@@ -1,23 +1,35 @@
-import logo from './logo.svg';
-import './App.css';
+import { makeStyles, Grid } from '@material-ui/core';
+
+import Header from "./components/Header";
+import LeftBar from './components/LeftBar';
+import Feed from './components/Feed';
+import RightBar from './components/RightBar';
+import FightCard from "./components/FightCard/FightCard";
+
+const useStyles = makeStyles((theme) =>({
+  rightBar: {
+    [theme.breakpoints.down('sm')]: {
+      display: 'none'
+    }
+  }
+}));
 
 function App() {
+  const classes = useStyles();
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <Header />
+      <Grid container>
+        {/* <Grid item sm={2} xs={2}>
+          <LeftBar />
+        </Grid> */}
+        <Grid item sm={12} xs={12}>
+          <Feed />
+        </Grid>
+        {/* <Grid item sm={3} className={classes.rightBar}>
+          <RightBar />
+        </Grid> */}
+      </Grid>
     </div>
   );
 }
