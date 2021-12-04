@@ -4,6 +4,7 @@ import DateDisplay from './DateDisplay';
 import TeamCard from './TeamCard';
 import EmbedYouTube from '../../EmbedYouTube';
 import { Grid, makeStyles } from '@material-ui/core';
+import Comments from '../comments/Comments';
 
 
 const player = {
@@ -73,6 +74,9 @@ const FightCard = () => {
             </Grid>
             <Grid item sm={12} className={classes.item}>
                 <FightDescription description={description} />
+            </Grid>
+            <Grid item sm={12} className={classes.item}>
+                <Comments currentUserId='1' />
             </Grid>
             {/* <PlayerCard player={player} /> */}
             {/* <DateDisplay date={date} season={season} /> */}
