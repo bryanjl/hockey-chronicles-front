@@ -1,3 +1,4 @@
+import { Container, makeStyles, Typography } from "@material-ui/core";
 import { useState, useEffect } from "react";
 import {
     getComments as getCommentsApi, 
@@ -9,8 +10,27 @@ import Comment from './Comment';
 import CommentForm from "./CommentForm";
 import './comments.css';
 
+const useStyles = makeStyles((theme) => ({
+    comments: {
+        justifyItems: 'center',
+        // border: '1px solid black',
+        width: '75%',
+        [theme.breakpoints.down('md')]:{
+            width: '100%'
+        }        
+    },
+    commentTitle: {
+        marginBottom: '10px'
+    },
+    formTitle: {
+        marginBottom: '5px'
+    }
+}));
+
 
 const Comments = ({ currentUserId }) => {
+    const classes = useStyles();
+
     //state of comments
     const [backendComments, setBackendComments] = useState([]);
     const [activeComment, setActiveComment] = useState(null);
@@ -65,9 +85,9 @@ const Comments = ({ currentUserId }) => {
     //reply comments doesn't scale to large amount of replies
     //okay for small/med project
     return (
-        <div className='comments' >
-            <h3 className='comments-title' > Comments </h3>
-            <div className='comment-form-title'>Write Comment</div>
+        <Container className={classes.comments} >
+            <Typography variant='h4' className={classes.commentTitle}> Comments </Typography>
+            <Typography variant='h5' className={classes.formTitle}>Write comment</Typography>
             <CommentForm submitLabel='Write' handleSubmit={addComment}  />
             <div className='comments-container'>
                 {rootComments.map((rootComment) => (
@@ -84,7 +104,7 @@ const Comments = ({ currentUserId }) => {
                     />
                 ))}
             </div>
-        </div>
+        </Container>
     )
 }
 

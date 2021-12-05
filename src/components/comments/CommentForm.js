@@ -1,4 +1,20 @@
-import { useState } from "react"
+import { useState } from "react";
+import { Button, Grid, makeStyles, TextField } from "@material-ui/core";
+
+const useStyles = makeStyles((theme) => ({
+    button: {
+        marginRight: '5px',
+        marginTop: '5px'
+    },
+    textfield: {
+        width: '95%',
+        backgroundColor: 'white',
+        [theme.breakpoints.up('md')]: {
+            width: '100%'
+        }
+    }
+}));
+
 
 
 const CommentForm = ({ 
@@ -8,34 +24,55 @@ const CommentForm = ({
     initialText = '', 
     handleCancel 
 }) => {
-    const [text, settext] = useState(initialText);
+    const classes = useStyles();
+
+    const [text, setText] = useState(initialText);
     const isTextareaDisabled = text.length === 0;
 
     const onSubmit = event => {
         event.preventDefault();
         handleSubmit(text);
-        settext('');    
+        setText('');    
     }
 
     return (
         <form onSubmit={onSubmit}>
-            <textarea 
-                className='comment-form-textarea' 
-                value={text} 
-                onChange={(e) => settext(e.target.value)} 
-            />
-            <button className='comment-form-button' disabled={isTextareaDisabled} >{submitLabel}</button>
-            {hasCancelButton && (
-                <button 
-                    type='button'
-                    className='comment-form-button comment-form-cancel-button'
-                    onClick={handleCancel}
-                >
-                    Cancel
-                </button>
-            )}
+            <Grid container>
+                <Grid item xs={12}>
+                    <TextField 
+                        className={classes.textfield} 
+                        variant='filled' 
+                        value={text} 
+                        onChange={(e) => setText(e.target.value)}
+                        multiline
+                        rows={5}
+                        placeholder='Write your comment...'
+                    />
+                </Grid>
+                <Grid item xs={12}>
+                    <Button 
+                        className={classes.button}
+                        type='submit' 
+                        variant='contained'  
+                        disabled={isTextareaDisabled}
+                    >
+                        {submitLabel} 
+                    </Button>
+                    {hasCancelButton && (
+                        <Button 
+                            className={classes.button}
+                            variant='contained'
+                            onClick={handleCancel}
+                        >
+                            Cancel
+                        </Button>
+                    )}
+                </Grid>
+            </Grid>   
         </form>
     )
 }
 
-export default CommentForm
+export default CommentForm;
+
+

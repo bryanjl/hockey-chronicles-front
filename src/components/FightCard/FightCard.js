@@ -2,9 +2,10 @@ import PlayerCard from './PlayerCard';
 import FightDescription from './FightDescription';
 import DateDisplay from './DateDisplay';
 import TeamCard from './TeamCard';
-import EmbedYouTube from '../../EmbedYouTube';
+import EmbedYouTube from '../EmbedYouTube';
 import { Grid, makeStyles } from '@material-ui/core';
 import Comments from '../comments/Comments';
+import OutcomeChart from '../charts/OutcomeChart';
 
 
 const player = {
@@ -43,13 +44,20 @@ const teams = [
 const useStyles = makeStyles((theme) => ({
     container: {
         display: 'flex',
-        justifyItems: 'center',
+        justifyContent: 'center',
         backgroundColor: 'red'
     },
     item: {
         display: 'flex',
         justifyContent: 'center',
-        marginBottom: '10px'
+        marginBottom: '10px',
+        // border: '1px solid black'
+    },
+    comments: {
+        
+    },
+    chart: {
+        marginTop: 'auto'
     }
 }));
 
@@ -57,16 +65,20 @@ const FightCard = () => {
     const classes = useStyles();
     return (
         <Grid container className={classes.container}>
+            
             <Grid item sm={12} className={classes.item}>  
                 <DateDisplay date={date} season={season} />
             </Grid>
             <Grid item sm={12} className={classes.item}>  
                 <TeamCard teams={teams} />
             </Grid>
-            <Grid item sm={6} className={classes.item}>  
+            <Grid item sm={4} className={classes.item}>  
                 <PlayerCard player={player} />
             </Grid>
-            <Grid item sm={6} className={classes.item}>
+            <Grid item sm={4} className={`${classes.item} ${classes.chart}`}>  
+                <OutcomeChart />
+            </Grid>
+            <Grid item sm={4} className={classes.item}>
                 <PlayerCard player={player} />
             </Grid>
             <Grid item sm={12} className={classes.item}>
@@ -76,7 +88,7 @@ const FightCard = () => {
                 <FightDescription description={description} />
             </Grid>
             <Grid item sm={12} className={classes.item}>
-                <Comments currentUserId='1' />
+                <Comments className={classes.comments} currentUserId='1' />
             </Grid>
             {/* <PlayerCard player={player} /> */}
             {/* <DateDisplay date={date} season={season} /> */}

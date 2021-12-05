@@ -1,5 +1,46 @@
-
+import { Avatar, Divider, Grid, makeStyles, Paper, Typography } from "@material-ui/core";
 import CommentForm from "./CommentForm";
+
+const useStyles = makeStyles((theme) => ({
+    commentPaper: {
+        width: '95%',
+        padding: '10px',
+        // marginTop: '5px',
+        [theme.breakpoints.up('md')]: {
+            width: '100%'
+        },
+        borderRadius: '0'
+    },
+    commentAuthor: {
+        marginRight: '8px',
+        fontSize: '20px',
+        color: 'rgb(59, 130, 246)'
+    },
+    commentBody: {
+        fontSize: '18px',
+        overflowWrap: 'break-word'
+    },
+    rightAlign: {
+        textAlign: 'right',
+        marginRight: '10px'
+    },
+    commentActions: {
+        display: 'flex',
+        cursor: 'pointer',
+        marginTop: '8px'
+    },
+    commentAction: {
+        marginRight: '5px',
+        color: 'rgb(51, 51, 51)',
+        fontSize: '12px',
+    },
+    replies: {
+        width: '100%'
+    },
+    commentAvatar: {
+        marginRight: '10px'
+    }
+}));
 
 const Comment = ({ 
     comment, 
@@ -10,8 +51,11 @@ const Comment = ({
     addComment, 
     setActiveComment, 
     parentId = null,
-    updateComment 
+    updateComment,
+    isReply = false 
 }) => {
+    const classes = useStyles();
+
     const fiveMinutes = 300000; 
     const timePassed = new Date() - new Date(comment.createdAt) > fiveMinutes;
     const canReply = Boolean(currentUserId);
@@ -27,75 +71,98 @@ const Comment = ({
         activeComment.type === 'editing' && 
         activeComment.id === comment.id;
     const replyId = parentId ? parentId : comment.id
+
+    const imgSrc = './user-icon.png';
+
     return (
-        <div className='comment'>
-            <div className='comment-image-container'>
-                <img src='/user-icon.png' alt='user' />
-            </div>
-            <div className='comment-right-part'>
-                <div className='comment-content'>
-                    <div className='comment-author'>
-                        {comment.username}
+        <Paper className={classes.commentPaper} elevation={0}>
+            <Grid container wrap='nowrap' spacing={0}> 
+                <Grid item>
+                    <Avatar className={classes.commentAvatar} alt='user' src={imgSrc} />
+                </Grid>
+                <Grid item zeroMinWidth>
+                    <Grid container>
+                        <Grid item> 
+                            <Typography className={classes.commentAuthor}>
+                                {comment.username}
+                            </Typography>
+                        </Grid>
+                        <Grid item> 
+                            <Typography >
+                                {createdAt}
+                            </Typography>
+                        </Grid>
+                        
+                    </Grid>
+                    {!isEditing && <Typography className={classes.commentBody}>{comment.body}</Typography>}
+                    {isEditing && (
+                        <CommentForm 
+                            submitLabel='Update' 
+                            hasCancelButton 
+                            initialText={comment.body} 
+                            handleSubmit={(text) => updateComment(text, comment.id)}
+                            handleCancel={() => setActiveComment(null)}
+                        />
+                    )}
+                    <div className={classes.commentActions}>
+                        {canReply && 
+                            <Typography 
+                                className={classes.commentAction}
+                                onClick={() => setActiveComment({ id: comment.id, type: 'replying' })}
+                            >
+                                Reply
+                            </Typography>}
+                        {canEdit && 
+                            <Typography 
+                                className={classes.commentAction}
+                                onClick={() => setActiveComment({ id: comment.id, type: 'editing' })}
+                            >
+                                Edit
+                            </Typography>}
+                        {canDelete && 
+                            <Typography 
+                                className={classes.commentAction} 
+                                onClick={() => deleteComment(comment.id)} 
+                            >
+                                Delete
+                            </Typography>}
                     </div>
-                    <div>
-                        {createdAt}
-                    </div>
-                </div>
-                {!isEditing && <div className='comment-text'>{comment.body}</div>}
-                {isEditing && (
-                    <CommentForm 
-                        submitLabel='Update' 
-                        hasCancelButton 
-                        initialText={comment.body} 
-                        handleSubmit={(text) => updateComment(text, comment.id)}
-                        handleCancel={() => setActiveComment(null)}
-                    />
-                )}
-                <div className='comment-actions'>
-                    {canReply && 
-                        <div 
-                            className='comment-action'
-                            onClick={() => setActiveComment({ id: comment.id, type: 'replying' })}
-                        >
-                            Reply
-                        </div>}
-                    {canEdit && 
-                        <div 
-                            className='comment-action'
-                            onClick={() => setActiveComment({ id: comment.id, type: 'editing' })}
-                        >
-                            Edit
-                        </div>}
-                    {canDelete && <div className='comment-action' onClick={() => deleteComment(comment.id)} >Delete</div>}
-                </div>
-                {/* if there is reply we recursively call comment components
-                there can be no nested replies save on performance*/}
-                {isReplying && (
-                    <CommentForm
-                        submitLabel='Reply'
-                        handleSubmit={(text) => addComment(text, replyId)}
-                    />
-                )}
-                {replies.length > 0 && (
-                    <div className='replies'>
-                        {replies.map(reply => (
-                            <Comment 
-                                key={reply.id} 
-                                comment={reply} 
-                                replies={[]}
-                                currentUserId={currentUserId}
-                                deleteComment={deleteComment}
-                                updateComment={updateComment}
-                                parentId={comment.id}
-                                addComment={addComment}
-                                activeComment={activeComment}
-                                setActiveComment={setActiveComment}
-                            />
-                        ))}
-                    </div>
-                )}
-            </div>
-        </div>
+                    {/* if there is reply we recursively call comment components
+                    there can be no nested replies save on performance*/}
+                    {isReplying && (
+                        <CommentForm
+                            submitLabel='Reply'
+                            handleSubmit={(text) => addComment(text, replyId)}
+                            hasCancelButton
+                            handleCancel={() => setActiveComment(null)}
+                        />
+                    )}
+                    {replies.length > 0 && (
+                        <div className={classes.replies}>
+                            {replies.map(reply => (
+                                <Comment 
+                                    key={reply.id} 
+                                    comment={reply} 
+                                    replies={[]}
+                                    currentUserId={currentUserId}
+                                    deleteComment={deleteComment}
+                                    updateComment={updateComment}
+                                    parentId={comment.id}
+                                    addComment={addComment}
+                                    activeComment={activeComment}
+                                    setActiveComment={setActiveComment}
+                                    isReply={true}
+                                />
+                            ))}
+                        </div>
+                    )}
+                </Grid>
+            </Grid>
+            {!isReply && 
+                <Divider variant='fullWidth' />
+            }
+            
+        </Paper>
     )
 }
 

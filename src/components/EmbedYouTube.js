@@ -4,6 +4,9 @@ import YouTube from "react-youtube";
 const useStyles = makeStyles((theme) => ({
     container: {
         width: '75%',
+        [theme.breakpoints.down('sm')]: {
+            width: '100%'
+        },
         display: 'flex',
         justifyContent: 'center',
         marginTop: '15px'
@@ -25,6 +28,6 @@ const EmbedYouTube = () => {
     )
 }
 
-export default EmbedYouTube
+export default EmbedYouTube;
 
 
