@@ -19,7 +19,15 @@ const useStyles = makeStyles((theme) => ({
     },
     text: {
         textAlign: 'center',
-        fontSize: [22, '!important']
+        fontSize: [22, '!important']        
+    },
+    vsTitle: {
+        display: 'flex',
+        height: '100%',
+        width: '100%',
+        // border: '1px solid black',
+        alignItems: 'center',
+        justifyContent: 'center'
     }
 }));
 
@@ -33,21 +41,18 @@ export default function TeamCard(props) {
         <React.Fragment>
         <CardContent>
             <Grid container>
-                <Grid item sm={6}>
+                <Grid item sm={5}>
                     <Typography className={classes.text}>
                         {teams[0].city} {teams[0].name}
                     </Typography>
-                    {/* <Typography>
-                        {teams[0].league}
-                    </Typography> */}
                 </Grid>
-                <Grid item sm={6}>
+                <Grid item sm={2}>
+                    <Typography className={classes.vsTitle}>VS</Typography>
+                </Grid>
+                <Grid item sm={5}>
                     <Typography className={classes.text}>
                         {teams[1].city} {teams[1].name}
                     </Typography>
-                    {/* <Typography>
-                        {teams[1].league}
-                    </Typography> */}
                 </Grid>
             </Grid>
             

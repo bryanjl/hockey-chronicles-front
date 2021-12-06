@@ -6,6 +6,7 @@ import {
     deleteComment as deleteCommentApi,
     updateComment as updateCommentApi
 } from './api';
+// import { postComment } from "../../api/fights/fightApi";
 import Comment from './Comment';
 import CommentForm from "./CommentForm";
 import './comments.css';
