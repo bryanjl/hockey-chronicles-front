@@ -15,7 +15,7 @@ class OutcomeChart extends Component {
         }
         },
         xaxis: {
-          categories: ['player1', 'draw', 'player2']
+          categories: [`${props.fight.data.players[1].lastName}`, 'draw', `${props.fight.data.players[0].lastName}`]
         },
         yaxis: {
             show: false
@@ -36,7 +36,7 @@ class OutcomeChart extends Component {
       series: [
         {
           name: "Votes",
-          data: [30, 21, 45]
+          data: [`${props.fight.data.outcome[props.fight.data.players[1]._id]}`, 21, `${props.fight.data.outcome[props.fight.data.players[0]._id]}`]
         }
       ]
     };

@@ -31,27 +31,51 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-export default function TeamCard(props) {
+export default function TeamCard({ fight }) {
 
     const classes = useStyles();
 
-    let teams = props.teams;
+    let teams = fight.teams;
 
     const card = (
         <React.Fragment>
         <CardContent>
             <Grid container>
                 <Grid item sm={5}>
-                    <Typography className={classes.text}>
-                        {teams[0].city} {teams[0].name}
-                    </Typography>
+                    <Grid item sm={12}> 
+                        <Typography className={classes.text}>
+                            {teams[0].city}
+                        </Typography>
+                    </Grid>
+                    <Grid item sm={12}> 
+                        <Typography className={classes.text}>
+                            {teams[0].name}
+                        </Typography>
+                    </Grid>                    
                 </Grid>
                 <Grid item sm={2}>
                     <Typography className={classes.vsTitle}>VS</Typography>
                 </Grid>
                 <Grid item sm={5}>
+                    <Grid item sm={12}> 
+                        <Typography className={classes.text}>
+                            {teams[1].city}
+                        </Typography>
+                    </Grid>
+                    <Grid item sm={12}> 
+                        <Typography className={classes.text}>
+                            {teams[1].name}
+                        </Typography>
+                    </Grid> 
+                </Grid>
+                <Grid item sm={12}>
                     <Typography className={classes.text}>
-                        {teams[1].city} {teams[1].name}
+                        {fight.gameType} Game
+                    </Typography>
+                </Grid>
+                <Grid item sm={12}>
+                    <Typography className={classes.text}>
+                        {(fight.fightType !== 'Fight') && fight.fightType}
                     </Typography>
                 </Grid>
             </Grid>

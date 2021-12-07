@@ -27,22 +27,22 @@ import {
 
 
 
-const player = {
-    firstName: 'Bryan',
-    lastName: 'Lilly',
-    position: 'Center',
-    wins: 1,
-    losses: 2,
-    draws: 3,
-    unfairTally: 2,
-    actionRating: 6.5,
-    height: 187,
-    weight: 200,
-    shoots: 'Left'
+// const player = {
+//     firstName: 'Bryan',
+//     lastName: 'Lilly',
+//     position: 'Center',
+//     wins: 1,
+//     losses: 2,
+//     draws: 3,
+//     unfairTally: 2,
+//     actionRating: 6.5,
+//     height: 187,
+//     weight: 200,
+//     shoots: 'Left'
     
-}
+// }
 
-const description = "'body1. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos blanditiis tenetur unde suscipit, quam beatae rerum inventore consectetur, neque doloribus, cupiditate numquam dignissimos laborum fugiat deleniti? Eum      quasi quidem quibusdam.'"
+// const description = "'body1. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos blanditiis tenetur unde suscipit, quam beatae rerum inventore consectetur, neque doloribus, cupiditate numquam dignissimos laborum fugiat deleniti? Eum      quasi quidem quibusdam.'"
 
 // let date = 'Feb 7th, 1987'
 // let season = '1986-1987'
@@ -88,7 +88,7 @@ const FightCard = () => {
     
     useEffect(() => {
         setFight({data: {}, isFetching: true })
-        getFight('6189038f2ef67904ba54525a').then(data => {
+        getFight('61af39ffc3886aea9b3e6573').then(data => {
             console.log(data);
             setFight({data: data.data, isFetching: false});
         })   
@@ -107,22 +107,22 @@ const FightCard = () => {
                     <DateDisplay date={new Date(fight.data.date.split('T')[0]).toDateString()} season={fight.data.season.season} />
                 </Grid>
                 <Grid item sm={12} className={classes.item}>  
-                    <TeamCard teams={fight.data.teams} />
+                    <TeamCard fight={fight.data} />
                 </Grid>
                 <Grid item sm={4} className={classes.item}>  
-                    <PlayerCard player={player} />
+                    <PlayerCard player={fight.data.players[1]} />
                 </Grid>
                 <Grid item sm={4} className={`${classes.item} ${classes.chart}`}>  
-                    <OutcomeChart />
+                    <OutcomeChart fight={fight} />
                 </Grid>
                 <Grid item sm={4} className={classes.item}>
-                    <PlayerCard player={player} />
+                    <PlayerCard player={fight.data.players[0]} />
                 </Grid>
                 <Grid item sm={12} className={classes.item}>
-                    <EmbedYouTube />
+                    <EmbedYouTube videoLink={fight.data.videoLink} />
                 </Grid>
                 <Grid item sm={12} className={classes.item}>
-                    <FightDescription description={description} />
+                    <FightDescription description={fight.data.description} />
                 </Grid>
                 <Grid item sm={12} className={classes.item}>
                     <Comments className={classes.comments} currentUserId='1' />

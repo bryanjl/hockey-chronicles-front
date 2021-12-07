@@ -16,13 +16,20 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-export default function Types(props) {
+export default function FightDescription({ description = '' }) {
     const classes = useStyles();
+
+    if(description === ''){
+        return (
+            <div></div>
+        )
+    }
+
     return (
     <Container className={classes.container}>
         <Typography className={classes.descTitle}>Fight Description</Typography>
         <Typography className={classes.text}>
-            {props.description}
+            {description}
         </Typography>
     </Container>
   );

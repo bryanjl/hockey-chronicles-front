@@ -6,41 +6,50 @@ import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { makeStyles } from '@material-ui/core';
+import { Grid } from '@mui/material';
 
 
 const useStyles = makeStyles((theme) => ({
     cardContainer: {
-        maxWidth: '275px',
-        
-        [theme.breakpoints.down('xs')]: {
-            maxWidth: '125px'
-        }
+      maxWidth: '275px',
+      height: '100%',
+      [theme.breakpoints.down('xs')]: {
+          maxWidth: '125px'
+      },
+      padding: '5px'
+    },
+    card: {
+      height: '100%',
+      maxWidth: '275px'
     },
     name: {
-        fontSize: [25, '!important'],
-        paddingBottom: theme.spacing(),
-        [theme.breakpoints.down('xs')]: {
-            fontSize: [15, '!important']
-        }
+      display: 'flex',
+      width: '100%',
+      fontSize: [25, '!important'],
+      paddingBottom: theme.spacing(),
+      [theme.breakpoints.down('xs')]: {
+          fontSize: [15, '!important']
+      },
+      justifyContent: 'center'
     },
     stats: {
-        fontSize: [25, '!important'],
-        paddingTop: theme.spacing(),
-        [theme.breakpoints.down('xs')]: {
-            fontSize: [12, '!important']
-        }
+      fontSize: [25, '!important'],
+      paddingTop: theme.spacing(),
+      [theme.breakpoints.down('xs')]: {
+          fontSize: [12, '!important']
+      }
     },
     weightHeight: {
-        fontSize: [15, '!important'],
-        [theme.breakpoints.down('xs')]: {
-            display: 'none'
-        }
+      fontSize: [15, '!important'],
+      [theme.breakpoints.down('xs')]: {
+          display: 'none'
+      }
     },
     position: {
-        fontSize: [15, '!important'],
-        [theme.breakpoints.down('xs')]: {
-            display: 'none'
-        }
+      fontSize: [15, '!important'],
+      [theme.breakpoints.down('xs')]: {
+          display: 'none'
+      }
     }
 }));
 
@@ -60,18 +69,42 @@ export default function OutlinedCard(props) {
       const card = (
         <React.Fragment>
           <CardContent>
-            <Typography className={classes.name}>
-              {props.player.firstName} {props.player.lastName}
-            </Typography>
-            <Typography className={classes.weightHeight} >
-              {props.player.height}cm {props.player.weight}lb 
-            </Typography>
-            <Typography className={classes.position}>
-              {props.player.position} - Shoots {props.player.shoots}
-            </Typography>
-            <Typography className={classes.stats}>
-              {props.player.wins}{bull}{props.player.losses}{bull}{props.player.draws} (W-L-D)
-            </Typography>
+            <Grid container> 
+              <Grid item sm={12}>
+                <Typography className={classes.name}>
+                  {props.player.firstName}
+                </Typography>
+              </Grid>
+              <Grid item sm={12}>
+                <Typography className={classes.name}>
+                  {props.player.lastName}
+                </Typography>
+              </Grid>
+              <Grid item sm={12}>
+                <Typography className={classes.weightHeight} >
+                  {`Height: ${props.player.height.split(' ')[0]}`} 
+                </Typography>
+              </Grid>
+              <Grid item sm={12}>
+                <Typography className={classes.weightHeight} >
+                  {`Weight: ${props.player.weight.split(' ')[0]}lb`} 
+                </Typography>
+              </Grid>
+              <Grid item sm={12}>
+                <Typography className={classes.position}>
+                  {props.player.position}
+                </Typography>
+              </Grid>
+              <Grid item sm={12}>
+                <Typography className={classes.stats}>
+                  {props.player.wins}{bull}{props.player.losses}{bull}{props.player.draw} (W-L-D)
+                </Typography>
+              </Grid>
+            </Grid>
+            
+            
+
+            
           </CardContent>
           <CardActions>
             <Button onClick={() => alert('hello')} size="small">View Player Profile</Button>

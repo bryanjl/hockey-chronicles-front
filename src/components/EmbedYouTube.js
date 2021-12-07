@@ -13,16 +13,34 @@ const useStyles = makeStyles((theme) => ({
     },
     youtube: {
         maxWidth: '100%'
+    },
+    noVideoContainer: {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: '15px'
+    },
+    noVideoImg: {
+        height: '75%',
+        width: '50%'
     }
 }));
 
-const EmbedYouTube = () => {
+const EmbedYouTube = ({ videoLink = '' }) => {
     const classes = useStyles();
+
+    if(videoLink === ''){
+        return (
+            <Container className={classes.noVideoContainer}>
+                <img className={classes.noVideoImg} src='./no-video-available.jpg' alt='No Video' />
+            </Container>
+        )
+    }
 
     return (
         
     <Container className={classes.container}>
-        <YouTube className={classes.youtube} videoId='B7_KJEwCAao' />
+        <YouTube className={classes.youtube} videoId={videoLink} />
     </Container>
         
     )
