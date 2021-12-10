@@ -97,7 +97,7 @@ export default function OutlinedCard(props) {
               </Grid>
               <Grid item sm={12}>
                 <Typography className={classes.stats}>
-                  {props.player.wins}{bull}{props.player.losses}{bull}{props.player.draw} (W-L-D)
+                  {props.player.wins}{bull}{props.player.losses}{bull}{props.player.draws} (W-L-D)
                 </Typography>
               </Grid>
             </Grid>

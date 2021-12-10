@@ -36,7 +36,7 @@ class OutcomeChart extends Component {
       series: [
         {
           name: "Votes",
-          data: [`${props.fight.data.outcome[props.fight.data.players[1]._id]}`, 21, `${props.fight.data.outcome[props.fight.data.players[0]._id]}`]
+          data: [`${props.fight.data.outcome[props.fight.data.players[1]._id]}`, `${props.fight.data.outcome.draw}`, `${props.fight.data.outcome[props.fight.data.players[0]._id]}`]
         }
       ]
     };

@@ -5,60 +5,15 @@ import TeamCard from './TeamCard';
 import EmbedYouTube from '../EmbedYouTube';
 import { Grid, makeStyles } from '@material-ui/core';
 import Comments from '../comments/Comments';
-import OutcomeChart from '../charts/OutcomeChart';
+// import OutcomeChart from '../charts/OutcomeChart';
+import Vote from './Vote';
 import { useEffect, useState } from 'react';
 
 //api
 import {
-    getFight
+    getFight,
+    updateOutcome
 } from '../../api/fights/fightApi';
-
-
-// const fetchData = async() => {
-//     let data = await getFight()
-//     console.log(data);
-// }
-
-// fetchData();
-
-
-
-
-
-
-
-// const player = {
-//     firstName: 'Bryan',
-//     lastName: 'Lilly',
-//     position: 'Center',
-//     wins: 1,
-//     losses: 2,
-//     draws: 3,
-//     unfairTally: 2,
-//     actionRating: 6.5,
-//     height: 187,
-//     weight: 200,
-//     shoots: 'Left'
-    
-// }
-
-// const description = "'body1. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos blanditiis tenetur unde suscipit, quam beatae rerum inventore consectetur, neque doloribus, cupiditate numquam dignissimos laborum fugiat deleniti? Eum      quasi quidem quibusdam.'"
-
-// let date = 'Feb 7th, 1987'
-// let season = '1986-1987'
-
-// const teams = [
-//     {
-//         city: 'Vancouver',
-//         name: 'Canucks',
-//         league: 'NHL'
-//     },
-//     {
-//         city: 'Chicago',
-//         name: 'Blackhawks',
-//         league: 'NHL'
-//     }
-// ]
 
 const useStyles = makeStyles((theme) => ({
     container: {
@@ -81,21 +36,25 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const FightCard = () => {
+    // 61af39ffc3886aea9b3e6573
+
+
     const classes = useStyles();
 
-    const [fight, setFight] = useState({data: {}, isFetching: true});
-        
+    const [fight, setFight] = useState({data: {}, isFetching: true});        
     
     useEffect(() => {
         setFight({data: {}, isFetching: true })
-        getFight('61af39ffc3886aea9b3e6573').then(data => {
+        getFight('61b2c7dfc02dfef5500c6a4e').then(data => {
             console.log(data);
             setFight({data: data.data, isFetching: false});
         })   
-    }, [])
+    }, []);
 
-    // console.log('this fight', fight.season);
-    // const [fight, setFight] = useState({})
+    const voteUpdate = async() => {
+        await updateOutcome(fight.data._id, {outcome: fight.data.outcome});
+        console.log('updated vote to API')
+    }
 
     return (
         
@@ -113,7 +72,7 @@ const FightCard = () => {
                     <PlayerCard player={fight.data.players[1]} />
                 </Grid>
                 <Grid item sm={4} className={`${classes.item} ${classes.chart}`}>  
-                    <OutcomeChart fight={fight} />
+                    <Vote fight={fight} setFight={setFight} voteUpdate={voteUpdate} />
                 </Grid>
                 <Grid item sm={4} className={classes.item}>
                     <PlayerCard player={fight.data.players[0]} />
