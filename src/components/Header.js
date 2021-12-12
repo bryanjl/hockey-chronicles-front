@@ -1,6 +1,9 @@
 import { AppBar, Toolbar, Typography, makeStyles, InputBase, alpha, Badge, Avatar } from '@material-ui/core';
 import { Search, Notifications, Cancel } from '@material-ui/icons';
+import { Button } from '@mui/material';
 import { useState } from 'react';
+import Login from './auth/Login';
+import Register from './auth/Register';
 
 const useStyles = makeStyles((theme) => ({
     header: {
@@ -65,7 +68,28 @@ const useStyles = makeStyles((theme) => ({
 
 const Header = () => {
     const [open, setOpen] = useState(false);
+
+    const [openLogin, setOpenLogin] = useState(false);
+    const [openRegister, setOpenRegister] = useState(false);
+
     const classes = useStyles({ open });
+
+    const loginBtnClick = () => {
+        setOpenLogin(true);
+    }
+
+    const onLoginClose = () => {
+        setOpenLogin(false);
+    }
+
+    const registerBtnClick = () => {
+        setOpenRegister(true);
+    }
+
+    const onRegisterClose = () => {
+        setOpenRegister(false);
+    }
+
     return (
         <AppBar className={classes.header} position='fixed'>
             <Toolbar className={classes.toolbar}>
@@ -75,6 +99,10 @@ const Header = () => {
                 <Typography variant='h5' component='h2' className={classes.logoSm}>
                     HFC
                 </Typography>
+                <Button onClick={loginBtnClick}>Login</Button>
+                <Login open={openLogin} onClose={onLoginClose} />
+                <Button onClick={registerBtnClick}>Register</Button>
+                <Register open={openRegister} onClose={onRegisterClose} />
                 <div className={classes.search}>
                     <Search />
                     <InputBase placeholder='Search' className={classes.input} fullWidth/>
