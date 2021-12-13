@@ -2,6 +2,7 @@ import { AppBar, Toolbar, Typography, makeStyles, InputBase, alpha, Badge, Avata
 import { Search, Notifications, Cancel } from '@material-ui/icons';
 import { Button } from '@mui/material';
 import { useState } from 'react';
+import { login as loginAPI, register as registerAPI } from '../api/auth/authApi';
 import Login from './auth/Login';
 import Register from './auth/Register';
 
@@ -67,27 +68,37 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const Header = () => {
+    //state for search bar
     const [open, setOpen] = useState(false);
+    const classes = useStyles({ open });
 
+    //state for Auth -> login/register
     const [openLogin, setOpenLogin] = useState(false);
     const [openRegister, setOpenRegister] = useState(false);
 
-    const classes = useStyles({ open });
-
+    //open login dialog
     const loginBtnClick = () => {
         setOpenLogin(true);
     }
-
+    //close login dialog
     const onLoginClose = () => {
         setOpenLogin(false);
     }
-
+    //open register dialog
     const registerBtnClick = () => {
         setOpenRegister(true);
     }
-
+    //close register dialog
     const onRegisterClose = () => {
         setOpenRegister(false);
+    }
+    //LOGIN sign in button -> api call
+    const signIn = (credentials) => {
+        loginAPI(credentials);
+    }
+    //REGISTER sign up button -> api call
+    const signUp = (userDetails) => {
+        registerAPI(userDetails);
     }
 
     return (
@@ -100,9 +111,9 @@ const Header = () => {
                     HFC
                 </Typography>
                 <Button onClick={loginBtnClick}>Login</Button>
-                <Login open={openLogin} onClose={onLoginClose} />
+                <Login open={openLogin} onClose={onLoginClose} signIn={signIn} />
                 <Button onClick={registerBtnClick}>Register</Button>
-                <Register open={openRegister} onClose={onRegisterClose} />
+                <Register open={openRegister} onClose={onRegisterClose} signUp={signUp} />
                 <div className={classes.search}>
                     <Search />
                     <InputBase placeholder='Search' className={classes.input} fullWidth/>
