@@ -99,6 +99,7 @@ const Header = () => {
     //REGISTER sign up button -> api call
     const signUp = (userDetails) => {
         registerAPI(userDetails);
+        // console.log(response);
     }
 
     return (

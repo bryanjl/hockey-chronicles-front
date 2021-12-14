@@ -1,4 +1,5 @@
 import fetchApi from "../fetchApi";
+// import { badRequestHandling } from "../../components/auth/Login";
 
 export const getToken = () => {
     let token = localStorage.getItem('token');
@@ -18,8 +19,15 @@ export const login = async (credentials) => {
     }
 
     let token = await fetchApi(route, options);
+    // if(token.success === false) {
+    //     badRequestHandling(token.msg)
+    // }
+    
+    // console.log(token);
 
     localStorage.setItem('token', token.token);
+
+    return token;
 }
 
 export const register = async (userDetails) => {
