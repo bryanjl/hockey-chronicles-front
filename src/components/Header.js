@@ -2,7 +2,13 @@ import { AppBar, Toolbar, Typography, makeStyles, InputBase, alpha, Badge, Avata
 import { Search, Notifications, Cancel } from '@material-ui/icons';
 import { Button } from '@mui/material';
 import { useState } from 'react';
-import { login as loginAPI, register as registerAPI } from '../api/auth/authApi';
+import { 
+    login as loginAPI, 
+    register as registerAPI, 
+    logout as logoutAPI,
+    getToken as getTokenAPI,
+    getUserDetails as getUserDetailsAPI
+} from '../api/auth/authApi';
 import Login from './auth/Login';
 import Register from './auth/Register';
 
@@ -101,6 +107,15 @@ const Header = () => {
         registerAPI(userDetails);
         // console.log(response);
     }
+    //LOGOUT logout button -> clear token
+    const logout = () => {
+        logoutAPI();
+    }
+    //TEST -> GET current logged in user's token
+    const getMe = () => {
+        let user = getUserDetailsAPI();
+        // console.log(token);
+    }
 
     return (
         <AppBar className={classes.header} position='fixed'>
@@ -115,6 +130,8 @@ const Header = () => {
                 <Login open={openLogin} onClose={onLoginClose} signIn={signIn} />
                 <Button onClick={registerBtnClick}>Register</Button>
                 <Register open={openRegister} onClose={onRegisterClose} signUp={signUp} />
+                <Button onClick={logout}>Logout</Button>
+                <Button onClick={getMe}>GET ME</Button>
                 <div className={classes.search}>
                     <Search />
                     <InputBase placeholder='Search' className={classes.input} fullWidth/>

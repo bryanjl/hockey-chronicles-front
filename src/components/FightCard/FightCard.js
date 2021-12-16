@@ -14,6 +14,7 @@ import {
     getFight,
     updateOutcome
 } from '../../api/fights/fightApi';
+import { updateComment } from '../../api/comments/commentsApi';
 
 const useStyles = makeStyles((theme) => ({
     container: {
@@ -43,9 +44,11 @@ const FightCard = () => {
 
     const [fight, setFight] = useState({data: {}, isFetching: true});        
     
+    let comments = fight.data.comments;
+
     useEffect(() => {
         setFight({data: {}, isFetching: true })
-        getFight('61b2c7dfc02dfef5500c6a4e').then(data => {
+        getFight('61b9cb8ba41de694cef62e0a').then(data => {
             console.log(data);
             setFight({data: data.data, isFetching: false});
         })   
@@ -84,7 +87,7 @@ const FightCard = () => {
                     <FightDescription description={fight.data.description} />
                 </Grid>
                 <Grid item sm={12} className={classes.item}>
-                    <Comments className={classes.comments} currentUserId='1' />
+                    <Comments className={classes.comments} fightId={fight.data._id} fight={fight.data} />
                 </Grid>
 
             </Grid>

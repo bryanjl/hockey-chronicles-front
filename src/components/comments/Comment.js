@@ -56,6 +56,8 @@ const Comment = ({
 }) => {
     const classes = useStyles();
 
+    console.log(replies);
+
     const fiveMinutes = 300000; 
     const timePassed = new Date() - new Date(comment.createdAt) > fiveMinutes;
     const canReply = Boolean(currentUserId);
@@ -65,12 +67,12 @@ const Comment = ({
     const isReplying = 
         activeComment && 
         activeComment.type === 'replying' && 
-        activeComment.id === comment.id;
+        activeComment.id === comment._id;
     const isEditing = 
         activeComment && 
         activeComment.type === 'editing' && 
-        activeComment.id === comment.id;
-    const replyId = parentId ? parentId : comment.id
+        activeComment.id === comment._id;
+    const replyId = parentId ? parentId : comment._id
 
     const imgSrc = './user-icon.png';
 
@@ -100,7 +102,7 @@ const Comment = ({
                             submitLabel='Update' 
                             hasCancelButton 
                             initialText={comment.body} 
-                            handleSubmit={(text) => updateComment(text, comment.id)}
+                            handleSubmit={(text) => updateComment(text, comment._id)}
                             handleCancel={() => setActiveComment(null)}
                         />
                     )}
@@ -108,21 +110,21 @@ const Comment = ({
                         {canReply && 
                             <Typography 
                                 className={classes.commentAction}
-                                onClick={() => setActiveComment({ id: comment.id, type: 'replying' })}
+                                onClick={() => setActiveComment({ id: comment._id, type: 'replying' })}
                             >
                                 Reply
                             </Typography>}
                         {canEdit && 
                             <Typography 
                                 className={classes.commentAction}
-                                onClick={() => setActiveComment({ id: comment.id, type: 'editing' })}
+                                onClick={() => setActiveComment({ id: comment._id, type: 'editing' })}
                             >
                                 Edit
                             </Typography>}
                         {canDelete && 
                             <Typography 
                                 className={classes.commentAction} 
-                                onClick={() => deleteComment(comment.id)} 
+                                onClick={() => deleteComment(comment._id)} 
                             >
                                 Delete
                             </Typography>}
@@ -141,13 +143,13 @@ const Comment = ({
                         <div className={classes.replies}>
                             {replies.map(reply => (
                                 <Comment 
-                                    key={reply.id} 
+                                    key={reply._id} 
                                     comment={reply} 
                                     replies={[]}
                                     currentUserId={currentUserId}
                                     deleteComment={deleteComment}
                                     updateComment={updateComment}
-                                    parentId={comment.id}
+                                    parentId={comment._id}
                                     addComment={addComment}
                                     activeComment={activeComment}
                                     setActiveComment={setActiveComment}

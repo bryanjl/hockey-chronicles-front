@@ -2,14 +2,15 @@ import { Container, makeStyles, Typography } from "@material-ui/core";
 import { useState, useEffect } from "react";
 import {
     getComments as getCommentsApi, 
-    createComment as createCommentApi, 
+    postComment as createCommentApi, 
     deleteComment as deleteCommentApi,
     updateComment as updateCommentApi
-} from './api';
-// import { postComment } from "../../api/fights/fightApi";
+} from '../../api/comments/commentsApi';
+import { getUserId } from "../../api/auth/authApi";
 import Comment from './Comment';
 import CommentForm from "./CommentForm";
 import './comments.css';
+
 
 const useStyles = makeStyles((theme) => ({
     comments: {
@@ -29,15 +30,19 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-const Comments = ({ currentUserId }) => {
+const Comments = ({ fightId }) => {
     const classes = useStyles();
+
+    let currentUserId = getUserId();
 
     //state of comments
     const [backendComments, setBackendComments] = useState([]);
     const [activeComment, setActiveComment] = useState(null);
 
-    const rootComments = backendComments.filter((backendComment) => backendComment.parentId === null );
+    let rootComments = backendComments.filter((backendComment) => backendComment.parentId === null );
     
+    // console.log(rootComments);
+
     //get replies belonging to parentId and Sort in ascending(new to old)
     const getReplies = commentId => {
         return backendComments
@@ -46,10 +51,18 @@ const Comments = ({ currentUserId }) => {
     }
 
     const addComment = (text, parentId) => {
-        createCommentApi(text, parentId).then(comment => {
-            setBackendComments([comment, ...backendComments]);
+        let newComments;
+        createCommentApi(fightId, text, parentId).then(comment => {
+            
+            setBackendComments(() => {
+                newComments = [comment, ...backendComments]
+                setBackendComments(newComments);
+            });    
             setActiveComment(null);
+            console.log('added', backendComments)
+            // rootComments = backendComments.filter((backendComment) => backendComment.parentId === null );
         });
+        
     }
 
     const deleteComment = (commentId) => {
@@ -78,10 +91,18 @@ const Comments = ({ currentUserId }) => {
 
     //Get comments from API
     useEffect(() => {
-        getCommentsApi().then(data => {
+
+        getCommentsApi(fightId).then(data => {
+            console.log(data)
             setBackendComments(data);
         });
-    }, []);
+
+        // setBackendComments(comments);
+        // console.log('hello');
+        // getCommentsApi().then(data => {
+        //     setBackendComments(data);
+        // });
+    }, [fightId]);
 
     //reply comments doesn't scale to large amount of replies
     //okay for small/med project
@@ -93,9 +114,9 @@ const Comments = ({ currentUserId }) => {
             <div className='comments-container'>
                 {rootComments.map((rootComment) => (
                     <Comment 
-                        key={rootComment.id} 
+                        key={rootComment._id} 
                         comment={rootComment} 
-                        replies={getReplies(rootComment.id)}
+                        replies={getReplies(rootComment._id)}
                         currentUserId={currentUserId}
                         deleteComment={deleteComment}
                         activeComment={activeComment}

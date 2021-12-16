@@ -1,5 +1,5 @@
 import { makeStyles } from "@material-ui/core";
-import { LockOpen, LockOutlined, SettingsOverscanOutlined } from "@material-ui/icons";
+import { LockOpen, LockOutlined } from "@material-ui/icons";
 import { Avatar, Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, Link, TextField } from "@mui/material";
 import { useState } from "react";
 import { login as loginAPI } from '../../api/auth/authApi';
@@ -16,21 +16,14 @@ const useStyles = makeStyles((theme) =>({
     }
 }));
 
-// let response;
-
-// export const badRequestHandling = (err) => {
-//     response = err;
-//     // console.log(err);
-    
-// }
-
-const Login = ({ open, onClose, signIn }) => {
-    const classes = useStyles();
-
+const Login = ({ open, onClose }) => {
+    //State
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [formError, setFormError] = useState('');
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+    const classes = useStyles();
 
     const handleUsernameChange = (e) => {
         setUsername(e.target.value);
@@ -61,6 +54,7 @@ const Login = ({ open, onClose, signIn }) => {
         setUsername('');
         setPassword('');
         setFormError('');
+        setIsLoggedIn(false);
         onClose();
     }
     
@@ -75,7 +69,7 @@ const Login = ({ open, onClose, signIn }) => {
                 </Avatar>
                 {isLoggedIn ? 'You are now logged in' : 'Sign In'}
             </DialogTitle>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} className={classes.loggedIn}>
                 <DialogContent>
                     <TextField
                         onInvalid={(e) => (username === '') ? e.target.setCustomValidity('Enter Username') : e.target.setCustomValidity('')}
