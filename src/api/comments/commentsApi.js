@@ -47,23 +47,47 @@ export const getComments = async(recordId) => {
     return response.data;
 }
 
-export const updateComment = () => {
+export const updateComment = (recordId, text, commentId) => {
+    let route = `/fights/${recordId}/comments`;
 
+    let token = getToken();
+
+    let reqBody = {
+        body: text,
+        commentId
+    }
+
+    let options = {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(reqBody)
+    }
+
+    fetchApi(route, options);
 }
 
-//takes in record ID
-// export const getComments = (recordId) => {
-//     let route = `/games/${recordId}/comments`
+export const deleteComment = (recordId, commentId) => {
+    console.log(commentId);
 
-//     let options = {
-//         method: 'GET'
-//     }
+    let route = `/fights/${recordId}/comments`;
 
-//     let comments = fetchApi(route, options);
+    let token = getToken();
 
-//     return comments;
-// }
+    let reqBody = {
+        commentId
+    }
 
-export const deleteComment = () => {
-    
+    let options = {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(reqBody)
+    }
+
+    fetchApi(route, options);
 }

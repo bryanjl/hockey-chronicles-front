@@ -56,14 +56,8 @@ const Comment = ({
 }) => {
     const classes = useStyles();
 
-    // console.log('reply', replies);
-    // console.log('commentttt', comment);
-    // console.log(new Date(comment.createdAt))
-    console.log(currentUserId, comment.userId);
-
-    const fiveMinutes = 30000000; 
+    const fiveMinutes = 3000000; 
     const timePassed = new Date() - new Date(comment.createdAt) > fiveMinutes;
-    console.log(new Date() - new Date(comment.createdAt));
     const canReply = Boolean(currentUserId);
     const canEdit = currentUserId === comment.userId && !timePassed;
     const canDelete = currentUserId === comment.userId && !timePassed;
@@ -71,11 +65,11 @@ const Comment = ({
     const isReplying = 
         activeComment && 
         activeComment.type === 'replying' && 
-        activeComment._id === comment._id;
+        activeComment.id === comment._id;
     const isEditing = 
         activeComment && 
         activeComment.type === 'editing' && 
-        activeComment._id === comment._id;
+        activeComment.id === comment._id;
     const replyId = parentId ? parentId : comment._id
 
     const imgSrc = './user-icon.png';

@@ -39,7 +39,7 @@ const Comments = ({ fightId }) => {
     const [backendComments, setBackendComments] = useState([]);
     const [activeComment, setActiveComment] = useState(null);
 
-    let rootComments = backendComments.filter((backendComment) => backendComment.parentId === null );
+    const rootComments = backendComments.filter((backendComment) => backendComment.parentId === null );
     
     // console.log(rootComments);
 
@@ -51,60 +51,47 @@ const Comments = ({ fightId }) => {
     }
 
     const addComment = (text, parentId) => {
-        let newComments;
         createCommentApi(fightId, text, parentId).then(comment => {
-            console.log('comment', comment);
             setBackendComments(() => {
-                setActiveComment(null);
-                newComments = [comment, ...backendComments]
+                let newComments = [comment, ...backendComments]
                 setBackendComments(newComments);
-                
-                // console.log('added', backendComments)
+                setActiveComment(null);
             });    
-            
-            
-            // rootComments = backendComments.filter((backendComment) => backendComment.parentId === null );
         });
         
     }
 
     const deleteComment = (commentId) => {
         if(window.confirm('Are you sure you want remove comment')) {
-            deleteCommentApi(commentId).then(() => {
-                const updatedBackendComments = backendComments.filter(
-                    (backendComment) => backendComment.id !== commentId
-                );
-                setBackendComments(updatedBackendComments);
-            });
+            deleteCommentApi(fightId, commentId)
+            const updatedBackendComments = backendComments.filter(
+                (backendComment) => backendComment._id !== commentId);
+            setBackendComments(updatedBackendComments);
         }
     }
 
     const updateComment = (text, commentId) => {
-        updateCommentApi(text, commentId).then(() => {
-            const updatedBackendComments = backendComments.map((backendComment) => {
-                if(backendComment.id === commentId) {
-                    return { ...backendComment, body: text };
-                }
-                return backendComment;
-            });
-            setBackendComments(updatedBackendComments);
-            setActiveComment(null);
-        });
+        updateCommentApi(fightId, text, commentId)
+        
+        
+        const updatedBackendComments = backendComments.map((backendComment) => {
+            if(backendComment._id === commentId) {
+                return { ...backendComment, body: text };
+            }
+            return backendComment;
+        })
+        
+        setBackendComments(updatedBackendComments);
+        setActiveComment(null);
+        
     }
 
     //Get comments from API
     useEffect(() => {
-
         getCommentsApi(fightId).then(data => {
             data.sort((a, b) => new Date(a.createdAt).getTime() + new Date(b.createdAt).getTime());
             setBackendComments(data.reverse());
         });
-
-        // setBackendComments(comments);
-        // console.log('hello');
-        // getCommentsApi().then(data => {
-        //     setBackendComments(data);
-        // });
     }, [fightId]);
 
     //reply comments doesn't scale to large amount of replies
