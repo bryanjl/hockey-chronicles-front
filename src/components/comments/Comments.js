@@ -53,13 +53,16 @@ const Comments = ({ fightId }) => {
     const addComment = (text, parentId) => {
         let newComments;
         createCommentApi(fightId, text, parentId).then(comment => {
-            
+            console.log('comment', comment);
             setBackendComments(() => {
+                setActiveComment(null);
                 newComments = [comment, ...backendComments]
                 setBackendComments(newComments);
+                
+                // console.log('added', backendComments)
             });    
-            setActiveComment(null);
-            console.log('added', backendComments)
+            
+            
             // rootComments = backendComments.filter((backendComment) => backendComment.parentId === null );
         });
         
@@ -93,8 +96,8 @@ const Comments = ({ fightId }) => {
     useEffect(() => {
 
         getCommentsApi(fightId).then(data => {
-            console.log(data)
-            setBackendComments(data);
+            data.sort((a, b) => new Date(a.createdAt).getTime() + new Date(b.createdAt).getTime());
+            setBackendComments(data.reverse());
         });
 
         // setBackendComments(comments);

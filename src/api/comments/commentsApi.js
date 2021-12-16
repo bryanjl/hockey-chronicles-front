@@ -11,6 +11,7 @@ export const postComment = async(recordId, text, parentId = null) => {
     let reqBody = {
         body: text,
         user: userId,
+        userId: userId,
         parentId: parentId,
         username: username
     }
@@ -26,7 +27,11 @@ export const postComment = async(recordId, text, parentId = null) => {
 
     let response = await fetchApi(route, options);
 
-    return response.data;
+    response.data.comments[response.data.comments.length - 1].userId = response.data.comments[response.data.comments.length - 1].user;
+
+    // console.log('response', response.data.comments[response.data.comments.length - 1]);
+
+    return response.data.comments[response.data.comments.length - 1];
 }
 
 export const getComments = async(recordId) => {
@@ -37,6 +42,7 @@ export const getComments = async(recordId) => {
     }
 
     let response = await fetchApi(route, options);
+    // console.log('getcomments response', response.data);
 
     return response.data;
 }
