@@ -14,7 +14,7 @@ import {
     getFight,
     updateOutcome
 } from '../../api/fights/fightApi';
-import { updateComment } from '../../api/comments/commentsApi';
+// import { updateComment } from '../../api/comments/commentsApi';
 
 const useStyles = makeStyles((theme) => ({
     container: {
@@ -44,7 +44,7 @@ const FightCard = () => {
 
     const [fight, setFight] = useState({data: {}, isFetching: true});        
     
-    let comments = fight.data.comments;
+    // let comments = fight.data.comments;
 
     useEffect(() => {
         setFight({data: {}, isFetching: true })

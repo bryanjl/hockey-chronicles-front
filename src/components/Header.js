@@ -117,6 +117,14 @@ const Header = () => {
         // console.log(token);
     }
 
+    const handleSearchSubmit = (e) => {
+        // e.preventDefault();
+        if (e.keyCode === 13) {
+            alert('search submit')
+        }
+        
+    }
+
     return (
         <AppBar className={classes.header} position='fixed'>
             <Toolbar className={classes.toolbar}>
@@ -134,7 +142,7 @@ const Header = () => {
                 <Button onClick={getMe}>GET ME</Button>
                 <div className={classes.search}>
                     <Search />
-                    <InputBase placeholder='Search' className={classes.input} fullWidth/>
+                    <InputBase onKeyDown={handleSearchSubmit} placeholder='Search' className={classes.input} fullWidth/>
                     <Cancel className={classes.cancelSearch} onClick={() => setOpen(false)} />
                 </div>
                 <div className={classes.icons}>
