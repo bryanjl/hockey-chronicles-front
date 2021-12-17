@@ -6,6 +6,8 @@ export const getToken = () => {
     let token = localStorage.getItem('token');
     // console.log(jwtDecode(token));
 
+    
+
     return token;
 }
 
@@ -17,11 +19,14 @@ export const getUsername = () => {
 }
 
 export const getUserId = () => {
-    let token = getToken();
-
-    let user = jwtDecode(token);
-
-    return user.id;
+    try {
+        let token = getToken();  
+        let user = jwtDecode(token); 
+        return user.id; 
+    } catch (error) {
+        //how to handle not logged in user???
+        console.log(error)
+    }
 }
 
 //login to API
@@ -73,7 +78,6 @@ export const logout = () => {
 //get user details from API
 export const getUserDetails = async() => {
     let token = getToken();
-    console.log(token);
 
     let route = `/auth/me`;
     let options = {

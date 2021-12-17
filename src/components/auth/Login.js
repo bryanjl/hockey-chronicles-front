@@ -1,5 +1,5 @@
 import { makeStyles } from "@material-ui/core";
-import { LockOpen, LockOutlined } from "@material-ui/icons";
+import { CheckCircle, LockOpen, LockOutlined } from "@material-ui/icons";
 import { Avatar, Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, Link, TextField } from "@mui/material";
 import { useState } from "react";
 import { login as loginAPI } from '../../api/auth/authApi';
@@ -13,6 +13,14 @@ const useStyles = makeStyles((theme) =>({
     },
     footer: {
         padding: '15px'
+    },
+    successContainer: {
+        display: 'flex',
+        alignItems: 'center'
+    },
+    successIcon: {
+        color: 'green',
+        fontSize: '100px'
     }
 }));
 
@@ -47,6 +55,10 @@ const Login = ({ open, onClose }) => {
             }    
         } else {
             setIsLoggedIn(true);
+            
+            setTimeout(() => {
+                handleClose();
+            }, 2000)
         }
     }
 
@@ -57,12 +69,12 @@ const Login = ({ open, onClose }) => {
         setIsLoggedIn(false);
         onClose();
     }
+
+  
     
-    return (
-        
-            
-              
+    return ( 
         <Dialog open={open} onClose={handleClose}>
+            {isLoggedIn && <Success onClose={handleClose} />} 
             <DialogTitle className={classes.title}>
                 <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
                     {isLoggedIn ?  <LockOpen /> : <LockOutlined />}
@@ -124,6 +136,25 @@ const Login = ({ open, onClose }) => {
             </Grid>
         </Dialog>
     )
+    
 }
+
+const Success = ({ onClose }) => {
+    const classes = useStyles();
+
+    const [open, setOpen] = useState(true);
+    setTimeout(() => { 
+        setOpen(false)
+    }, 2000);
+
+    return (
+        <Dialog open={open} onClose={onClose} className={classes.successContainer}>
+            <DialogTitle>You are now logged in</DialogTitle>
+            <CheckCircle className={classes.successIcon} />
+        </Dialog>
+    )
+}
+
+
 
 export default Login

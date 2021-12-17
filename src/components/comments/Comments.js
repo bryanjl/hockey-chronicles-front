@@ -90,6 +90,7 @@ const Comments = ({ fightId }) => {
     useEffect(() => {
         getCommentsApi(fightId).then(data => {
             data.sort((a, b) => new Date(a.createdAt).getTime() + new Date(b.createdAt).getTime());
+            //Not sure why I need to reverse list here??
             setBackendComments(data.reverse());
         });
     }, [fightId]);
