@@ -1,4 +1,5 @@
 import { Container, makeStyles } from "@material-ui/core"
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import FightCard from "./FightCard/FightCard";
 import SearchResults from "./search/SearchResults";
@@ -16,10 +17,15 @@ const useStyles = makeStyles((theme) => ({
 const Feed = () => {
     const classes = useStyles();
     return (
-        <Container className={classes.container}>
-            {/* <FightCard /> */}
-            <SearchResults />
-        </Container>
+        
+            <Container className={classes.container}>
+                <Routes>
+                    <Route path='/fights/:id' element={<FightCard />} />
+                    <Route path='/search/:searchParams' element={<SearchResults />} />  
+                </Routes>
+            </Container>
+        
+        
     )
 }
 

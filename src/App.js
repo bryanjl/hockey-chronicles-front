@@ -1,4 +1,5 @@
 import { makeStyles, Grid } from '@material-ui/core';
+import { BrowserRouter as Router } from 'react-router-dom';
 
 import Header from "./components/Header";
 import LeftBar from './components/LeftBar';
@@ -17,20 +18,22 @@ const useStyles = makeStyles((theme) =>({
 function App() {
   const classes = useStyles();
   return (
-    <div>
-      <Header />
-      <Grid container>
-        {/* <Grid item sm={2} xs={2}>
-          <LeftBar />
-        </Grid> */}
-        <Grid item sm={12} xs={12}>
-          <Feed />
+    <Router>
+      <div>
+        <Header />
+        <Grid container>
+          {/* <Grid item sm={2} xs={2}>
+            <LeftBar />
+          </Grid> */}
+          <Grid item sm={12} xs={12}>
+            <Feed />
+          </Grid>
+          {/* <Grid item sm={3} className={classes.rightBar}>
+            <RightBar />
+          </Grid> */}
         </Grid>
-        {/* <Grid item sm={3} className={classes.rightBar}>
-          <RightBar />
-        </Grid> */}
-      </Grid>
-    </div>
+      </div>
+    </Router>
   );
 }
 

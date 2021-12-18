@@ -2,6 +2,7 @@ import { AppBar, Toolbar, Typography, makeStyles, InputBase, alpha, Badge, Avata
 import { Search, Notifications, Cancel } from '@material-ui/icons';
 import { Button } from '@mui/material';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { 
     login as loginAPI, 
     register as registerAPI, 
@@ -74,6 +75,8 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const Header = () => {
+    let navigate = useNavigate();
+
     //state for search bar
     const [open, setOpen] = useState(false);
     const classes = useStyles({ open });
@@ -118,9 +121,9 @@ const Header = () => {
     }
 
     const handleSearchSubmit = (e) => {
-        // e.preventDefault();
+        
         if (e.keyCode === 13) {
-            alert('search submit')
+            navigate(`/search/${e.target.value}`);
         }
         
     }

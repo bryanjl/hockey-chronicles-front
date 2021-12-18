@@ -1,13 +1,16 @@
 import { Grid, makeStyles } from "@material-ui/core";
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import { fightSearch as fightSearchAPI } from "../../api/search/searchApi";
 import SearchResult from "./SearchResult";
 const useStyles = makeStyles((theme) => ({
 
 }));
 
-const SearchResults = ({ searchParams }) => {
+const SearchResults = () => {
     const classes = useStyles();
+
+    const { searchParams } = useParams()
 
     const [isSearching, setIsSearching] = useState(true);
     const [searchResults, setSearchResults] = useState([]);
@@ -15,13 +18,14 @@ const SearchResults = ({ searchParams }) => {
     //perform search
     useEffect(() => {
         setIsSearching(true);
+        console.log(searchParams)
         //api call
-        fightSearchAPI(searchParams).then((response) => {
-            console.log('from search component', response.data);
-            setSearchResults(response.data);
-            console.log('from searchresults', searchResults);
-            setIsSearching(false);
-        });
+        // fightSearchAPI(searchParams).then((response) => {
+        //     console.log('from search component', response.data);
+        //     setSearchResults(response.data);
+        //     console.log('from searchresults', searchResults);
+        //     setIsSearching(false);
+        // });
     }, []);
  
 
