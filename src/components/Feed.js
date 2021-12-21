@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import FightCard from "./FightCard/FightCard";
 import SearchResults from "./search/SearchResults";
+import Home from "./Home";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -14,14 +15,15 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-const Feed = () => {
+const Feed = ({ searchQuery }) => {
     const classes = useStyles();
     return (
         
             <Container className={classes.container}>
                 <Routes>
-                    <Route path='/fights/:id' element={<FightCard />} />
-                    <Route path='/search/:searchParams' element={<SearchResults />} />  
+                    <Route path='/' element={<Home />} />
+                    <Route path='/fights/:fightID' element={<FightCard />} />
+                    <Route path='/search' element={<SearchResults searchQuery={searchQuery} />} />  
                 </Routes>
             </Container>
         

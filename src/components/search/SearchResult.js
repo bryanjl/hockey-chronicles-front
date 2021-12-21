@@ -1,4 +1,5 @@
 import { Button, Card, CardActions, Grid, makeStyles, Typography } from "@material-ui/core"
+import { useNavigate } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
     cardContainer: {
@@ -22,8 +23,15 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-const SearchResult = ({ result }) => {
+const SearchResult = ({ result, id }) => {
     const classes = useStyles();
+
+    const navigate = useNavigate();
+
+    const getFight = () => {
+        console.log(id)
+        navigate(`/fights/${id}`)
+    }
 
     let date = new Date(result.date.split('T')[0]).toDateString();
 
@@ -46,7 +54,7 @@ const SearchResult = ({ result }) => {
                 </Grid>
                 <Grid item xs={2} >
                     <CardActions className={classes.cardButton}>
-                        <Button onClick={() => alert('hello')} size="small">View Fight</Button>
+                        <Button onClick={getFight} size="small">View Fight</Button>
                     </CardActions>
                 </Grid>
                 

@@ -8,6 +8,7 @@ import Comments from '../comments/Comments';
 // import OutcomeChart from '../charts/OutcomeChart';
 import Vote from './Vote';
 import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 
 //api
 import {
@@ -42,13 +43,16 @@ const FightCard = () => {
 
     const classes = useStyles();
 
-    const [fight, setFight] = useState({data: {}, isFetching: true});        
+    const [fight, setFight] = useState({data: {}, isFetching: true});   
+    
+    let { fightID } = useParams();
+    console.log(fightID)
     
     // let comments = fight.data.comments;
 
     useEffect(() => {
         setFight({data: {}, isFetching: true })
-        getFight('61b9cb8ba41de694cef62e0a').then(data => {
+        getFight(fightID).then(data => {
             console.log(data);
             setFight({data: data.data, isFetching: false});
         })   

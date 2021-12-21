@@ -6,6 +6,7 @@ import LeftBar from './components/LeftBar';
 import Feed from './components/Feed';
 import RightBar from './components/RightBar';
 import FightCard from "./components/FightCard/FightCard";
+import { useState } from 'react';
 
 const useStyles = makeStyles((theme) =>({
   rightBar: {
@@ -16,17 +17,23 @@ const useStyles = makeStyles((theme) =>({
 }));
 
 function App() {
+  const [searchValue, setSearchValue] = useState('')
+
+  const handleSearch = (value) => {
+    setSearchValue(value)
+  }
+
   const classes = useStyles();
   return (
     <Router>
       <div>
-        <Header />
+        <Header handleSearch={handleSearch} />
         <Grid container>
           {/* <Grid item sm={2} xs={2}>
             <LeftBar />
           </Grid> */}
           <Grid item sm={12} xs={12}>
-            <Feed />
+            <Feed searchQuery={searchValue} />
           </Grid>
           {/* <Grid item sm={3} className={classes.rightBar}>
             <RightBar />

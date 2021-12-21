@@ -47,9 +47,9 @@ const VoteDialog = ({ onClose, open, players, onSubmit }) => {
                     onChange={handleChange}
                     className={classes.radioGroup}
                 >
-                    <FormControlLabel value={players[0]._id} control={<Radio />} label={`${players[0].firstName} ${players[0].lastName}`} />
+                    <FormControlLabel value={players[0].id} control={<Radio />} label={`${players[0].firstName} ${players[0].lastName}`} />
                     <FormControlLabel value="draw" control={<Radio />} label="Draw" />
-                    <FormControlLabel value={players[1]._id} control={<Radio />} label={`${players[1].firstName} ${players[1].lastName}`} />
+                    <FormControlLabel value={players[1].id} control={<Radio />} label={`${players[1].firstName} ${players[1].lastName}`} />
                 </RadioGroup>
             </FormControl>
             <Button variant='outlined' onClick={submitVote}>Submit Vote</Button>

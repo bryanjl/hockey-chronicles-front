@@ -74,7 +74,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }))
 
-const Header = () => {
+const Header = ({ handleSearch }) => {
     let navigate = useNavigate();
 
     //state for search bar
@@ -121,9 +121,10 @@ const Header = () => {
     }
 
     const handleSearchSubmit = (e) => {
-        
+        // handleSearch(e.target.value);
         if (e.keyCode === 13) {
-            navigate(`/search/${e.target.value}`);
+            handleSearch(e.target.value);
+            navigate(`/search`);
         }
         
     }
