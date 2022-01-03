@@ -2,10 +2,10 @@ import { makeStyles, Grid } from '@material-ui/core';
 import { BrowserRouter as Router } from 'react-router-dom';
 
 import Header from "./components/Header";
-import LeftBar from './components/LeftBar';
+// import LeftBar from './components/LeftBar';
 import Feed from './components/Feed';
-import RightBar from './components/RightBar';
-import FightCard from "./components/FightCard/FightCard";
+// import RightBar from './components/RightBar';
+// import FightCard from "./components/FightCard/FightCard";
 import { useState } from 'react';
 
 const useStyles = makeStyles((theme) =>({
@@ -19,6 +19,7 @@ const useStyles = makeStyles((theme) =>({
 function App() {
   const [searchValue, setSearchValue] = useState('')
 
+  // search query comes from header
   const handleSearch = (value) => {
     setSearchValue(value)
   }

@@ -10,6 +10,11 @@ import LeagueProfile from "./leagueProfile/LeagueProfile";
 import SeasonProfile from "./seasonProfile/SeasonProfile";
 import TeamProfile from "./teamProfile/TeamProfile";
 
+import Fights from "./pages/Fights";
+import Players from "./pages/Players";
+import Leagues from "./pages/Leagues";
+import Teams from "./pages/Teams";
+
 
 const useStyles = makeStyles((theme) => ({
     container: {
@@ -27,12 +32,21 @@ const Feed = ({ searchQuery }) => {
         <Container className={classes.container}>
             <Routes>
                 <Route path='/' element={<Home />} />
+                <Route path='/fights' element={<Fights />} />
                 <Route path='/fights/:fightID' element={<FightCard />} />
+                <Route path='/players' element={<Players />} />
                 <Route path='/players/:playerID' element={<PlayerProfile />} />
+
                 <Route path='/games/:gameID' element={<GameProfile />} />
+
+                <Route path='/leagues' element={<Leagues />} />
                 <Route path='/leagues/:leagueID' element={<LeagueProfile />} />
+
                 <Route path='/seasons/:seasonID' element={<SeasonProfile />} />
+
+                <Route path='/teams' element={<Teams />} />
                 <Route path='/teams/:teamID' element={<TeamProfile />} />
+                
                 <Route path='/search' element={<SearchResults searchQuery={searchQuery} />} />  
             </Routes>
         </Container>

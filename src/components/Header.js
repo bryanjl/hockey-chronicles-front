@@ -1,6 +1,7 @@
 import { AppBar, Toolbar, Typography, makeStyles, InputBase, alpha, Badge, Avatar } from '@material-ui/core';
-import { Search, Notifications, Cancel } from '@material-ui/icons';
-import { Button } from '@mui/material';
+import { Search, Notifications, Cancel, LocalGasStationOutlined, AccountCircleRounded } from '@material-ui/icons';
+import { LoginOutlined, LoginRounded, LogoutRounded } from '@mui/icons-material';
+import { Button, Menu, MenuItem } from '@mui/material';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
@@ -85,6 +86,20 @@ const Header = ({ handleSearch }) => {
     const [openLogin, setOpenLogin] = useState(false);
     const [openRegister, setOpenRegister] = useState(false);
 
+    //state for dropdown menu from avatar
+    const [anchorEl, setAnchorEl] = useState(null);
+    const openMenu = Boolean(anchorEl);
+
+    //avatar click for menu
+    const handleAvatarClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    //avatar menu on close
+    const handleAvatarClose = () => {
+        setAnchorEl(null);
+      };
+
     //open login dialog
     const loginBtnClick = () => {
         setOpenLogin(true);
@@ -138,12 +153,16 @@ const Header = ({ handleSearch }) => {
                 <Typography variant='h5' component='h2' className={classes.logoSm}>
                     HFC
                 </Typography>
-                <Button onClick={loginBtnClick}>Login</Button>
+                <Button >Fights</Button>
+                <Button >Players</Button>
+                <Button >Teams</Button>
+                <Button >Leagues</Button>
+
+                
                 <Login open={openLogin} onClose={onLoginClose} signIn={signIn} />
-                <Button onClick={registerBtnClick}>Register</Button>
+                
                 <Register open={openRegister} onClose={onRegisterClose} signUp={signUp} />
-                <Button onClick={logout}>Logout</Button>
-                <Button onClick={getMe}>GET ME</Button>
+                
                 <div className={classes.search}>
                     <Search />
                     <InputBase onKeyDown={handleSearchSubmit} placeholder='Search' className={classes.input} fullWidth/>
@@ -154,7 +173,30 @@ const Header = ({ handleSearch }) => {
                     <Badge badgeContent={4} color='secondary'>
                         <Notifications />
                     </Badge>
-                    <Avatar className={classes.avatar} src='#'></Avatar>
+                    <Avatar 
+                        className={classes.avatar} src='#'
+                        id="basic-button"
+                        aria-controls={openMenu ? 'basic-menu' : undefined}
+                        aria-haspopup="true"
+                        aria-expanded={openMenu ? 'true' : undefined}
+                        onClick={handleAvatarClick}    
+                    >
+                    </Avatar>
+                    <Menu
+                                id="basic-menu"
+                                anchorEl={anchorEl}
+                                open={openMenu}
+                                onClose={handleAvatarClose}
+                                MenuListProps={{
+                                  'aria-labelledby': 'basic-button',
+                                }}
+                    >
+                        <MenuItem onClick={loginBtnClick}><LoginRounded />   Login</MenuItem>
+                        <MenuItem onClick={logout}><LogoutRounded />   Logout</MenuItem>
+                        <MenuItem onClick={registerBtnClick}><AccountCircleRounded />  Register</MenuItem>
+                        {/* <MenuItem onClick={getMe}>Get Me</MenuItem> */}
+                    </Menu>
+
                 </div>
             </Toolbar>
         </AppBar>
