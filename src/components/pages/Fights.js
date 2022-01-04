@@ -1,6 +1,6 @@
 import { Grid, makeStyles } from "@material-ui/core";
 import { useEffect, useState } from "react";
-import { getFight as getFightAPI } from "../../api/fights/fightApi"
+import { getAllFights as getAllFightsAPI } from "../../api/fights/fightApi"
 import SearchResult from "../search/SearchResult";
 import Paging from "../Paging";
 
@@ -14,16 +14,25 @@ const Fights = () => {
     const [isFetching, setIsFetching] = useState(true);
     const [fightResults, setFightResults] = useState([]);
 
-    // !!!
-    // const [page, setPage] = useState(1);
+    // state for current page for pagination
+    const [page, setPage] = useState(1);
+    //state for total number of pages 
+    const [numberOfPages, setNumberOfPages] = useState(0);
 
     useEffect(() => {
-        getFightAPI().then(data => {
+        setIsFetching(true);
+        getAllFightsAPI(page).then(data => {
             setFightResults(data.data);
+            setNumberOfPages(data.pagination.totalPages);
             setIsFetching(false);
             // console.log(fightResults);
         });
-    }, []);
+    }, [page]);
+
+    //page change function
+    const pageChange = (value) => {
+        setPage(value);
+    }
 
     return (
         <Grid container>
@@ -32,7 +41,7 @@ const Fights = () => {
                     return <SearchResult key={result._id} result={result} id={result._id} />
                 })
             }
-            <Paging />
+            <Paging pageChange={pageChange} totalPages={numberOfPages} />
         </Grid>
     )
 }

@@ -13,6 +13,19 @@ export const getFight = (fightId = '') => {
     return data;
 }
 
+//Get all fights fight by ID
+export const getAllFights = (page = 1) => {
+    let route = `/fights?page=${page}`;
+    
+    let options = {
+        method: 'GET'
+    }
+
+    let data = fetchApi(route, options);
+
+    return data;
+}
+
 
 //Post a comment to a fight
 export const postComment = (fightId, comment) => {

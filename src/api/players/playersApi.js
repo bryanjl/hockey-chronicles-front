@@ -12,3 +12,16 @@ export const getPlayer = async(playerId) => {
 
     return result;
 }
+
+//Get all players
+export const getAllPlayers = async(page = 1) => {
+    let route = `/players?page=${page}`;
+
+    let options = {
+        path: 'GET'
+    }
+
+    let result = await fetchApi(route, options);
+
+    return result;
+}

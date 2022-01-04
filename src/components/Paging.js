@@ -12,13 +12,25 @@ const useStyles = makeStyles((theme) =>({
     }
 }));
 
-const Paging = () => {
+const Paging = ({ pageChange, totalPages }) => {
     const classes = useStyles();
+
+    const handleChange = (e, value) => {
+        // console.log(e.target.textContent);
+        // console.log(value);
+        pageChange(value);
+        window.scroll(0, 0);
+    }
 
     return (
         <div className={classes.paging}>
             <Stack spacing={2}>
-                <Pagination variant="outlined" size="large" className={classes.paging} count={10} />
+                <Pagination 
+                    variant="outlined" 
+                    size="large" 
+                    count={totalPages}
+                    onChange={handleChange}
+                />
             </Stack>
         </div>
     )

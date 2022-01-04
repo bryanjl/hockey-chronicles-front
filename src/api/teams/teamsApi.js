@@ -12,3 +12,16 @@ export const getTeam = async(teamId) => {
 
     return result;
 }
+
+//get all teams
+export const getAllTeams = async(page = 1) => {
+    let route = `/teams?page=${page}`;
+
+    let options = {
+        path: 'GET'
+    }
+
+    let result = await fetchApi(route, options);
+
+    return result;
+}

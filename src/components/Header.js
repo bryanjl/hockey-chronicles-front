@@ -1,9 +1,9 @@
 import { AppBar, Toolbar, Typography, makeStyles, InputBase, alpha, Badge, Avatar } from '@material-ui/core';
-import { Search, Notifications, Cancel, LocalGasStationOutlined, AccountCircleRounded } from '@material-ui/icons';
-import { LoginOutlined, LoginRounded, LogoutRounded } from '@mui/icons-material';
+import { Search, Notifications, Cancel, AccountCircleRounded } from '@material-ui/icons';
+import { LoginRounded, LogoutRounded } from '@mui/icons-material';
 import { Button, Menu, MenuItem } from '@mui/material';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { 
     login as loginAPI, 
     register as registerAPI, 
@@ -153,12 +153,12 @@ const Header = ({ handleSearch }) => {
                 <Typography variant='h5' component='h2' className={classes.logoSm}>
                     HFC
                 </Typography>
-                <Button >Fights</Button>
-                <Button >Players</Button>
-                <Button >Teams</Button>
-                <Button >Leagues</Button>
+                <Button component={Link} to='/fights'>Fights</Button>
+                <Button component={Link} to='/players'>Players</Button>
+                <Button component={Link} to='/teams'>Teams</Button>
+                <Button component={Link} to='/leagues'>Leagues</Button>
 
-                
+
                 <Login open={openLogin} onClose={onLoginClose} signIn={signIn} />
                 
                 <Register open={openRegister} onClose={onRegisterClose} signUp={signUp} />
