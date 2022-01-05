@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import { getAllFights as getAllFightsAPI } from "../../api/fights/fightApi"
 import SearchResult from "../search/SearchResult";
 import Paging from "../Paging";
+import SeasonSelect from "../seasonProfile/SeasonSelect";
+import Search from "../search/Search";
 
 const useStyles = makeStyles((theme) => ({
 
@@ -36,6 +38,11 @@ const Fights = () => {
 
     return (
         <Grid container>
+            <Grid item sm={12}>
+                <Search />
+                <SeasonSelect />
+            </Grid>
+            
             {!isFetching && 
                 fightResults.map((result) => {
                     return <SearchResult key={result._id} result={result} id={result._id} />

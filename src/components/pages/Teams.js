@@ -4,6 +4,8 @@ import { getAllTeams as getAllTeamsAPI } from "../../api/teams/teamsApi";
 // import SearchResult from "../search/SearchResult";
 import TeamResult from '../teamProfile/TeamResult';
 import Paging from "../Paging";
+import LeagueSelect from "../leagueProfile/LeagueSelect";
+import Search from "../search/Search";
 
 const useStyles = makeStyles((theme) => ({
 
@@ -35,6 +37,10 @@ const Teams = () => {
 
     return (
         <Grid container>
+            <Grid item sm={12}>
+                <Search />
+                <LeagueSelect />
+            </Grid>
             {!isFetching && 
                 teamResults.map((result) => {
                     return <TeamResult key={result._id} team={result} id={result._id} />

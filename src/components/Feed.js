@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
     container: {
         paddingTop: theme.spacing(10),
         justifyContent: 'center',
-        backgroundColor: 'blue'
+        backgroundColor: 'lightblue'
     }
 }));
 
@@ -46,7 +46,7 @@ const Feed = ({ searchQuery }) => {
 
                 <Route path='/teams' element={<Teams />} />
                 <Route path='/teams/:teamID' element={<TeamProfile />} />
-                
+
                 <Route path='/search' element={<SearchResults searchQuery={searchQuery} />} />  
             </Routes>
         </Container>

@@ -4,6 +4,8 @@ import { getAllPlayers as getAllPlayersAPI } from "../../api/players/playersApi"
 // import SearchResult from "../search/SearchResult";
 import PlayerCard from '../FightCard/PlayerCard';
 import Paging from "../Paging";
+import PositionSelect from "../playerProfile/PositionSelect";
+import Search from "../search/Search";
 
 const useStyles = makeStyles((theme) => ({
 
@@ -36,6 +38,11 @@ const Players = () => {
 
     return (
         <Grid container>
+            <Grid item sm={12}>
+                <Search />
+                <PositionSelect />
+            </Grid>
+            
             {!isFetching && 
                 playerResults.map((result) => {
                     return <PlayerCard key={result._id} player={result} id={result._id} />
