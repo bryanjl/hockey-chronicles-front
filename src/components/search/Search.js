@@ -52,8 +52,21 @@ import {
     })
   );
   
-  export default function Search() {
+  export default function Search({ handleSearch }) {
     const classes = useStyles();
+
+    const search = (e) => {
+          // handleSearch(e.target.value);
+          if (e.keyCode === 13) {
+            if(e.target.value === ''){
+              return;
+            }
+            let query = `?term=${e.target.value}`;
+            handleSearch(query);
+            console.log(query);
+        }
+    }
+
     return (
       <div className={classes.search}>
         <div className={classes.searchIcon}>
@@ -62,7 +75,7 @@ import {
         <InputBase
           placeholder="Search..."
           
-          
+          onKeyDown={search}
           classes={{
             root: classes.inputRoot,
             input: classes.inputInput,

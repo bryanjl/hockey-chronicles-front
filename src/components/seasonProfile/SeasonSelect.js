@@ -6,7 +6,7 @@ import Select from '@mui/material/Select';
 import { useEffect, useState } from 'react';
 import { getAllSeasons as getAllSeasonsAPI } from '../../api/seasons/seasonsApi';
 
-const SeasonSelect = () => {
+const SeasonSelect = ({ seasonSelect }) => {
     //all seasons for menuitem list
     const [seasons, setSeasons] = useState([]);
     const [isFetching, setIsFetching] = useState(true);
@@ -26,6 +26,7 @@ const SeasonSelect = () => {
     const handleChange = (e) => {
         console.log(e.target.value);
         setSeason(e.target.value);
+        seasonSelect(e.target.value);
     }
 
     return (
@@ -41,7 +42,7 @@ const SeasonSelect = () => {
           >
             {!isFetching && 
                 seasons.map(result => {
-                    return <MenuItem key={result._id} value={result.season}>{result.season}</MenuItem>
+                    return <MenuItem key={result._id} value={result._id}>{result.season}</MenuItem>
                 })
             }
             {/* <MenuItem value={10}>Ten</MenuItem>
