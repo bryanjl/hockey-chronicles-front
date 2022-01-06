@@ -42,7 +42,7 @@ const SeasonSelect = ({ seasonSelect }) => {
           >
             {!isFetching && 
                 seasons.map(result => {
-                    return <MenuItem key={result._id} value={result._id}>{result.season}</MenuItem>
+                    return <MenuItem key={result._id} value={result.season}>{result.season}</MenuItem>
                 })
             }
             {/* <MenuItem value={10}>Ten</MenuItem>
