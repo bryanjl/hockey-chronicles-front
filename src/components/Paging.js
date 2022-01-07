@@ -1,5 +1,6 @@
 import { makeStyles } from "@material-ui/core";
 import { Pagination, Stack } from "@mui/material"
+import { useState } from "react";
 
 const useStyles = makeStyles((theme) =>({
     paging: {
@@ -12,13 +13,20 @@ const useStyles = makeStyles((theme) =>({
     }
 }));
 
-const Paging = ({ pageChange, totalPages }) => {
+const Paging = ({ currPage, pageChange, totalPages }) => {
     const classes = useStyles();
+
+    const [page, setPage] = useState(1)
+
+    if(page !== currPage) {
+        setPage(currPage);
+    }
 
     const handleChange = (e, value) => {
         // console.log(e.target.textContent);
         // console.log(value);
         pageChange(value);
+        setPage(value);
         window.scroll(0, 0);
     }
 
@@ -30,6 +38,7 @@ const Paging = ({ pageChange, totalPages }) => {
                     size="large" 
                     count={totalPages}
                     onChange={handleChange}
+                    page={page}
                 />
             </Stack>
         </div>

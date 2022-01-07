@@ -14,8 +14,8 @@ export const getFight = (fightId = '') => {
 }
 
 //Get all fights fight by ID
-export const getAllFights = (page = 1) => {
-    let route = `/fights?page=${page}`;
+export const getAllFights = (query = '') => {
+    let route = `/fights?${query}`;
     
     let options = {
         method: 'GET'

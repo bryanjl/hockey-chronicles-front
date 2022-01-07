@@ -1,8 +1,6 @@
 import { Grid, makeStyles } from "@material-ui/core";
 import { useEffect, useState } from "react";
 import { getAllFights as getAllFightsAPI } from "../../api/fights/fightApi"
-import { getSeason as getSeasonAPI } from "../../api/seasons/seasonsApi";
-import { fightSearch as fightSearchAPI } from "../../api/search/searchApi";
 import SearchResult from "../search/SearchResult";
 import Paging from "../Paging";
 import SeasonSelect from "../seasonProfile/SeasonSelect";
@@ -20,46 +18,42 @@ const Fights = () => {
 
     // state for current page for pagination
     const [page, setPage] = useState(1);
+    //state for seasonSelect
+    const [seasonValue, setSeasonValue] = useState('');
+    //state for search query
+    const [searchQuery, setSearchQuery] = useState('');
     //state for total number of pages 
     const [numberOfPages, setNumberOfPages] = useState(0);
 
     //Get all fights
     useEffect(() => {
-        fetchData(page);
-        //eslint-disable-next-line
-    }, []);
+        fetchData(`${seasonValue}${searchQuery}page=${page}`);
+    }, [page, seasonValue, searchQuery]);
     
-    const fetchData = (pageNumber) => {
+    //fetch data
+    //api route /fights?term=&page
+    const fetchData = (query) => {
         setIsFetching(true);
-        getAllFightsAPI(pageNumber).then(data => {
+        getAllFightsAPI(query).then(data => {
+            // console.log(data);
             setFightResults(data.data);
             setNumberOfPages(data.pagination.totalPages);
             setIsFetching(false);
-            // console.log(fightResults);
         });
     }
 
-    
     //get fights by season -> select
-    const seasonSelect = (seasonValue) => {
-        setIsFetching(true);
-        let query = `?term=${seasonValue}&path=season&page=${page}`
-        fightSearchAPI(query).then(data => {
-            console.log(data.data);
-            setFightResults(data.data);
-            setNumberOfPages(Math.ceil((data.count - 25)/25));
-            setIsFetching(false);
-        });
+    const seasonSelect = (season) => {
+       setSeasonValue(`term=${season}&`);
+       setSearchQuery('');
+       setPage(1);
     }
 
     //fight search
     const fightSearch = (query) => {
-        setIsFetching(true);
-        fightSearchAPI(query).then(data => {
-            setFightResults(data.data);
-            setNumberOfPages(Math.ceil((data.count - 25)/25));
-            setIsFetching(false);
-        });
+        setSearchQuery(`term=${query}&`);
+        setSeasonValue('');
+        setPage(1);
     }
 
     //page change function
@@ -81,7 +75,7 @@ const Fights = () => {
                 })
             }
             {numberOfPages !== 0 && 
-                <Paging pageChange={pageChange} totalPages={numberOfPages} />
+                <Paging currPage={page} pageChange={pageChange} totalPages={numberOfPages} />
             }
             
         </Grid>

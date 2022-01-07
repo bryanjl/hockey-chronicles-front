@@ -63,7 +63,7 @@ import {
             }
             let query = `?term=${e.target.value}`;
             handleSearch(query);
-            console.log(query);
+            // console.log(query);
         }
     }
 
