@@ -6,7 +6,7 @@ import Select from '@mui/material/Select';
 import { useEffect, useState } from 'react';
 import { getAllLeagues as getAllLeaguesAPI } from '../../api/leagues/leaguesApi';
 
-const LeagueSelect = () => {
+const LeagueSelect = ({ leagueSelect }) => {
     //state for leagues api
     const [leagues, setLeagues] = useState([]);
     const [isFetching, setIsFetching] = useState(true);
@@ -26,6 +26,7 @@ const LeagueSelect = () => {
     const handleChange = (e) => {
         console.log(e.target.value);
         setLeague(e.target.value);
+        leagueSelect(e.target.value);
     }
 
     return (

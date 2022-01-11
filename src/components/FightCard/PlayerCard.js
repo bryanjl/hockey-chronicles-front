@@ -7,6 +7,7 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { makeStyles } from '@material-ui/core';
 import { Grid } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -56,6 +57,12 @@ const useStyles = makeStyles((theme) => ({
 export default function OutlinedCard(props) {
     const classes = useStyles();
 
+  const navigate = useNavigate();
+
+  const getPlayer = () => {
+    console.log(props.id);
+    navigate(`/players/${props.id}`)
+  }
 
     const bull = (
         <Box
@@ -107,7 +114,7 @@ export default function OutlinedCard(props) {
             
           </CardContent>
           <CardActions>
-            <Button onClick={() => alert('hello')} size="small">View Player Profile</Button>
+            <Button onClick={getPlayer} size="small">View Player Profile</Button>
           </CardActions>
         </React.Fragment>
       );

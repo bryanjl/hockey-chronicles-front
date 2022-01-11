@@ -14,6 +14,7 @@ const useStyles = makeStyles((theme) => ({
 const Teams = () => {
     const classes = useStyles();
 
+    //state for data from API
     const [isFetching, setIsFetching] = useState(true);
     const [teamResults, setTeamResults] = useState([]);
 
@@ -21,32 +22,54 @@ const Teams = () => {
     const [page, setPage] = useState(1);
     const [numberOfPages, setNumberOfPages] = useState(0);
 
+    //state for league select
+    const [leagueValue, setLeagueValue] = useState('');
+
+    //state for search query
+    const [searchQuery, setSearchQuery] = useState('');
+
     //handle page change
     const pageChange = (value) => {
         setPage(value);
     }
 
     useEffect(() => {
+        fetchData(`${leagueValue}${searchQuery}page=${page}`);
+    }, [page, leagueValue, searchQuery]);
+
+    const fetchData = (query) => {
         setIsFetching(true);
-        getAllTeamsAPI(page).then(data => {
+        getAllTeamsAPI(query).then(data => {
             setTeamResults(data.data);
             setNumberOfPages(data.pagination.totalPages);
             setIsFetching(false);
         });
-    }, [page]);
+    }
+
+    const leagueSelect = (league) => {
+        setLeagueValue(`term=${league}&`);
+        setSearchQuery('');
+        setPage(1);
+    }
+
+    const teamSearch = (inputQuery) => {
+        setSearchQuery(`term=${inputQuery}&`);
+        setLeagueValue('');
+        setPage(1);
+    }
 
     return (
         <Grid container>
             <Grid item sm={12}>
-                <Search />
-                <LeagueSelect />
+                <Search handleSearch={teamSearch} />
+                <LeagueSelect leagueSelect={leagueSelect} />
             </Grid>
             {!isFetching && 
                 teamResults.map((result) => {
                     return <TeamResult key={result._id} team={result} id={result._id} />
                 })
             }
-            <Paging pageChange={pageChange} totalPages={numberOfPages} />
+            <Paging currPage={page} pageChange={pageChange} totalPages={numberOfPages} />
         </Grid>
     )
 }

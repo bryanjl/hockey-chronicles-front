@@ -5,14 +5,15 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { useState } from 'react';
 
-const PositionSelect = () => {
+const PositionSelect = ({ positionSelect }) => {
     //state for position value
     const [position, setPosition] = useState('');
 
     //handle change
     const handleChange = (e) => {
-        console.log(e.target.value);
+        // console.log(e.target.value);
         setPosition(e.target.value);
+        positionSelect(e.target.value);
     }
 
     return (

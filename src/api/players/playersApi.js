@@ -14,8 +14,8 @@ export const getPlayer = async(playerId) => {
 }
 
 //Get all players
-export const getAllPlayers = async(page = 1) => {
-    let route = `/players?page=${page}`;
+export const getAllPlayers = async(query = '') => {
+    let route = `/players?${query}`;
 
     let options = {
         path: 'GET'

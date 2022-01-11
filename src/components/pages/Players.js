@@ -21,26 +21,48 @@ const Players = () => {
     const [page, setPage] = useState(1);
     const [numberOfPages, setNumberOfPages] = useState(0);
 
+    //state for position select
+    const [positionValue, setPositionValue] = useState('');
+
+    //state for search query
+    const [searchQuery, setSearchQuery] = useState('');
+
     //handle page change
     const pageChange = (value) => {
         setPage(value);
     }
 
     useEffect(() => {
+        fetchData(`${positionValue}${searchQuery}page=${page}`);
+    }, [page, positionValue, searchQuery]);
+
+    const fetchData = (query) => {
         setIsFetching(true);
-        getAllPlayersAPI(page).then(data => {
+        getAllPlayersAPI(query).then(data => {
             setPlayerResults(data.data);
-            console.log(data.data);
+            // console.log(data.data);
             setNumberOfPages(data.pagination.totalPages);
             setIsFetching(false);
-        })
-    }, [page]);
+        });
+    }
+
+    const positionSelect = (position) => {
+        setPositionValue(`term=${position}&`);
+        setSearchQuery('');
+        setPage(1);
+    }
+
+    const playerSearch = (inputQuery) => {
+        setSearchQuery(`term=${inputQuery}&`);
+        setPositionValue('');
+        setPage(1);
+    }
 
     return (
         <Grid container>
             <Grid item sm={12}>
-                <Search />
-                <PositionSelect />
+                <Search handleSearch={playerSearch} />
+                <PositionSelect positionSelect={positionSelect} />
             </Grid>
             
             {!isFetching && 
@@ -48,7 +70,7 @@ const Players = () => {
                     return <PlayerCard key={result._id} player={result} id={result._id} />
                 })
             }
-            <Paging pageChange={pageChange} totalPages={numberOfPages} />
+            <Paging currPage={page} pageChange={pageChange} totalPages={numberOfPages} />
         </Grid>
     )
 }
