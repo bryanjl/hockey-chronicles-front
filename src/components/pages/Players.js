@@ -34,6 +34,7 @@ const Players = () => {
 
     useEffect(() => {
         fetchData(`${positionValue}${searchQuery}page=${page}`);
+        // window.location.pathname = `players?${positionValue}${searchQuery}page=${page}`
     }, [page, positionValue, searchQuery]);
 
     const fetchData = (query) => {

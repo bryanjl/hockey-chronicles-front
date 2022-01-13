@@ -1,5 +1,5 @@
 import { Container, makeStyles } from "@material-ui/core"
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 
 import FightCard from "./FightCard/FightCard";
 import SearchResults from "./search/SearchResults";

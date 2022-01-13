@@ -29,7 +29,7 @@ const SearchResult = ({ result, id }) => {
     const navigate = useNavigate();
 
     const getFight = () => {
-        console.log(id)
+        // console.log(id)
         navigate(`/fights/${id}`)
     }
 
