@@ -46,7 +46,7 @@ const FightCard = () => {
     const [fight, setFight] = useState({data: {}, isFetching: true});   
     
     let { fightID } = useParams();
-    console.log(fightID)
+    // console.log(fightID)
     
     // let comments = fight.data.comments;
 
@@ -105,16 +105,4 @@ const FightCard = () => {
     )
 }
 
-export default FightCard
-
-// <Grid container>
-// <Grid item sm={2} xs={2}>
-//   <LeftBar />
-// </Grid>
-// <Grid item sm={7} xs={10}>
-//   <Feed />
-// </Grid>
-// <Grid item sm={3} className={classes.rightBar}>
-//   <RightBar />
-// </Grid>
-// </Grid>
+export default FightCard;
