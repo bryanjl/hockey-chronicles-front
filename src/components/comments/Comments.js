@@ -1,7 +1,7 @@
 import { Container, makeStyles, Typography } from "@material-ui/core";
 import { useState, useEffect } from "react";
 import {
-    getComments as getCommentsApi, 
+    // getComments as getCommentsApi, 
     postComment as createCommentApi, 
     deleteComment as deleteCommentApi,
     updateComment as updateCommentApi
@@ -15,7 +15,6 @@ import './comments.css';
 const useStyles = makeStyles((theme) => ({
     comments: {
         justifyItems: 'center',
-        // border: '1px solid black',
         width: '75%',
         [theme.breakpoints.down('md')]:{
             width: '100%'
@@ -30,8 +29,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-const Comments = ({ fightId }) => {
+const Comments = ({ model, recordId, comments }) => {
     const classes = useStyles();
+
+    console.log(comments);
 
     let currentUserId = getUserId();
 
@@ -40,8 +41,6 @@ const Comments = ({ fightId }) => {
     const [activeComment, setActiveComment] = useState(null);
 
     const rootComments = backendComments.filter((backendComment) => backendComment.parentId === null );
-    
-    // console.log(rootComments);
 
     //get replies belonging to parentId and Sort in ascending(new to old)
     const getReplies = commentId => {
@@ -51,9 +50,9 @@ const Comments = ({ fightId }) => {
     }
 
     const addComment = (text, parentId) => {
-        createCommentApi(fightId, text, parentId).then(comment => {
+        createCommentApi(model, recordId, text, parentId).then(comment => {
             setBackendComments(() => {
-                let newComments = [comment, ...backendComments]
+                let newComments = [...backendComments, comment];
                 setBackendComments(newComments);
                 setActiveComment(null);
             });    
@@ -63,7 +62,7 @@ const Comments = ({ fightId }) => {
 
     const deleteComment = (commentId) => {
         if(window.confirm('Are you sure you want remove comment')) {
-            deleteCommentApi(fightId, commentId)
+            deleteCommentApi(model, recordId, commentId)
             const updatedBackendComments = backendComments.filter(
                 (backendComment) => backendComment._id !== commentId);
             setBackendComments(updatedBackendComments);
@@ -71,7 +70,7 @@ const Comments = ({ fightId }) => {
     }
 
     const updateComment = (text, commentId) => {
-        updateCommentApi(fightId, text, commentId)
+        updateCommentApi(model, recordId, text, commentId)
         
         
         const updatedBackendComments = backendComments.map((backendComment) => {
@@ -86,14 +85,19 @@ const Comments = ({ fightId }) => {
         
     }
 
-    //Get comments from API
     useEffect(() => {
-        getCommentsApi(fightId).then(data => {
-            data.sort((a, b) => new Date(a.createdAt).getTime() + new Date(b.createdAt).getTime());
-            //Not sure why I need to reverse list here??
-            setBackendComments(data.reverse());
-        });
-    }, [fightId]);
+        comments.sort((a, b) => new Date(a.createdAt).getTime() + new Date(b.createdAt).getTime());
+        setBackendComments(comments);
+    }, [comments]);
+
+    //Get comments from API
+    // useEffect(() => {
+    //     getCommentsApi(model, recordId).then(data => {
+    //         data.sort((a, b) => new Date(a.createdAt).getTime() + new Date(b.createdAt).getTime());
+    //         //Not sure why I need to reverse list here??
+    //         setBackendComments(data.reverse());
+    //     });
+    // }, [recordId, model]);
 
     //reply comments doesn't scale to large amount of replies
     //okay for small/med project
@@ -121,4 +125,4 @@ const Comments = ({ fightId }) => {
     )
 }
 
-export default Comments
+export default Comments;

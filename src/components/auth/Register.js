@@ -1,7 +1,10 @@
 import { makeStyles } from "@material-ui/core"
 import { LockOutlined } from "@material-ui/icons";
 import { Avatar, Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, Link, TextField } from "@mui/material";
-import { useState } from "react";
+import Success from "./Success";
+import { useState, useContext } from "react";
+import { UserContext } from "../../contexts/UserContext";
+import {register as registerAPI} from '../../api/auth/authApi';
 
 const useStyles = makeStyles((theme) => ({
     title: {
@@ -15,12 +18,20 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-const Register = ({ open, onClose, signUp }) => {
+const Register = ({ open, onClose }) => {
+    //styles
     const classes = useStyles();
+    //context
+    const { setUser } = useContext(UserContext);
 
+    //componet state
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+    //errorState
+    const [formError, setFormError] = useState('')
 
     const handleUsernameChange = (e) => {
         setUsername(e.target.value);
@@ -34,18 +45,49 @@ const Register = ({ open, onClose, signUp }) => {
         setPassword(e.target.value);
     }
 
-    const onSubmit = () => {
+    const onSubmit = async() => {
         let userDetails = {
             username: username,
             email: email,
             password: password
         }
 
-        signUp(userDetails)
+        let response = await registerAPI(userDetails);
+        console.log(response);
+
+        //handle response errors
+        if(response.success === false){
+            if(response.msg === 'Cannot use duplicate values in field' && response.formField === 'email'){
+                alert('Email is already in use');
+                setFormError('email');
+            } else if (response.msg === 'Cannot use duplicate values in field' && response.formField === 'username'){
+                alert('Username is already in use');
+                setFormError('username');
+            } else {
+                window.alert(`Server Error - Please try again later`)
+            }   
+        } else {
+            setUser(response.user);
+            setIsLoggedIn(true);
+
+            setTimeout(() => {
+                handleClose();
+            }, 2000)
+        }
+    }
+
+    const handleClose = () => {
+        setUsername('');
+        setPassword('');
+        setEmail('');
+        setFormError('');
+        setIsLoggedIn(false);
+        onClose();
     }
 
     return (
-        <Dialog open={open} onClose={onClose}>
+        <Dialog open={open} onClose={handleClose}>
+            {isLoggedIn && <Success onClose={handleClose} message='You are now registered' />} 
             <DialogTitle className={classes.title}>
                 <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
                     <LockOutlined />
@@ -60,6 +102,7 @@ const Register = ({ open, onClose, signUp }) => {
                             label='Username'
                             variant='outlined'
                             margin='normal'
+                            error={(formError === 'username') ? true : false}
                             onChange={handleUsernameChange}
                             fullWidth
                             required
@@ -71,6 +114,7 @@ const Register = ({ open, onClose, signUp }) => {
                             label='Email Address'
                             variant='outlined'
                             margin='normal'
+                            error={(formError === 'email') ? true : false}
                             onChange={handleEmailChange}
                             fullWidth
                             required

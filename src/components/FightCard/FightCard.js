@@ -91,7 +91,7 @@ const FightCard = () => {
                     <FightDescription description={fight.data.description} />
                 </Grid>
                 <Grid item sm={12} className={classes.item}>
-                    <Comments className={classes.comments} fightId={fight.data._id} fight={fight.data} />
+                    <Comments className={classes.comments} model='fights' recordId={fight.data._id} comments={fight.data.comments} />
                 </Grid>
 
             </Grid>

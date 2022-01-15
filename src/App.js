@@ -1,5 +1,6 @@
 import { makeStyles, Grid } from '@material-ui/core';
 import { BrowserRouter as Router } from 'react-router-dom';
+import { UserContext } from './contexts/UserContext';
 
 import Header from "./components/Header";
 // import LeftBar from './components/LeftBar';
@@ -18,6 +19,7 @@ const useStyles = makeStyles((theme) =>({
 
 function App() {
   const [searchValue, setSearchValue] = useState('')
+  const [user, setUser] = useState(null);
 
   // search query comes from header
   const handleSearch = (value) => {
@@ -28,18 +30,20 @@ function App() {
   return (
     <Router>
       <div>
-        <Header handleSearch={handleSearch} />
-        <Grid container>
-          {/* <Grid item sm={2} xs={2}>
-            <LeftBar />
-          </Grid> */}
-          <Grid item sm={12} xs={12}>
-            <Feed searchQuery={searchValue} />
+        <UserContext.Provider value={{ user, setUser }}>
+          <Header handleSearch={handleSearch} />
+          <Grid container>
+            {/* <Grid item sm={2} xs={2}>
+              <LeftBar />
+            </Grid> */}
+            <Grid item sm={12} xs={12}>
+              <Feed searchQuery={searchValue} />
+            </Grid>
+            {/* <Grid item sm={3} className={classes.rightBar}>
+              <RightBar />
+            </Grid> */}
           </Grid>
-          {/* <Grid item sm={3} className={classes.rightBar}>
-            <RightBar />
-          </Grid> */}
-        </Grid>
+        </UserContext.Provider>
       </div>
     </Router>
   );

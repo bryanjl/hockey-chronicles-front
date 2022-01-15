@@ -4,15 +4,9 @@ import { LoginRounded, LogoutRounded } from '@mui/icons-material';
 import { Button, Menu, MenuItem } from '@mui/material';
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { 
-    login as loginAPI, 
-    register as registerAPI, 
-    logout as logoutAPI,
-    getToken as getTokenAPI,
-    getUserDetails as getUserDetailsAPI
-} from '../api/auth/authApi';
 import Login from './auth/Login';
 import Register from './auth/Register';
+import Logout from './auth/Logout';
 
 const useStyles = makeStyles((theme) => ({
     header: {
@@ -85,6 +79,7 @@ const Header = ({ handleSearch }) => {
     //state for Auth -> login/register
     const [openLogin, setOpenLogin] = useState(false);
     const [openRegister, setOpenRegister] = useState(false);
+    const [openLogout, setOpenLogout] = useState(false);
 
     //state for dropdown menu from avatar
     const [anchorEl, setAnchorEl] = useState(null);
@@ -98,8 +93,7 @@ const Header = ({ handleSearch }) => {
     //avatar menu on close
     const handleAvatarClose = () => {
         setAnchorEl(null);
-      };
-
+    };
     //open login dialog
     const loginBtnClick = () => {
         setOpenLogin(true);
@@ -116,24 +110,17 @@ const Header = ({ handleSearch }) => {
     const onRegisterClose = () => {
         setOpenRegister(false);
     }
-    //LOGIN sign in button -> api call
-    const signIn = (credentials) => {
-        loginAPI(credentials);
-    }
-    //REGISTER sign up button -> api call
-    const signUp = (userDetails) => {
-        registerAPI(userDetails);
-        // console.log(response);
-    }
     //LOGOUT logout button -> clear token
-    const logout = () => {
-        logoutAPI();
+    const logoutBtnClick = () => {
+        setOpenLogout(true)
     }
-    //TEST -> GET current logged in user's token
-    const getMe = () => {
-        let user = getUserDetailsAPI();
-        // console.log(token);
+    const onLogoutClose = () => {
+        setOpenLogout(false);
     }
+    
+    // const logout = () => {
+    //     logoutAPI();
+    // }
 
     const handleSearchSubmit = (e) => {
         // handleSearch(e.target.value);
@@ -141,7 +128,6 @@ const Header = ({ handleSearch }) => {
             handleSearch(e.target.value);
             navigate(`/search`);
         }
-        
     }
 
     return (
@@ -159,9 +145,11 @@ const Header = ({ handleSearch }) => {
                 <Button component={Link} to='/leagues'>Leagues</Button>
 
 
-                <Login open={openLogin} onClose={onLoginClose} signIn={signIn} />
+                <Login open={openLogin} onClose={onLoginClose} />
                 
-                <Register open={openRegister} onClose={onRegisterClose} signUp={signUp} />
+                <Register open={openRegister} onClose={onRegisterClose} />
+
+                <Logout open={openLogout} onClose={onLogoutClose} />
                 
                 <div className={classes.search}>
                     <Search />
@@ -192,7 +180,7 @@ const Header = ({ handleSearch }) => {
                                 }}
                     >
                         <MenuItem onClick={loginBtnClick}><LoginRounded />   Login</MenuItem>
-                        <MenuItem onClick={logout}><LogoutRounded />   Logout</MenuItem>
+                        <MenuItem onClick={logoutBtnClick}><LogoutRounded />   Logout</MenuItem>
                         <MenuItem onClick={registerBtnClick}><AccountCircleRounded />  Register</MenuItem>
                         {/* <MenuItem onClick={getMe}>Get Me</MenuItem> */}
                     </Menu>

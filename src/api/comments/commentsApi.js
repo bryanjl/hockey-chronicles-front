@@ -1,8 +1,8 @@
 import fetchApi from '../fetchApi';
 import { getToken, getUsername, getUserId } from '../auth/authApi';
 
-export const postComment = async(recordId, text, parentId = null) => {
-    let route = `/fights/${recordId}/comments`;
+export const postComment = async(model, recordId, text, parentId = null) => {
+    let route = `/${model}/${recordId}/comments`;
 
     let token = getToken();
     let userId = getUserId();
@@ -34,8 +34,8 @@ export const postComment = async(recordId, text, parentId = null) => {
     return response.data.comments[response.data.comments.length - 1];
 }
 
-export const getComments = async(recordId) => {
-    let route = `/fights/${recordId}/comments`;
+export const getComments = async(model, recordId) => {
+    let route = `/${model}/${recordId}/comments`;
 
     let options = {
         method: 'GET'
@@ -47,8 +47,8 @@ export const getComments = async(recordId) => {
     return response.data;
 }
 
-export const updateComment = (recordId, text, commentId) => {
-    let route = `/fights/${recordId}/comments`;
+export const updateComment = (model, recordId, text, commentId) => {
+    let route = `/${model}/${recordId}/comments`;
 
     let token = getToken();
 
@@ -69,10 +69,10 @@ export const updateComment = (recordId, text, commentId) => {
     fetchApi(route, options);
 }
 
-export const deleteComment = (recordId, commentId) => {
+export const deleteComment = (model, recordId, commentId) => {
     console.log(commentId);
 
-    let route = `/fights/${recordId}/comments`;
+    let route = `/${model}/${recordId}/comments`;
 
     let token = getToken();
 

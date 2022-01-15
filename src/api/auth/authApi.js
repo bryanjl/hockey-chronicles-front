@@ -41,13 +41,13 @@ export const login = async (credentials) => {
         body: JSON.stringify(credentials)
     }
 
-    let token = await fetchApi(route, options);
+    let user = await fetchApi(route, options);
 
     // set token and username to localstorage
-    localStorage.setItem('token', token.token);
-    setUserName();
+    localStorage.setItem('token', user.token);
+    // setUserName();
 
-    return token;
+    return user;
 }
 
 //register for new account with API
@@ -62,11 +62,13 @@ export const register = async (userDetails) => {
         body: JSON.stringify(userDetails)
     }
 
-    let token = await fetchApi(route, options);
+    let user = await fetchApi(route, options);
 
     // set token and username to localstorage
-    localStorage.setItem('token', token.token);
-    setUserName();
+    localStorage.setItem('token', user.token);
+    // setUserName();
+
+    return user;
 }
 
 //clear localstorage of token and username

@@ -1,7 +1,9 @@
 import { makeStyles } from "@material-ui/core";
-import { CheckCircle, LockOpen, LockOutlined } from "@material-ui/icons";
+import { LockOpen, LockOutlined } from "@material-ui/icons";
 import { Avatar, Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, Link, TextField } from "@mui/material";
-import { useState } from "react";
+import Success from "./Success";
+import { useState, useContext } from "react";
+import { UserContext } from "../../contexts/UserContext";
 import { login as loginAPI } from '../../api/auth/authApi';
 
 
@@ -13,18 +15,13 @@ const useStyles = makeStyles((theme) =>({
     },
     footer: {
         padding: '15px'
-    },
-    successContainer: {
-        display: 'flex',
-        alignItems: 'center'
-    },
-    successIcon: {
-        color: 'green',
-        fontSize: '100px'
     }
 }));
 
 const Login = ({ open, onClose }) => {
+    //context
+    const { setUser } = useContext(UserContext);
+
     //State
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -55,6 +52,7 @@ const Login = ({ open, onClose }) => {
             }    
         } else {
             setIsLoggedIn(true);
+            setUser(response.user);
             
             setTimeout(() => {
                 handleClose();
@@ -74,7 +72,7 @@ const Login = ({ open, onClose }) => {
     
     return ( 
         <Dialog open={open} onClose={handleClose}>
-            {isLoggedIn && <Success onClose={handleClose} />} 
+            {isLoggedIn && <Success onClose={handleClose} message='You are now logged in' />} 
             <DialogTitle className={classes.title}>
                 <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
                     {isLoggedIn ?  <LockOpen /> : <LockOutlined />}
@@ -138,23 +136,5 @@ const Login = ({ open, onClose }) => {
     )
     
 }
-
-const Success = ({ onClose }) => {
-    const classes = useStyles();
-
-    const [open, setOpen] = useState(true);
-    setTimeout(() => { 
-        setOpen(false)
-    }, 2000);
-
-    return (
-        <Dialog open={open} onClose={onClose} className={classes.successContainer}>
-            <DialogTitle>You are now logged in</DialogTitle>
-            <CheckCircle className={classes.successIcon} />
-        </Dialog>
-    )
-}
-
-
 
 export default Login
