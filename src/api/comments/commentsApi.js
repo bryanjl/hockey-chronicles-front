@@ -1,12 +1,12 @@
 import fetchApi from '../fetchApi';
-import { getToken, getUsername, getUserId } from '../auth/authApi';
+import { getToken } from '../auth/authApi';
 
-export const postComment = async(model, recordId, text, parentId = null) => {
+export const postComment = async(user, model, recordId, text, parentId = null) => {
     let route = `/${model}/${recordId}/comments`;
 
     let token = getToken();
-    let userId = getUserId();
-    let username = getUsername();
+    let userId = user._id;
+    let username = user.username;
 
     let reqBody = {
         body: text,

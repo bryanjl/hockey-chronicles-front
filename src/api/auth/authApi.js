@@ -4,17 +4,14 @@ import jwtDecode from "jwt-decode";
 //get token from local storage
 export const getToken = () => {
     let token = localStorage.getItem('token');
-    // console.log(jwtDecode(token));
-
     
-
     return token;
 }
 
 //get username from localstorage
 export const getUsername = () => {
     let username = localStorage.getItem('username');
-
+    console.log('here');
     return username;
 }
 
@@ -25,7 +22,8 @@ export const getUserId = () => {
         return user.id; 
     } catch (error) {
         //how to handle not logged in user???
-        console.log(error)
+        console.log(error);
+        return null;
     }
 }
 
@@ -91,12 +89,16 @@ export const getUserDetails = async() => {
 
     let user = await fetchApi(route, options);
 
+    if(user.success === false) {
+        return null;
+    }
+
     return user.data;
 }
 
 //set username to local storage
-const setUserName = async () => {
-    let user = await getUserDetails();
+// const setUserName = async () => {
+//     let user = await getUserDetails();
 
-    localStorage.setItem('username', user.username);
-}
+//     localStorage.setItem('username', user.username);
+// }

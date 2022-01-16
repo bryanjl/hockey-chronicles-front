@@ -29,7 +29,7 @@ const GameEvent = ({ event }) => {
         navigate(`/fights/${event._id}`)
     }
 
-    console.log(event.players);
+    // console.log(event.players);
     
     return (
         <Card className={classes.gameCard} >

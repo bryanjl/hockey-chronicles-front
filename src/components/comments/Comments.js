@@ -1,12 +1,13 @@
 import { Container, makeStyles, Typography } from "@material-ui/core";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import { UserContext } from "../../contexts/UserContext";
 import {
     // getComments as getCommentsApi, 
     postComment as createCommentApi, 
     deleteComment as deleteCommentApi,
     updateComment as updateCommentApi
 } from '../../api/comments/commentsApi';
-import { getUserId } from "../../api/auth/authApi";
+// import { getUserId } from "../../api/auth/authApi";
 import Comment from './Comment';
 import CommentForm from "./CommentForm";
 import './comments.css';
@@ -31,10 +32,15 @@ const useStyles = makeStyles((theme) => ({
 
 const Comments = ({ model, recordId, comments }) => {
     const classes = useStyles();
+    const { user } = useContext(UserContext);
 
-    console.log(comments);
+    // console.log(user);
 
-    let currentUserId = getUserId();
+    let currentUserId = ''
+    if(user) {
+        currentUserId = user._id;
+    }
+    
 
     //state of comments
     const [backendComments, setBackendComments] = useState([]);
@@ -50,7 +56,7 @@ const Comments = ({ model, recordId, comments }) => {
     }
 
     const addComment = (text, parentId) => {
-        createCommentApi(model, recordId, text, parentId).then(comment => {
+        createCommentApi(user, model, recordId, text, parentId).then(comment => {
             setBackendComments(() => {
                 let newComments = [...backendComments, comment];
                 setBackendComments(newComments);
@@ -90,22 +96,25 @@ const Comments = ({ model, recordId, comments }) => {
         setBackendComments(comments);
     }, [comments]);
 
-    //Get comments from API
-    // useEffect(() => {
-    //     getCommentsApi(model, recordId).then(data => {
-    //         data.sort((a, b) => new Date(a.createdAt).getTime() + new Date(b.createdAt).getTime());
-    //         //Not sure why I need to reverse list here??
-    //         setBackendComments(data.reverse());
-    //     });
-    // }, [recordId, model]);
-
     //reply comments doesn't scale to large amount of replies
     //okay for small/med project
     return (
         <Container className={classes.comments} >
             <Typography variant='h4' className={classes.commentTitle}> Comments </Typography>
-            <Typography variant='h5' className={classes.formTitle}>Write comment</Typography>
-            <CommentForm submitLabel='Write' handleSubmit={addComment}  />
+            
+            {!user && 
+                <>
+                    <Typography>Please login to add a comment</Typography>
+                </>
+            }
+
+            {user && 
+                <>
+                    <Typography variant='h5' className={classes.formTitle}>Write comment</Typography>
+                    <CommentForm submitLabel='Write' handleSubmit={addComment}  />
+                </>
+            }
+            
             <div className='comments-container'>
                 {rootComments.map((rootComment) => (
                     <Comment 

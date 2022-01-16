@@ -56,11 +56,11 @@ const Comment = ({
 }) => {
     const classes = useStyles();
 
-    const fiveMinutes = 3000000; 
-    const timePassed = new Date() - new Date(comment.createdAt) > fiveMinutes;
+    // const fiveMinutes = 3000000; 
+    // const timePassed = new Date() - new Date(comment.createdAt) > fiveMinutes;
     const canReply = Boolean(currentUserId);
-    const canEdit = currentUserId === comment.userId && !timePassed;
-    const canDelete = currentUserId === comment.userId && !timePassed;
+    const canEdit = currentUserId === comment.userId;
+    const canDelete = currentUserId === comment.userId;
     const createdAt = new Date(comment.createdAt).toLocaleDateString();
     const isReplying = 
         activeComment && 
@@ -166,4 +166,4 @@ const Comment = ({
     )
 }
 
-export default Comment
+export default Comment;

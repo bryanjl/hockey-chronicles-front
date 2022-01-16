@@ -1,32 +1,41 @@
-import { makeStyles, Grid } from '@material-ui/core';
+import { Grid } from '@material-ui/core';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { UserContext } from './contexts/UserContext';
+import { getUserDetails as getUserDetailsAPI} from './api/auth/authApi';
 
 import Header from "./components/Header";
 // import LeftBar from './components/LeftBar';
 import Feed from './components/Feed';
 // import RightBar from './components/RightBar';
 // import FightCard from "./components/FightCard/FightCard";
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
-const useStyles = makeStyles((theme) =>({
-  rightBar: {
-    [theme.breakpoints.down('sm')]: {
-      display: 'none'
-    }
-  }
-}));
+// const useStyles = makeStyles((theme) =>({
+//   rightBar: {
+//     [theme.breakpoints.down('sm')]: {
+//       display: 'none'
+//     }
+//   }
+// }));
 
 function App() {
-  const [searchValue, setSearchValue] = useState('')
+  const [searchValue, setSearchValue] = useState('');
+
   const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    getUserDetailsAPI().then(response => {
+      // console.log(response);
+      setUser(response);
+    });
+  }, [])
 
   // search query comes from header
   const handleSearch = (value) => {
     setSearchValue(value)
   }
 
-  const classes = useStyles();
+  // const classes = useStyles();
   return (
     <Router>
       <div>

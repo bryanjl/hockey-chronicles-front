@@ -10,7 +10,7 @@ import DateDisplay from "../date/DateDisplay";
 import LeagueDisplay from "../leagueProfile/LeagueDisplay";
 import SeasonDisplay from "../seasonProfile/SeasonDisplay";
 import GameEvent from "./GameEvent";
-// import Comments from "../comments/Comments";
+import Comments from "../comments/Comments";
 
 const useStyles = makeStyles((theme) => ({
     teamContainer: {
@@ -47,7 +47,7 @@ const GameProfile = () => {
     useEffect(() => {
         setIsFetching(true);
         getGameAPI(gameID).then(data => {
-            console.log(data);
+            // console.log(data);
             setGame(data.data);
             setIsFetching(false);
         });
@@ -81,15 +81,15 @@ const GameProfile = () => {
                         <Typography>Game Events</Typography>
                         
                         {game.fights.map(fight => {
-                            console.log(fight);
+                            // console.log(fight);
                             
                             return (
-                                <GameEvent event={fight} />
+                                <GameEvent key={fight._id} event={fight} />
                             )
                         })}
                     </Paper>
 
-                    {/* <Comments /> */}
+                    <Comments className={classes.comments} model='games' recordId={game._id} comments={game.comments} />
                 </React.Fragment>
             }
         </React.Fragment>

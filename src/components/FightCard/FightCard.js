@@ -15,7 +15,6 @@ import {
     getFight,
     updateOutcome
 } from '../../api/fights/fightApi';
-// import { updateComment } from '../../api/comments/commentsApi';
 
 const useStyles = makeStyles((theme) => ({
     container: {
@@ -38,34 +37,27 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const FightCard = () => {
-    // 61af39ffc3886aea9b3e6573
-
-
     const classes = useStyles();
 
     const [fight, setFight] = useState({data: {}, isFetching: true});   
     
     let { fightID } = useParams();
-    // console.log(fightID)
-    
-    // let comments = fight.data.comments;
 
     useEffect(() => {
         setFight({data: {}, isFetching: true })
         getFight(fightID).then(data => {
-            console.log(data);
+            // console.log(data);
             setFight({data: data.data, isFetching: false});
-        })   
+        });
+        //eslint-disable-next-line   
     }, []);
 
     const voteUpdate = async() => {
         await updateOutcome(fight.data._id, {outcome: fight.data.outcome});
-        console.log('updated vote to API')
+        // console.log('updated vote to API')
     }
 
     return (
-        
-
             !fight.isFetching && 
                 <Grid container className={classes.container}>
             
@@ -93,15 +85,7 @@ const FightCard = () => {
                 <Grid item sm={12} className={classes.item}>
                     <Comments className={classes.comments} model='fights' recordId={fight.data._id} comments={fight.data.comments} />
                 </Grid>
-
             </Grid>
-             
-            
-           
-
-
-            
-        
     )
 }
 
