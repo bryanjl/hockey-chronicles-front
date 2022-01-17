@@ -1,17 +1,17 @@
-import { Grid, makeStyles } from "@material-ui/core";
+import { Grid } from "@material-ui/core";
 import { useEffect, useState } from "react";
 import { getAllLeagues as getAllLeaguesAPI } from "../../api/leagues/leaguesApi";
 // import SearchResult from "../search/SearchResult";
 import LeagueResult from '../leagueProfile/LeagueResult';
 import Paging from "../Paging";
 
-const useStyles = makeStyles((theme) => ({
+// const useStyles = makeStyles((theme) => ({
 
-}));
+// }));
 
 
 const Leagues = () => {
-    const classes = useStyles();
+    // const classes = useStyles();
 
     const [isFetching, setIsFetching] = useState(true);
     const [leagueResults, setLeagueResults] = useState([]);

@@ -143,6 +143,7 @@ const Header = ({ handleSearch }) => {
                 <Button component={Link} to='/players'>Players</Button>
                 <Button component={Link} to='/teams'>Teams</Button>
                 <Button component={Link} to='/leagues'>Leagues</Button>
+                <Button component={Link} to='/seasons'>Seasons</Button>
 
 
                 <Login open={openLogin} onClose={onLoginClose} />

@@ -14,6 +14,7 @@ import Fights from "./pages/Fights";
 import Players from "./pages/Players";
 import Leagues from "./pages/Leagues";
 import Teams from "./pages/Teams";
+import Seasons from "./pages/Seasons";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -42,6 +43,7 @@ const Feed = ({ searchQuery }) => {
                 <Route path='/leagues' element={<Leagues />} />
                 <Route path='/leagues/:leagueID' element={<LeagueProfile />} />
 
+                <Route path='/seasons' element={<Seasons />} />
                 <Route path='/seasons/:seasonID' element={<SeasonProfile />} />
 
                 <Route path='/teams' element={<Teams />} />

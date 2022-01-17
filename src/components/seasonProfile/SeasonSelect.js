@@ -40,6 +40,7 @@ const SeasonSelect = ({ seasonSelect }) => {
             label="Season"
             onChange={handleChange}
           >
+            <MenuItem value=''>All Seasons</MenuItem>
             {!isFetching && 
                 seasons.map(result => {
                     return <MenuItem key={result._id} value={result.season}>{result.season}</MenuItem>

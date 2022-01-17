@@ -1,4 +1,4 @@
-import { Grid, makeStyles } from "@material-ui/core";
+import { Grid } from "@material-ui/core";
 import { useEffect, useState } from "react";
 import { getAllFights as getAllFightsAPI } from "../../api/fights/fightApi"
 import SearchResult from "../search/SearchResult";
@@ -6,12 +6,12 @@ import Paging from "../Paging";
 import SeasonSelect from "../seasonProfile/SeasonSelect";
 import Search from "../search/Search";
 
-const useStyles = makeStyles((theme) => ({
+// const useStyles = makeStyles((theme) => ({
 
-}));
+// }));
 
 const Fights = () => {
-    const classes = useStyles();
+    // const classes = useStyles();
 
     const [isFetching, setIsFetching] = useState(true);
     const [fightResults, setFightResults] = useState([]);
