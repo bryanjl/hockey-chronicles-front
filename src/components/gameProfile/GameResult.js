@@ -25,7 +25,8 @@ const GameResult = ({ game }) => {
     const navigate = useNavigate()
 
     const handleClick = () => {
-        navigate(`/games/${game._id}`)
+        
+        navigate(`/games/${game._id}`);
     }
 
     return (

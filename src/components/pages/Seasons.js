@@ -1,10 +1,14 @@
 import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { getAllGames as getAllGamesAPI } from "../../api/games/gamesApi";
 import GameResult from "../gameProfile/GameResult";
 import Paging from "../Paging";
 import SeasonSelect from "../seasonProfile/SeasonSelect";
 
 const Seasons = () => {
+    const [searchParams, setSearchParams] = useSearchParams();
+    // console.log(searchParams);
+
     const [gameResults, setGameResults] = useState([]);
     const [isFetching, setIsFetching] = useState(true);
 
@@ -15,8 +19,13 @@ const Seasons = () => {
     //state for seasonSelect
     const [seasonValue, setSeasonValue] = useState('');
 
+    
+
     useEffect(() => {
+        setSearchParams(`${seasonValue}page=${page}`)
         fetchData(`${seasonValue}page=${page}`);
+        // fetchData(searchParams);
+        
     }, [page, seasonValue]);
 
     const fetchData = (query) => {
@@ -26,6 +35,7 @@ const Seasons = () => {
             setGameResults(response.data);
             setNumberOfPages(response.pagination.totalPages);
             setIsFetching(false);
+            // window.location = `${window.location.pathname}?${query}`;
         });
     }
 
