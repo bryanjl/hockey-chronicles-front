@@ -32,6 +32,7 @@ const PositionSelect = ({ positionSelect }) => {
                     return <MenuItem key={result._id} value={result.season}>{result.season}</MenuItem>
                 })
             } */}
+            <MenuItem value={''}>All Positions</MenuItem>
             <MenuItem value={'Center'}>Center</MenuItem>
             <MenuItem value={'Left Wing'}>Left Wing</MenuItem>
             <MenuItem value={'Right Wing'}>Right Wing</MenuItem>

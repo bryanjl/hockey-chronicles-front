@@ -1,18 +1,14 @@
-import { Grid, makeStyles } from "@material-ui/core";
+import { Grid } from "@material-ui/core";
 import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { getAllTeams as getAllTeamsAPI } from "../../api/teams/teamsApi";
-// import SearchResult from "../search/SearchResult";
 import TeamResult from '../teamProfile/TeamResult';
 import Paging from "../Paging";
 import LeagueSelect from "../leagueProfile/LeagueSelect";
 import Search from "../search/Search";
 
-const useStyles = makeStyles((theme) => ({
-
-}));
-
 const Teams = () => {
-    const classes = useStyles();
+    const [searchParams, setSearchParams] = useSearchParams();
 
     //state for data from API
     const [isFetching, setIsFetching] = useState(true);
@@ -22,20 +18,19 @@ const Teams = () => {
     const [page, setPage] = useState(1);
     const [numberOfPages, setNumberOfPages] = useState(0);
 
-    //state for league select
-    const [leagueValue, setLeagueValue] = useState('');
-
-    //state for search query
-    const [searchQuery, setSearchQuery] = useState('');
-
-    //handle page change
-    const pageChange = (value) => {
-        setPage(value);
-    }
-
     useEffect(() => {
-        fetchData(`${leagueValue}${searchQuery}page=${page}`);
-    }, [page, leagueValue, searchQuery]);
+        //get params
+        let searchTerm = searchParams.get('term');
+        let query = '';
+        if(searchTerm) {
+            query = `term=${searchTerm}&`;
+        }
+        
+        let pageParam = parseInt(searchParams.get('page')) || 1;
+        setPage(pageParam);
+
+        fetchData(`${query}page=${pageParam}`);
+    }, [searchParams]);
 
     const fetchData = (query) => {
         setIsFetching(true);
@@ -47,15 +42,26 @@ const Teams = () => {
     }
 
     const leagueSelect = (league) => {
-        setLeagueValue(`term=${league}&`);
-        setSearchQuery('');
-        setPage(1);
+        if(league) {
+            setSearchParams(`?term=${league}&page=1`);      
+        } else {
+            setSearchParams(`?page=1`);
+        }
     }
 
     const teamSearch = (inputQuery) => {
-        setSearchQuery(`term=${inputQuery}&`);
-        setLeagueValue('');
-        setPage(1);
+        setSearchParams(`?term=${inputQuery}&page=1`);
+    }
+
+    //page change function
+    const pageChange = (value) => {
+        //before changing page check to see if there is a search
+        //query and add to the searchParams
+        let searchTerm = `term=${searchParams.get('term')}&`;
+        if(!searchParams.get('term')) {
+            searchTerm = '';
+        }
+        setSearchParams(`?${searchTerm}page=${value}`);
     }
 
     return (

@@ -6,48 +6,61 @@ import Paging from "../Paging";
 import SeasonSelect from "../seasonProfile/SeasonSelect";
 
 const Seasons = () => {
+    //use searchparams for browser history
     const [searchParams, setSearchParams] = useSearchParams();
-    // console.log(searchParams);
 
+    //state for API data
     const [gameResults, setGameResults] = useState([]);
     const [isFetching, setIsFetching] = useState(true);
 
     //state for pagination
-    const [page, setPage] = useState(1)
+    const [page, setPage] = useState(1);
     const [numberOfPages, setNumberOfPages] = useState(0);
 
-    //state for seasonSelect
-    const [seasonValue, setSeasonValue] = useState('');
-
-    
-
     useEffect(() => {
-        setSearchParams(`${seasonValue}page=${page}`)
-        fetchData(`${seasonValue}page=${page}`);
-        // fetchData(searchParams);
+        //get params 
+        let searchTerm = searchParams.get('term') || '';
+        let query = '';
+        if(searchTerm){
+            query = `term=${searchTerm}&`;
+        }
         
-    }, [page, seasonValue]);
+        let pageParam = parseInt(searchParams.get('page')) || 1;
 
-    const fetchData = (query) => {
+        //set page number
+        setPage(pageParam);        
+
+        //fetch data
+        fetchData(`${query}page=${pageParam}`);        
+    }, [searchParams]);
+
+    const fetchData = (query = '') => {
         setIsFetching(true);
         getAllGamesAPI(query).then(response => {
-            console.log(response);
             setGameResults(response.data);
             setNumberOfPages(response.pagination.totalPages);
             setIsFetching(false);
-            // window.location = `${window.location.pathname}?${query}`;
         });
     }
 
       //get games by season -> select
       const seasonSelect = (season) => {
-        setSeasonValue(`term=${season}&`);
-        setPage(1);
+          if(season) {
+            setSearchParams(`?term=${season}&page=1`);      
+          } else {
+            setSearchParams(`?page=1`);
+          }
      }
 
     //page change function
     const pageChange = (value) => {
-        setPage(value);
+        //before changing page check to see if there is a search
+        //query and add to the searchParams
+        let searchTerm = `term=${searchParams.get('term')}&`;
+        if(!searchParams.get('term')) {
+            searchTerm = '';
+        }
+        setSearchParams(`?${searchTerm}page=${value}`);
     }
 
     return (

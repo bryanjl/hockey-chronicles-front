@@ -1,18 +1,16 @@
-import { Grid, makeStyles } from "@material-ui/core";
+import { Grid } from "@material-ui/core";
 import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { getAllPlayers as getAllPlayersAPI } from "../../api/players/playersApi";
-// import SearchResult from "../search/SearchResult";
 import PlayerCard from '../FightCard/PlayerCard';
 import Paging from "../Paging";
 import PositionSelect from "../playerProfile/PositionSelect";
 import Search from "../search/Search";
 
-const useStyles = makeStyles((theme) => ({
 
-}));
 
 const Players = () => {
-    const classes = useStyles();
+    const [searchParams, setSearchParams] = useSearchParams();
 
     const [isFetching, setIsFetching] = useState(true);
     const [playerResults, setPlayerResults] = useState([]);
@@ -22,41 +20,63 @@ const Players = () => {
     const [numberOfPages, setNumberOfPages] = useState(0);
 
     //state for position select
-    const [positionValue, setPositionValue] = useState('');
+    // const [positionValue, setPositionValue] = useState('');
 
     //state for search query
-    const [searchQuery, setSearchQuery] = useState('');
+    // const [searchQuery, setSearchQuery] = useState('');
 
-    //handle page change
-    const pageChange = (value) => {
-        setPage(value);
-    }
-
+    //Get all fights
     useEffect(() => {
-        fetchData(`${positionValue}${searchQuery}page=${page}`);
-        // window.location.pathname = `players?${positionValue}${searchQuery}page=${page}`
-    }, [page, positionValue, searchQuery]);
+        //get params
+        let searchTerm = searchParams.get('term');
+        let query = '';
+        if(searchTerm) {
+            query = `term=${searchTerm}&`;
+        }
+        
+        let pageParam = parseInt(searchParams.get('page')) || 1;
+        setPage(pageParam);
+
+        fetchData(`${query}page=${pageParam}`);
+    }, [searchParams]);
 
     const fetchData = (query) => {
         setIsFetching(true);
         getAllPlayersAPI(query).then(data => {
             setPlayerResults(data.data);
-            // console.log(data.data);
             setNumberOfPages(data.pagination.totalPages);
             setIsFetching(false);
         });
     }
 
     const positionSelect = (position) => {
-        setPositionValue(`term=${position}&`);
-        setSearchQuery('');
-        setPage(1);
+        if(position) {
+            setSearchParams(`?term=${position}&page=1`);      
+        } else {
+            setSearchParams(`?page=1`);
+        }
+        
+        // setPositionValue(`term=${position}&`);
+        // setSearchQuery('');
+        // setPage(1);
     }
 
     const playerSearch = (inputQuery) => {
-        setSearchQuery(`term=${inputQuery}&`);
-        setPositionValue('');
-        setPage(1);
+        setSearchParams(`?term=${inputQuery}&page=1`);
+        // setSearchQuery(`term=${inputQuery}&`);
+        // setPositionValue('');
+        // setPage(1);
+    }
+
+    //page change function
+    const pageChange = (value) => {
+        //before changing page check to see if there is a search
+        //query and add to the searchParams
+        let searchTerm = `term=${searchParams.get('term')}&`;
+        if(!searchParams.get('term')) {
+            searchTerm = '';
+        }
+        setSearchParams(`?${searchTerm}page=${value}`);
     }
 
     return (

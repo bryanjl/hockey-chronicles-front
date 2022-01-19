@@ -1,34 +1,41 @@
 import { Grid } from "@material-ui/core";
 import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { getAllFights as getAllFightsAPI } from "../../api/fights/fightApi"
 import SearchResult from "../search/SearchResult";
 import Paging from "../Paging";
 import SeasonSelect from "../seasonProfile/SeasonSelect";
 import Search from "../search/Search";
 
-// const useStyles = makeStyles((theme) => ({
-
-// }));
 
 const Fights = () => {
-    // const classes = useStyles();
+    //search params
+    const [searchParams, setSearchParams] = useSearchParams();
 
+    //fight data state
     const [isFetching, setIsFetching] = useState(true);
     const [fightResults, setFightResults] = useState([]);
 
     // state for current page for pagination
     const [page, setPage] = useState(1);
-    //state for seasonSelect
-    const [seasonValue, setSeasonValue] = useState('');
-    //state for search query
-    const [searchQuery, setSearchQuery] = useState('');
+
     //state for total number of pages 
     const [numberOfPages, setNumberOfPages] = useState(0);
 
     //Get all fights
     useEffect(() => {
-        fetchData(`${seasonValue}${searchQuery}page=${page}`);
-    }, [page, seasonValue, searchQuery]);
+        //get params
+        let searchTerm = searchParams.get('term');
+        let query = '';
+        if(searchTerm) {
+            query = `term=${searchTerm}&`;
+        }
+        
+        let pageParam = parseInt(searchParams.get('page')) || 1;
+        setPage(pageParam);
+
+        fetchData(`${query}page=${pageParam}`);
+    }, [searchParams]);
     
     //fetch data
     //api route /fights?term=&page
@@ -44,22 +51,27 @@ const Fights = () => {
 
     //get fights by season -> select
     const seasonSelect = (season) => {
-       setSeasonValue(`term=${season}&`);
-       setSearchQuery('');
-       setPage(1);
+        if(season) {
+            setSearchParams(`?term=${season}&page=1`);      
+        } else {
+            setSearchParams(`?page=1`);
+        }
     }
 
     //fight search
     const fightSearch = (query) => {
-        setSearchQuery(`term=${query}&`);
-        setSeasonValue('');
-        setPage(1);
+        setSearchParams(`?term=${query}&page=1`);
     }
 
     //page change function
     const pageChange = (value) => {
-        // fetchData(value);
-        setPage(value);
+        //before changing page check to see if there is a search
+        //query and add to the searchParams
+        let searchTerm = `term=${searchParams.get('term')}&`;
+        if(!searchParams.get('term')) {
+            searchTerm = '';
+        }
+        setSearchParams(`?${searchTerm}page=${value}`);
     }
 
     return (
