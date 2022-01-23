@@ -1,11 +1,13 @@
-import { InputBase, makeStyles, Paper, Typography } from "@material-ui/core"
-import LeagueSelect from "../../leagueProfile/LeagueSelect";
+import { Button, InputBase, makeStyles, Paper, Typography } from "@material-ui/core"
+import { useState } from "react";
+
 
 const useStyles = makeStyles((theme) => ({
     container: {
         height: '150px',
         width: '350px',
-        padding: '15px'
+        padding: '15px',
+        margin: '15px'
     },
     inputRoot: {
         backgroundColor: 'gray',
@@ -13,8 +15,18 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-const FightSearch = () => {
+const FightSearch = ({ handleClick }) => {
     const classes = useStyles();
+
+    const [searchValue, setSearchValue] = useState('');
+
+    const fightSearchInput = (e) => {
+        setSearchValue(e.target.value);
+    }
+
+    const searchBtn = () => {
+        handleClick(searchValue);
+    }
 
     return (
         <Paper elevation={8} className={classes.container}>
@@ -26,9 +38,10 @@ const FightSearch = () => {
                     input: classes.inputInput
                 }}
                 fullWidth
+                onChange={fightSearchInput}
                 inputProps={{ 'aria-label': 'search ' }}
             ></InputBase>
-            <LeagueSelect />
+            <Button variant="outlined" fullWidth onClick={searchBtn}>Search</Button>
         </Paper>
     )
 }
