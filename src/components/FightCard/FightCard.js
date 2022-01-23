@@ -46,7 +46,7 @@ const FightCard = () => {
     useEffect(() => {
         setFight({data: {}, isFetching: true })
         getFight(fightID).then(data => {
-            // console.log(data);
+            console.log(data);
             setFight({data: data.data, isFetching: false});
         });
         //eslint-disable-next-line   

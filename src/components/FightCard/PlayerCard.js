@@ -60,8 +60,8 @@ export default function OutlinedCard(props) {
   const navigate = useNavigate();
 
   const getPlayer = () => {
-    console.log(props.id);
-    navigate(`/players/${props.id}`)
+    console.log(props.player.id);
+    navigate(`/players/${props.player.id}`)
   }
 
     const bull = (

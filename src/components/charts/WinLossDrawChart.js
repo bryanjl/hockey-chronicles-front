@@ -35,7 +35,7 @@ class WinLossDrawChart extends Component {
       },
       series: [
         {
-          name: "Votes",
+          name: "Total",
           data: [`${props.wins}`, `${props.draws}`, `${props.losses}`]
         }
       ]
