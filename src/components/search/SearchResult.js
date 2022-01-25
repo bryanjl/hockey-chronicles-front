@@ -24,6 +24,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const SearchResult = ({ result, id }) => {
+    // console.log(result);
     const classes = useStyles();
 
     const navigate = useNavigate();

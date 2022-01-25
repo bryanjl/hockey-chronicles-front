@@ -22,7 +22,8 @@ const useStyles = makeStyles((theme) => ({
         display: 'none',
         [theme.breakpoints.down('sm')]: {
             display: 'block'
-        }
+        },
+        cursor: 'pointer'
     },
     toolbar: {
         display: 'flex',
@@ -117,10 +118,9 @@ const Header = ({ handleSearch }) => {
     const onLogoutClose = () => {
         setOpenLogout(false);
     }
-    
-    // const logout = () => {
-    //     logoutAPI();
-    // }
+    const goHome = () => {
+        navigate('/');
+    }
 
     const handleSearchSubmit = (e) => {
         // handleSearch(e.target.value);
@@ -133,12 +133,14 @@ const Header = ({ handleSearch }) => {
     return (
         <AppBar className={classes.header} position='fixed'>
             <Toolbar className={classes.toolbar}>
-                <Typography variant='h5' component='h2' className={classes.logoLg}>
+                <Typography onClick={goHome} variant='h5' component='h2' className={classes.logoLg}>
                     Hockey Fight Chronicles
                 </Typography>
-                <Typography variant='h5' component='h2' className={classes.logoSm}>
+                
+                <Typography onClick={goHome} variant='h5' component='h2' className={classes.logoSm}>
                     HFC
                 </Typography>
+                
                 <Button component={Link} to='/fights'>Fights</Button>
                 <Button component={Link} to='/players'>Players</Button>
                 <Button component={Link} to='/teams'>Teams</Button>

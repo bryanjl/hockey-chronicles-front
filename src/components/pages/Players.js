@@ -88,6 +88,7 @@ const Players = () => {
             
             {!isFetching && 
                 playerResults.map((result) => {
+                    // console.log(result);
                     return <PlayerCard key={result._id} player={result} id={result._id} />
                 })
             }

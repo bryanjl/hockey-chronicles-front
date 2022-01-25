@@ -57,11 +57,13 @@ const useStyles = makeStyles((theme) => ({
 export default function OutlinedCard(props) {
     const classes = useStyles();
 
+    // console.log(props.players);
+
   const navigate = useNavigate();
 
   const getPlayer = () => {
-    console.log(props.player.id);
-    navigate(`/players/${props.player.id}`)
+    // console.log(props.player._id);
+    navigate(`/players/${props.player._id ? props.player._id : props.player.id}`)
   }
 
     const bull = (

@@ -35,6 +35,7 @@ const Teams = () => {
     const fetchData = (query) => {
         setIsFetching(true);
         getAllTeamsAPI(query).then(data => {
+            console.log(data);
             setTeamResults(data.data);
             setNumberOfPages(data.pagination.totalPages);
             setIsFetching(false);
@@ -50,7 +51,7 @@ const Teams = () => {
     }
 
     const teamSearch = (inputQuery) => {
-        setSearchParams(`?term=${inputQuery}&page=1`);
+        setSearchParams(`${inputQuery}&page=1`);
     }
 
     //page change function
