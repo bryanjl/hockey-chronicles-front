@@ -10,6 +10,7 @@ import { Grid, makeStyles, Typography } from "@material-ui/core";
 import LeagueDisplay from "../leagueProfile/LeagueDisplay";
 import GameResult from "../gameProfile/GameResult";
 import GameEvent from "../gameProfile/GameEvent";
+import SeasonSelect from "../seasonProfile/SeasonSelect";
 
 const useStyles = makeStyles((theme) => ({
     teamImg: {
@@ -33,10 +34,14 @@ const TeamProfile = () => {
     //state for fetching
     const [isFetching, setIsFetching] = useState(true);
 
+    //season value state
+    const [selectedSeason, setSelectedSeason] = useState('');
+
     useEffect(() => {
         setIsFetching(true);
         getTeamAPI(teamID).then(data => {
             console.log(data);
+            data.data.teams.games.sort()
             setTeam(data.data);
             setIsFetching(false);
         });
@@ -44,6 +49,11 @@ const TeamProfile = () => {
 
     const setTab = (value) => {
         setSelectedTab(value);
+    }
+
+    const getSeason = (seasonValue) => {
+        // console.log(seasonValue);
+        setSelectedSeason(seasonValue);
     }
 
     return (
@@ -64,10 +74,17 @@ const TeamProfile = () => {
                 </Grid>
                 
                 <TeamTabs setTab={setTab} currTab={selectedTab} />
-                {selectedTab === 0 && 
+                <SeasonSelect seasonSelect={getSeason} />
+                {selectedTab === 0 &&
+                     
                     team.games.map(game => {
-                        return <GameResult key={game._id} game={game} />
+                        if(selectedSeason === game.season.season){
+                            return <GameResult key={game._id} game={game} />
+                        } else {
+                            return <></>
+                        }
                     })
+                    
                 }
                 {selectedTab === 1 && 
                     team.fights.map(fight => {

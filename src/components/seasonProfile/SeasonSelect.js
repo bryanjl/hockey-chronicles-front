@@ -24,7 +24,7 @@ const SeasonSelect = ({ seasonSelect }) => {
     }, []);
 
     const handleChange = (e) => {
-        console.log(e.target.value);
+        // console.log(e.target.value);
         setSeason(e.target.value);
         seasonSelect(e.target.value);
     }
