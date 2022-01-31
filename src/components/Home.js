@@ -1,4 +1,4 @@
-import { Grid, Typography } from "@material-ui/core";
+import { Grid } from "@material-ui/core";
 import { useNavigate } from "react-router-dom";
 import PlayerSearch from "./pages/home/PlayerSearch";
 import FightSearch from "./pages/home/FightSearch";
@@ -19,9 +19,9 @@ const Home = () => {
 
     return (
         <Grid container>
-            <Grid item xs={12}>
+            {/* <Grid item xs={12}>
                 <Typography variant="h1">HomePage</Typography>
-            </Grid>
+            </Grid> */}
             <Grid item xs={12}>
                 <PlayerSearch handleClick={handlePlayerSearch} />
             </Grid>

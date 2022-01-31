@@ -1,5 +1,5 @@
 import { AppBar, Toolbar, Typography, makeStyles, InputBase, alpha, Badge, Avatar } from '@material-ui/core';
-import { Search, Notifications, Cancel, AccountCircleRounded } from '@material-ui/icons';
+import { Search, Notifications, Cancel, AccountCircleRounded, MenuBook, MenuOutlined } from '@material-ui/icons';
 import { LoginRounded, LogoutRounded } from '@mui/icons-material';
 import { Button, Menu, MenuItem } from '@mui/material';
 import { useState } from 'react';
@@ -133,6 +133,7 @@ const Header = ({ handleSearch }) => {
     return (
         <AppBar className={classes.header} position='fixed'>
             <Toolbar className={classes.toolbar}>
+                <MenuOutlined />
                 <Typography onClick={goHome} variant='h5' component='h2' className={classes.logoLg}>
                     Hockey Fight Chronicles
                 </Typography>
@@ -141,11 +142,11 @@ const Header = ({ handleSearch }) => {
                     HFC
                 </Typography>
                 
-                <Button component={Link} to='/fights'>Fights</Button>
+                {/* <Button component={Link} to='/fights'>Fights</Button>
                 <Button component={Link} to='/players'>Players</Button>
                 <Button component={Link} to='/teams'>Teams</Button>
                 <Button component={Link} to='/leagues'>Leagues</Button>
-                <Button component={Link} to='/seasons'>Seasons</Button>
+                <Button component={Link} to='/seasons'>Seasons</Button> */}
 
 
                 <Login open={openLogin} onClose={onLoginClose} />
@@ -160,10 +161,10 @@ const Header = ({ handleSearch }) => {
                     <Cancel className={classes.cancelSearch} onClick={() => setOpen(false)} />
                 </div>
                 <div className={classes.icons}>
-                    <Search className={classes.searchBtn} onClick={() => setOpen(true)} />
+                    {/* <Search className={classes.searchBtn} onClick={() => setOpen(true)} />
                     <Badge badgeContent={4} color='secondary'>
                         <Notifications />
-                    </Badge>
+                    </Badge> */}
                     <Avatar 
                         className={classes.avatar} src='#'
                         id="basic-button"
