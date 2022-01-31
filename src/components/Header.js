@@ -1,5 +1,5 @@
-import { AppBar, Toolbar, Typography, makeStyles, InputBase, alpha, Badge, Avatar } from '@material-ui/core';
-import { Search, Notifications, Cancel, AccountCircleRounded, MenuBook, MenuOutlined } from '@material-ui/icons';
+import { AppBar, Toolbar, Typography, makeStyles, InputBase, alpha, Avatar } from '@material-ui/core';
+import { Search, Cancel, AccountCircleRounded, MenuOutlined } from '@material-ui/icons';
 import { LoginRounded, LogoutRounded } from '@mui/icons-material';
 import { Button, Menu, MenuItem } from '@mui/material';
 import { useState } from 'react';
@@ -10,7 +10,7 @@ import Logout from './auth/Logout';
 
 const useStyles = makeStyles((theme) => ({
     header: {
-        backgroundColor: theme.palette.primary.main
+        backgroundColor: theme.palette.primary.dark
     },
     logoLg: {
         display: 'none',
@@ -84,16 +84,29 @@ const Header = ({ handleSearch }) => {
 
     //state for dropdown menu from avatar
     const [anchorEl, setAnchorEl] = useState(null);
-    const openMenu = Boolean(anchorEl);
+    const [openMenu, setOpenMenu] = useState(false);
+    // const openMenu = Boolean(anchorEl);
+
+    const [openMainMenu, setOpenMainMenu] = useState(false);
 
     //avatar click for menu
     const handleAvatarClick = (event) => {
         setAnchorEl(event.currentTarget);
+        setOpenMenu(true);
     };
-
     //avatar menu on close
     const handleAvatarClose = () => {
         setAnchorEl(null);
+        setOpenMenu(false);
+    };
+    //Main Menu
+    const handleMainMenuClick = (event) => {
+        setAnchorEl(event.currentTarget);
+        setOpenMainMenu(true);
+    };
+    const handleMainMenuClose = () => {
+        setAnchorEl(null);
+        setOpenMainMenu(false);
     };
     //open login dialog
     const loginBtnClick = () => {
@@ -133,7 +146,30 @@ const Header = ({ handleSearch }) => {
     return (
         <AppBar className={classes.header} position='fixed'>
             <Toolbar className={classes.toolbar}>
-                <MenuOutlined />
+                <MenuOutlined 
+                    id="menu-button"
+                    aria-controls={openMainMenu ? 'main-menu' : undefined}
+                    aria-haspopup="true"
+                    aria-expanded={openMainMenu ? 'true' : undefined}
+                    onClick={handleMainMenuClick} 
+                />
+                <Menu
+                    id="main-menu"
+                    anchorEl={anchorEl}
+                    open={openMainMenu}
+                    onClose={handleMainMenuClose}
+                    MenuListProps={{
+                        'aria-labelledby': 'menu-button',
+                    }}
+                >
+                    <MenuItem><Button component={Link} to='/fights'>Fights</Button></MenuItem>
+                    <MenuItem><Button component={Link} to='/teams'>Teams</Button></MenuItem>
+                    <MenuItem><Button component={Link} to='/players'>Players</Button></MenuItem>
+                    <MenuItem><Button component={Link} to='/leagues'>Leagues</Button></MenuItem>
+                    <MenuItem><Button component={Link} to='/seasons'>Seasons</Button></MenuItem>
+                    
+                </Menu>
+
                 <Typography onClick={goHome} variant='h5' component='h2' className={classes.logoLg}>
                     Hockey Fight Chronicles
                 </Typography>
@@ -142,11 +178,11 @@ const Header = ({ handleSearch }) => {
                     HFC
                 </Typography>
                 
-                {/* <Button component={Link} to='/fights'>Fights</Button>
-                <Button component={Link} to='/players'>Players</Button>
-                <Button component={Link} to='/teams'>Teams</Button>
-                <Button component={Link} to='/leagues'>Leagues</Button>
-                <Button component={Link} to='/seasons'>Seasons</Button> */}
+                
+                
+                
+                
+                
 
 
                 <Login open={openLogin} onClose={onLoginClose} />

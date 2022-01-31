@@ -3,14 +3,20 @@ import { useState } from "react";
 
 const useStyles = makeStyles((theme) => ({
     container: {
-        height: '150px',
-        width: '350px',
+        // height: '150px',
+        // width: '350px',
         padding: '15px',
         margin: '15px'
     },
     inputRoot: {
-        backgroundColor: 'gray',
-        color: 'white'
+        // backgroundColor: 'gray',
+        // color: 'white'
+        border: '1px solid gray',
+        paddingLeft: '5px'
+    },
+    searchBtn: {
+        backgroundColor: theme.palette.primary.light,
+        marginTop: '10px'
     }
 }));
 
@@ -39,8 +45,9 @@ const PlayerSearch = ({ handleClick }) => {
                 fullWidth
                 onChange={playerSearchInput}
                 inputProps={{ 'aria-label': 'search ' }}
+                
             ></InputBase>
-            <Button variant="outlined" fullWidth onClick={searchBtn}>Search</Button>
+            <Button className={classes.searchBtn} variant="outlined" fullWidth onClick={searchBtn}>Search</Button>
         </Paper>
     )
 }

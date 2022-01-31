@@ -76,14 +76,18 @@ const Fights = () => {
 
     return (
         <Grid container>
-            <Grid item sm={12}>
+            <Grid item xs={12}>
                 <Search handleSearch={fightSearch} />
                 <SeasonSelect seasonSelect={seasonSelect} />
             </Grid>
             
             {!isFetching && 
                 fightResults.map((result) => {
-                    return <SearchResult key={result._id} result={result} id={result._id} />
+                    if(result.fightType === 'Event' || result.players.length === 0) {
+                        return <></>
+                    } else {
+                        return <SearchResult key={result._id} result={result} id={result._id} />
+                    }                    
                 })
             }
             {numberOfPages !== 0 && 

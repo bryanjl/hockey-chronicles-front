@@ -1,12 +1,17 @@
 import { createTheme } from '@material-ui/core';
-import { red } from '@material-ui/core/colors';
+import { blue, red } from '@material-ui/core/colors';
 
 
 export const theme = createTheme({
     palette: {
-        primary: {
-            main: red[500]
-
-        }
+        primary: red,
+        secondary: blue
+    },
+    typography: {
+        fontFamily: 'Hind Siliguri',
+        fontWeightLight: 400,
+        fontWeightRegular: 500,
+        fontWeightMedium: 600,
+        fontWeightBold: 700
     }
 });

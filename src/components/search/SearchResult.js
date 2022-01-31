@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 const useStyles = makeStyles((theme) => ({
     cardContainer: {
         width: '100%',
-        height: '150px',
+        height: '100%',
         marginTop: '15px',
 
     },
@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const SearchResult = ({ result, id }) => {
-    // console.log(result);
+    console.log(result);
     const classes = useStyles();
 
     const navigate = useNavigate();
@@ -43,15 +43,19 @@ const SearchResult = ({ result, id }) => {
         >
             <Grid container className={classes.gridContainer}>
                 <Grid item xs={10}>
-                    <Grid item sm={12} className={classes.gridItem}>
+                    {/* <Grid item sm={12} className={classes.gridItem}>
                         <Typography>{result.teams[0].city} {result.teams[0].name} VS {result.teams[1].city} {result.teams[1].name}</Typography>
-                    </Grid>
-                    <Grid item sm={12} className={classes.gridItem}>
-                        <Typography>{result.league.name}</Typography>
-                    </Grid>
+                    </Grid> */}
                     <Grid item sm={12} className={classes.gridItem}>
                         <Typography>{date}</Typography>
                     </Grid>
+                    <Grid item sm={12} className={classes.gridItem}>
+                        <Typography>{result.players[0].lastName ? result.players[0].lastName : 'unknown'} VS {result.players[1].lastName ? result.players[1].lastName : 'unknown'}</Typography>
+                    </Grid>
+                    {/* <Grid item sm={12} className={classes.gridItem}>
+                        <Typography>{result.league.name}</Typography>
+                    </Grid> */}
+                    
                 </Grid>
                 <Grid item xs={2} >
                     <CardActions className={classes.cardButton}>

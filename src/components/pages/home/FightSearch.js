@@ -4,14 +4,20 @@ import { useState } from "react";
 
 const useStyles = makeStyles((theme) => ({
     container: {
-        height: '150px',
-        width: '350px',
+        // height: '150px',
+        // width: '350px',
         padding: '15px',
         margin: '15px'
     },
     inputRoot: {
-        backgroundColor: 'gray',
-        color: 'white'
+        // backgroundColor: 'gray',
+        // color: 'white'
+        border: '1px solid gray',
+        paddingLeft: '5px'
+    },
+    searchBtn: {
+        backgroundColor: theme.palette.primary.light,
+        marginTop: '10px'
     }
 }));
 
@@ -32,7 +38,7 @@ const FightSearch = ({ handleClick }) => {
         <Paper elevation={8} className={classes.container}>
             <Typography variant="h5">Search Fights</Typography>
             <InputBase
-                placeholder="Search fights"
+                placeholder="Search Fights"
                 classes={{
                     root: classes.inputRoot,
                     input: classes.inputInput
@@ -41,7 +47,7 @@ const FightSearch = ({ handleClick }) => {
                 onChange={fightSearchInput}
                 inputProps={{ 'aria-label': 'search ' }}
             ></InputBase>
-            <Button variant="outlined" fullWidth onClick={searchBtn}>Search</Button>
+            <Button className={classes.searchBtn} variant="outlined" fullWidth onClick={searchBtn}>Search</Button>
         </Paper>
     )
 }

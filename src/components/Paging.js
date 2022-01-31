@@ -35,7 +35,7 @@ const Paging = ({ currPage, pageChange, totalPages }) => {
             <Stack spacing={2}>
                 <Pagination 
                     variant="outlined" 
-                    size="large" 
+                    // size="" 
                     count={totalPages}
                     onChange={handleChange}
                     page={page}
