@@ -58,3 +58,17 @@ export const updateOutcome = (fightId, outcome) => {
     return data;
 }
 
+//get TopFive teams/players
+export const getTopFive = (season) => {
+    let route = `/fights/topfive${season}`;
+
+    let options = {
+        method: 'GET',
+
+    }
+
+    let data = fetchApi(route, options);
+
+    return data;
+}
+

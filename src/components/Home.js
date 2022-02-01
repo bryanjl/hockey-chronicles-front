@@ -3,8 +3,9 @@ import { useNavigate } from "react-router-dom";
 import PlayerSearch from "./pages/home/PlayerSearch";
 import FightSearch from "./pages/home/FightSearch";
 import FeaturedFight from "./pages/home/FeaturedFight";
-import FightLeader from "./pages/home/FightLeader";
+// import FightLeader from "./pages/home/FightLeader";
 import FightStats from "./pages/home/FightStats";
+import TopFive from "./pages/home/TopFive";
 
 const Home = () => {
     const navigate = useNavigate();
@@ -29,11 +30,12 @@ const Home = () => {
                 <FightSearch handleClick={handleFightSearch} />
             </Grid>
             <Grid item xs={12}>
-                <FeaturedFight />
+                <TopFive />
             </Grid>
             <Grid item xs={12}>
-                <FightLeader />
+                <FeaturedFight />
             </Grid>
+            
             <Grid item xs={12}>
                 <FightStats />
             </Grid>
