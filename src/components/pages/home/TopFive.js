@@ -69,7 +69,7 @@ const TopFive = () => {
 
   return (
       <Paper className={classes.container}>
-          <Typography variant="h5">Top 5</Typography>
+          <Typography variant="h5">Fight Leaders</Typography>
           <Tabs className={classes.tabs} value={currTab} onChange={handleTabChange}>
               <Tab label='Players' />
               <Tab label='Teams' />

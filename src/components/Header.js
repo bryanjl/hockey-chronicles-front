@@ -152,6 +152,7 @@ const Header = ({ handleSearch }) => {
                     aria-haspopup="true"
                     aria-expanded={openMainMenu ? 'true' : undefined}
                     onClick={handleMainMenuClick} 
+
                 />
                 <Menu
                     id="main-menu"
