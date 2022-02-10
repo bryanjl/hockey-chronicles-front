@@ -12,8 +12,7 @@ import { useParams } from 'react-router-dom';
 
 //api
 import {
-    getFight,
-    updateOutcome
+    getFight
 } from '../../api/fights/fightApi';
 
 const useStyles = makeStyles((theme) => ({
@@ -39,57 +38,60 @@ const useStyles = makeStyles((theme) => ({
 const FightCard = () => {
     const classes = useStyles();
 
-    const [fight, setFight] = useState({data: {}, isFetching: true});   
+    const [fight, setFight] = useState({});   
+
+    const [isFetching, setIsFetching] = useState(true);
     
     let { fightID } = useParams();
 
     useEffect(() => {
-        setFight({data: {}, isFetching: true })
+        setIsFetching(true);
         getFight(fightID).then(data => {
             console.log(data);
-            setFight({data: data.data, isFetching: false});
+            setFight(data.data);
+            setIsFetching(false);
         });
         //eslint-disable-next-line   
     }, []);
 
-    const voteUpdate = async() => {
-        await updateOutcome(fight.data._id, {outcome: fight.data.outcome});
-        // console.log('updated vote to API')
-    }
+    // const voteUpdate = async() => {
+    //     await updateOutcome(fight._id, {outcome: fight.outcome});
+    //     // console.log('updated vote to API')
+    // }
 
     return (
-            !fight.isFetching && 
+            !isFetching && 
                 <Grid container className={classes.container}>
             
                 <Grid item xs={12} className={classes.item}>  
-                    <DateDisplay date={new Date(fight.data.date.split('T')[0]).toDateString()} season={fight.data.season.season} />
+                    <DateDisplay date={new Date(fight.date.split('T')[0]).toDateString()} season={fight.season.season} />
                 </Grid>
                 <Grid item sm={12} className={classes.item}>  
-                    <TeamCard fight={fight.data} />
+                    <TeamCard fight={fight} />
                 </Grid>
                 <Grid item xs={6} className={classes.item}>  
-                    <PlayerCard player={fight.data.players[1]} />
+                    <PlayerCard player={fight.players[1]} />
                 </Grid>
                 
                 <Grid item xs={6} className={classes.item}>
-                    <PlayerCard player={fight.data.players[0]} />
+                    <PlayerCard player={fight.players[0]} />
                 </Grid>
 
                 <Grid item sm={12} className={classes.item}>
-                    <EmbedYouTube videoLink={fight.data.videoLink} />
+                    <EmbedYouTube videoLink={fight.videoLink} />
                 </Grid>
                 
                 <Grid item xs={12} className={`${classes.item} ${classes.chart}`}>  
-                    <Vote fight={fight} setFight={setFight} voteUpdate={voteUpdate} />
+                    <Vote fight={fight} />
                 </Grid>
 
 
                 <Grid item sm={12} className={classes.item}>
-                    <FightDescription description={fight.data.description} />
+                    <FightDescription description={fight.description} />
                 </Grid>
 
                 <Grid item sm={12} className={classes.item}>
-                    <Comments className={classes.comments} model='fights' recordId={fight.data._id} comments={fight.data.comments} />
+                    <Comments className={classes.comments} model='fights' recordId={fight._id} comments={fight.comments} />
                 </Grid>
             </Grid>
     )

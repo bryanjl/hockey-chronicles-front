@@ -42,9 +42,14 @@ const VoteDialog = ({ onClose, open, players, onSubmit }) => {
     }
 
     const submitVote = () => {
+        let voteObj = {
+            outcome: value,
+            wonBy: wonBy,
+            actionRating: actionRating
+        }
         // console.log(value)
-        // onSubmit(value);
-        console.log(value, wonBy, actionRating)
+        onSubmit(voteObj);;
+        // console.log(value, wonBy, actionRating)
         onClose();
     }
 
@@ -84,7 +89,7 @@ const VoteDialog = ({ onClose, open, players, onSubmit }) => {
                                 <FormLabel component="legend">Choose the winner:</FormLabel>
                                 <RadioGroup
                                     aria-label="vote"
-                                    defaultValue="draw"
+                                    // defaultValue="draw"
                                     name="radio-buttons-group"
                                     onChange={handleChange}
                                     className={classes.radioGroup}
@@ -118,9 +123,9 @@ const VoteDialog = ({ onClose, open, players, onSubmit }) => {
                                     onChange={handleWonByChange}
                                     className={classes.radioGroup}
                                 >
-                                    <FormControlLabel value='KO' control={<Radio />} label={`Knockout`} />
-                                    <FormControlLabel value="KD" control={<Radio />} label="Knockdown" />
-                                    <FormControlLabel value='Fall' control={<Radio />} label={`Fall`} />
+                                    <FormControlLabel value='knockout' control={<Radio />} label={`Knockout`} />
+                                    <FormControlLabel value="knockdown" control={<Radio />} label="Knockdown" />
+                                    <FormControlLabel value='fall' control={<Radio />} label={`Fall`} />
                                     
                                 </RadioGroup>
                             </FormControl>

@@ -7,7 +7,7 @@ class ActionRatingChart extends Component {
 
       this.state = {
       
-        series: [props.fight.data.actionRating.average * 10],
+        series: [props.actionRating * 10],
         options: {
           chart: {
             type: 'radialBar',
