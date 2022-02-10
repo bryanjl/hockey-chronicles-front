@@ -10,6 +10,7 @@ const TeamTabs = ({ setTab, currTab }) => {
         <Tabs value={currTab} onChange={handleChange}>
             <Tab label="Games" />
             <Tab label="Fights" />
+            <Tab label="Rivals" />
         </Tabs>
     )
 }

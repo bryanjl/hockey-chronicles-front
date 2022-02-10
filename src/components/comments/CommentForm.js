@@ -5,14 +5,15 @@ import { Button, Grid, makeStyles, TextField } from "@material-ui/core";
 const useStyles = makeStyles((theme) => ({
     button: {
         marginRight: '5px',
-        marginTop: '5px'
+        marginTop: '5px',
+        marginBottom: '5px'
     },
     textfield: {
-        width: '95%',
+        minWidth: '95%',
         backgroundColor: 'white',
-        [theme.breakpoints.up('md')]: {
-            width: '100%'
-        }
+        // [theme.breakpoints.up('md')]: {
+        //     width: '100%'
+        // }
     }
 }));
 
@@ -48,6 +49,7 @@ const CommentForm = ({
                         multiline
                         rows={5}
                         placeholder='Write your comment...'
+                        fullWidth
                     />
                 </Grid>
                 <Grid item xs={12}>

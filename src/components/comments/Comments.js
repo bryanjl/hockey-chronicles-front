@@ -1,4 +1,4 @@
-import { Container, makeStyles, Typography } from "@material-ui/core";
+import { Container, Grid, makeStyles, Typography } from "@material-ui/core";
 import { useState, useEffect, useContext } from "react";
 import { UserContext } from "../../contexts/UserContext";
 import {
@@ -15,11 +15,13 @@ import './comments.css';
 
 const useStyles = makeStyles((theme) => ({
     comments: {
+        display: 'flex',
         justifyItems: 'center',
-        width: '75%',
-        [theme.breakpoints.down('md')]:{
-            width: '100%'
-        }        
+        minWidth: '100%',
+        // border: '1px solid black',
+        // [theme.breakpoints.down('md')]:{
+        //     width: '100%'
+        // }        
     },
     commentTitle: {
         marginBottom: '10px'
@@ -100,36 +102,42 @@ const Comments = ({ model, recordId, comments }) => {
     //okay for small/med project
     return (
         <Container className={classes.comments} >
-            <Typography variant='h4' className={classes.commentTitle}> Comments </Typography>
-            
-            {!user && 
-                <>
-                    <Typography>Please login to add a comment</Typography>
-                </>
-            }
+            <Grid container>
+                <Grid item xs={12}>
+                    <Typography variant='h4' className={classes.commentTitle}> Comments </Typography>
+                </Grid>
 
-            {user && 
-                <>
-                    <Typography variant='h5' className={classes.formTitle}>Write comment</Typography>
-                    <CommentForm submitLabel='Write' handleSubmit={addComment}  />
-                </>
-            }
-            
-            <div className='comments-container'>
-                {rootComments.map((rootComment) => (
-                    <Comment 
-                        key={rootComment._id} 
-                        comment={rootComment} 
-                        replies={getReplies(rootComment._id)}
-                        currentUserId={currentUserId}
-                        deleteComment={deleteComment}
-                        activeComment={activeComment}
-                        setActiveComment={setActiveComment}
-                        addComment={addComment}
-                        updateComment={updateComment}
-                    />
-                ))}
-            </div>
+                <Grid item xs={12}>
+                    {!user && 
+                        <>
+                            <Typography>Please login to add a comment</Typography>
+                        </>
+                    }
+
+                    {user && 
+                        <>
+                            <Typography variant='h5' className={classes.formTitle}>Write comment</Typography>
+                            <CommentForm submitLabel='Write' handleSubmit={addComment}  />
+                        </>
+                    }
+                </Grid>
+
+                <Grid item xs={12}>
+                    {rootComments.map((rootComment) => (
+                        <Comment 
+                            key={rootComment._id} 
+                            comment={rootComment} 
+                            replies={getReplies(rootComment._id)}
+                            currentUserId={currentUserId}
+                            deleteComment={deleteComment}
+                            activeComment={activeComment}
+                            setActiveComment={setActiveComment}
+                            addComment={addComment}
+                            updateComment={updateComment}
+                        />
+                    ))}
+                </Grid>
+            </Grid>
         </Container>
     )
 }

@@ -10,8 +10,8 @@ import { Container, Grid, makeStyles } from '@material-ui/core';
 
 
 const useStyles = makeStyles((theme) => ({
-    container: {
-        width: '75%'
+    cardContainer: {
+        minWidth: '70vw'
     },
     button: {
         textAlign: 'center',
@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
     },
     text: {
         textAlign: 'center',
-        fontSize: [22, '!important']        
+        fontSize: [15, '!important']        
     },
     vsTitle: {
         display: 'flex',
@@ -28,6 +28,9 @@ const useStyles = makeStyles((theme) => ({
         // border: '1px solid black',
         alignItems: 'center',
         justifyContent: 'center'
+    },
+    teamImg: {
+        maxHeight: '80px'
     }
 }));
 
@@ -38,53 +41,25 @@ export default function TeamCard({ fight }) {
     let teams = fight.teams;
 
     const card = (
-        <React.Fragment>
-        <CardContent>
-            <Grid container>
-                <Grid item sm={5}>
-                    <Grid item sm={12}> 
-                        <Typography className={classes.text}>
-                            {teams[0].city}
-                        </Typography>
+        <>
+            <CardContent>
+                <Grid container className={classes.cardContainer}>
+                    <Grid item xs={4}>
+                        <img className={classes.teamImg} src={`/images/teams/${teams[0].city}${teams[0].name}.png`} alt={`${teams.city}`} />
                     </Grid>
-                    <Grid item sm={12}> 
-                        <Typography className={classes.text}>
-                            {teams[0].name}
-                        </Typography>
-                    </Grid>                    
-                </Grid>
-                <Grid item sm={2}>
-                    <Typography className={classes.vsTitle}>VS</Typography>
-                </Grid>
-                <Grid item sm={5}>
-                    <Grid item sm={12}> 
-                        <Typography className={classes.text}>
-                            {teams[1].city}
-                        </Typography>
+                    <Grid item xs={4}>
+                        <Typography className={classes.vsTitle}>VS</Typography>    
                     </Grid>
-                    <Grid item sm={12}> 
-                        <Typography className={classes.text}>
-                            {teams[1].name}
-                        </Typography>
-                    </Grid> 
+                    <Grid item xs={4}>
+                        <img className={classes.teamImg} src={`/images/teams/${teams[1].city}${teams[1].name}.png`} alt={`${teams.city}`} />
+                    </Grid>
                 </Grid>
-                <Grid item sm={12}>
-                    <Typography className={classes.text}>
-                        {fight.gameType} Game
-                    </Typography>
-                </Grid>
-                <Grid item sm={12}>
-                    <Typography className={classes.text}>
-                        {(fight.fightType !== 'Fight') && fight.fightType}
-                    </Typography>
-                </Grid>
-            </Grid>
-            
-        </CardContent>
-        <CardActions>
-            <Button className={classes.button} onClick={() => alert('hello')} size="small">View Game Details</Button>
-        </CardActions>
-        </React.Fragment>
+            </CardContent>
+
+            <CardActions>
+                <Button className={classes.button} onClick={() => alert('hello')} size="small">View Game Details</Button>
+            </CardActions>
+        </>
     );
 
 

@@ -32,7 +32,7 @@ const EmbedYouTube = ({ videoLink = '' }) => {
     if(videoLink === ''){
         return (
             <Container className={classes.noVideoContainer}>
-                <img className={classes.noVideoImg} src='./no-video-available.jpg' alt='No Video' />
+                <img className={classes.noVideoImg} src='/no-video-available.jpg' alt='No Video' />
             </Container>
         )
     }

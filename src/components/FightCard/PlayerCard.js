@@ -79,12 +79,12 @@ export default function OutlinedCard(props) {
         <React.Fragment>
           <CardContent>
             <Grid container> 
-              <Grid item sm={12}>
+              <Grid item xs={12}>
                 <Typography className={classes.name}>
                   {props.player.firstName}
                 </Typography>
               </Grid>
-              <Grid item sm={12}>
+              <Grid item xs={12}>
                 <Typography className={classes.name}>
                   {props.player.lastName}
                 </Typography>
@@ -116,7 +116,10 @@ export default function OutlinedCard(props) {
             
           </CardContent>
           <CardActions>
-            <Button onClick={getPlayer} size="small">View Player Profile</Button>
+            <Grid item xs={12}>
+              <Button onClick={getPlayer} size="small">View Player Profile</Button>
+            </Grid>
+            
           </CardActions>
         </React.Fragment>
       );

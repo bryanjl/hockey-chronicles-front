@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
     container: {
         display: 'flex',
         justifyContent: 'center',
-        backgroundColor: 'red'
+        // backgroundColor: 'red'
     },
     item: {
         display: 'flex',
@@ -61,27 +61,33 @@ const FightCard = () => {
             !fight.isFetching && 
                 <Grid container className={classes.container}>
             
-                <Grid item sm={12} className={classes.item}>  
+                <Grid item xs={12} className={classes.item}>  
                     <DateDisplay date={new Date(fight.data.date.split('T')[0]).toDateString()} season={fight.data.season.season} />
                 </Grid>
                 <Grid item sm={12} className={classes.item}>  
                     <TeamCard fight={fight.data} />
                 </Grid>
-                <Grid item sm={4} className={classes.item}>  
+                <Grid item xs={6} className={classes.item}>  
                     <PlayerCard player={fight.data.players[1]} />
                 </Grid>
-                <Grid item sm={4} className={`${classes.item} ${classes.chart}`}>  
-                    <Vote fight={fight} setFight={setFight} voteUpdate={voteUpdate} />
-                </Grid>
-                <Grid item sm={4} className={classes.item}>
+                
+                <Grid item xs={6} className={classes.item}>
                     <PlayerCard player={fight.data.players[0]} />
                 </Grid>
+
                 <Grid item sm={12} className={classes.item}>
                     <EmbedYouTube videoLink={fight.data.videoLink} />
                 </Grid>
+                
+                <Grid item xs={12} className={`${classes.item} ${classes.chart}`}>  
+                    <Vote fight={fight} setFight={setFight} voteUpdate={voteUpdate} />
+                </Grid>
+
+
                 <Grid item sm={12} className={classes.item}>
                     <FightDescription description={fight.data.description} />
                 </Grid>
+
                 <Grid item sm={12} className={classes.item}>
                     <Comments className={classes.comments} model='fights' recordId={fight.data._id} comments={fight.data.comments} />
                 </Grid>

@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
     container: {
         paddingTop: theme.spacing(10),
         justifyContent: 'center',
-        backgroundColor: theme.palette.secondary.dark,
+        // backgroundColor: theme.palette.secondary.dark,
         minHeight: '100vh'
     }
 }));

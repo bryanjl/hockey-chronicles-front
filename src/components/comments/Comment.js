@@ -3,7 +3,7 @@ import CommentForm from "./CommentForm";
 
 const useStyles = makeStyles((theme) => ({
     commentPaper: {
-        width: '95%',
+        width: '100%',
         padding: '10px',
         // marginTop: '5px',
         [theme.breakpoints.up('md')]: {
