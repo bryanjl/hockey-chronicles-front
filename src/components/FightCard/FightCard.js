@@ -14,6 +14,7 @@ import { useParams } from 'react-router-dom';
 import {
     getFight
 } from '../../api/fights/fightApi';
+import { Typography } from '@mui/material';
 
 const useStyles = makeStyles((theme) => ({
     container: {
@@ -67,7 +68,7 @@ const FightCard = () => {
                     <DateDisplay date={new Date(fight.date.split('T')[0]).toDateString()} season={fight.season.season} />
                 </Grid>
                 <Grid item sm={12} className={classes.item}>  
-                    <TeamCard fight={fight} />
+                    <TeamCard fight={fight} showGameLink={true} />
                 </Grid>
                 <Grid item xs={6} className={classes.item}>  
                     <PlayerCard player={fight.players[1]} />
@@ -75,6 +76,10 @@ const FightCard = () => {
                 
                 <Grid item xs={6} className={classes.item}>
                     <PlayerCard player={fight.players[0]} />
+                </Grid>
+
+                <Grid item xs={12} align='center'>
+                    <Typography>{fight.fightType} at {fight.time ? fight.time : 'Time in Game'}</Typography>
                 </Grid>
 
                 <Grid item sm={12} className={classes.item}>

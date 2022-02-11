@@ -24,7 +24,8 @@ const useStyles = makeStyles((theme) => ({
         // }        
     },
     commentTitle: {
-        marginBottom: '10px'
+        marginBottom: '10px',
+        marginTop: '15px'
     },
     formTitle: {
         marginBottom: '5px'

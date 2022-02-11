@@ -1,9 +1,7 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
-import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { makeStyles } from '@material-ui/core';
 import { Grid } from '@mui/material';
@@ -115,12 +113,12 @@ export default function OutlinedCard(props) {
 
             
           </CardContent>
-          <CardActions>
+          {/* <CardActions>
             <Grid item xs={12}>
               <Button onClick={getPlayer} size="small">View Player Profile</Button>
             </Grid>
             
-          </CardActions>
+          </CardActions> */}
         </React.Fragment>
       );
 
@@ -128,7 +126,7 @@ export default function OutlinedCard(props) {
 
   return (
     <Box className={classes.cardContainer}>
-      <Card variant="elevation" className={classes.card}>{card}</Card>
+      <Card onClick={getPlayer} variant="elevation" className={classes.card}>{card}</Card>
     </Box>
     
   );
