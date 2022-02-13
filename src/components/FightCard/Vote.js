@@ -43,7 +43,7 @@ const Vote = ({ fight }) => {
 
     
     useEffect(() => {
-        console.log('here');
+        // console.log('here');
         setAction(fight.actionRating);
 
         setOutcome(fight.outcome);
@@ -83,6 +83,7 @@ const Vote = ({ fight }) => {
 
         //set new outcome and update state
         let newOutcome = {...outcome};
+        delete newOutcome.winner;
         newOutcome[valuesObj.outcome] = outcome[valuesObj.outcome] + 1;
 
         setOutcome(newOutcome);
@@ -102,7 +103,7 @@ const Vote = ({ fight }) => {
             winBy: newWinBy
         };
 
-        // console.log(requestBody);
+        console.log(requestBody);
 
         await updateOutcomeAPI(fight._id, requestBody);
         // console.log(response);

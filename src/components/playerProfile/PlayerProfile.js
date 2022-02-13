@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import PlayerTabs from "./PlayerTabs";
 // import GameEvent from "../gameProfile/GameEvent";
 import WinLossDrawChart from "../charts/WinLossDrawChart";
@@ -7,9 +7,11 @@ import {
     getPlayer as getPlayerAPI 
 } from "../../api/players/playersApi";
 import { Grid, makeStyles, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@material-ui/core";
+import Row from "./Row";
 
 //utils
 import { checkIfInitialOutcome, checkIfDrawOutcome, checkOutcomeWinner } from "../../utils/checkFightOutcome";
+
 
 const useStyles = makeStyles((theme) => ({
     headshotImg: {
@@ -18,6 +20,9 @@ const useStyles = makeStyles((theme) => ({
     },
     paperContainer: {
         padding: '15px'
+    },
+    tableContainer: {
+        overflow: 'auto'
     }
 }));
 
@@ -29,30 +34,41 @@ const PlayerProfile = () => {
     //state for player data
     const [player, setPlayer] = useState({});
 
+    //fights organized by season [[1994-1995], [1995-1996], [etc]]
+    const [sortedFights, setSortedFights] = useState([]);
+
     //state for current tab
     const [selectedTab, setSelectedTab] = useState(0);
 
     //state for isfetchng from API
-    const [isFetching, setIsFetching] = useState(true); 
+    const [isFetching, setIsFetching] = useState(true);
+    
+    //state for player rivals
+    const [playerRivals, setPlayerRivals] = useState([]);
 
     useEffect(() => {
         setIsFetching(true);
         getPlayerAPI(playerID).then(data => {
-            console.log(data);
+            // console.log(data);
             data.data.fights.sort((a, b) => {
                 return new Date(a.date) - new Date(b.date)
             });
-            console.log(checkIfInitialOutcome(data.data.fights[0].outcome))
+            // console.log(checkIfInitialOutcome(data.data.fights[0].outcome))
             // console.log(data.data.fights);
             setPlayer(data.data);
-            setIsFetching(false);
+            getRivals(data.data.fights);
+            sortFights(data.data.fights);
+            setIsFetching(false);    
         });
-    }, [playerID]);
+        
+        //eslint-disable-next-line
+    }, []);
 
     const setTab = (value) => {
         setSelectedTab(value);
     }
 
+    //check to see if player had won lost, drawed or if there is no votes for outcome chart
     const outcomeValue = (outcomeObj, playerId) => {
         if(checkIfInitialOutcome(outcomeObj)){
             return '';
@@ -64,6 +80,85 @@ const PlayerProfile = () => {
             }         
             return 'Loss';
         }
+    }
+
+    //organize fights into seasons
+    const sortFights = (allFights) => {        
+        //organize fights into seasons by array [[1994-1995], [1995-1996], [etc]]
+        //must be a sorted array
+        let fightArr = [];
+        let currSeason = allFights[0].season.season;
+        let seasonArr = [];
+        let actionAccum = {
+            average: 0,
+            votes: 0
+        }
+        allFights.forEach(fight => {
+            if (fight.season.season === currSeason) {
+                seasonArr.push(fight);
+                if(fight.actionRating.average !== 0){
+                    // console.log(fight.actionRating.average, typeof fight.actionRating.average)
+                    actionAccum.average += Number.parseFloat(fight.actionRating.average, 10);
+                    actionAccum.votes += 1;
+                }
+            } else {
+                // console.log(actionAccum);
+                let action = 0;
+                if(actionAccum.average !== 0){
+                    action = (actionAccum.average / actionAccum.votes)
+                }
+                // console.log(action);
+                seasonArr.push(action);
+                fightArr.push(seasonArr);
+                seasonArr = [];
+                actionAccum = {
+                    average: 0,
+                    votes: 0
+                }       
+                currSeason = fight.season.season;
+                seasonArr.push(fight);
+            }
+        });
+        let action = 0;
+        if(actionAccum.average !== 0){
+            action = (actionAccum.average / actionAccum.votes)
+        }
+        seasonArr.push(action);
+        fightArr.push(seasonArr);
+        // console.log(fightArr);
+        setSortedFights(fightArr);
+    }
+
+
+    //this could be a custom hook
+    const getRivals = (allFights) => {
+        let unsortedRivals = {};
+        allFights.forEach(fight => {
+            if(fight.players[0].lastName !== player.lastName){
+                // console.log('here');
+                if(!unsortedRivals[`${fight.players[0].firstName} ${fight.players[0].lastName}`]){
+                    unsortedRivals[`${fight.players[0].firstName} ${fight.players[0].lastName}`] = 1;    
+                } else {
+                    unsortedRivals[`${fight.players[0].firstName} ${fight.players[0].lastName}`] += 1;
+                }
+                
+            } else {
+                if(!unsortedRivals[`${fight.players[1].firstName} ${fight.players[1].lastName}`]){
+                    unsortedRivals[`${fight.players[1].firstName} ${fight.players[1].lastName}`] = 1;    
+                } else {
+                    unsortedRivals[`${fight.players[1].firstName} ${fight.players[1].lastName}`] += 1;
+                }
+            }
+        });
+        let sortedRivals = [];
+        for(let item in unsortedRivals) {
+            sortedRivals.push([item, unsortedRivals[item]]);
+        }
+        sortedRivals.sort((a, b) => {
+            return b[1] - a[1];
+        });
+        // console.log(sortedRivals);
+        setPlayerRivals(sortedRivals);
     }
 
     return (
@@ -101,45 +196,54 @@ const PlayerProfile = () => {
 
                 <PlayerTabs setTab={setTab} currTab={selectedTab} />
 
-                
-                <TableContainer sx={{maxHeight: 440, overflow: 'hidden'}} component={Paper}>
-                    <Table stickyHeader aria-label="simple table">
-                        <TableHead>
-                        <TableRow>
-                            <TableCell>Date</TableCell>
-                            <TableCell align="right">League</TableCell>
-                            <TableCell align="right">Game</TableCell>
-                            <TableCell align="right">Opponent</TableCell>
-                            <TableCell align="right">Outcome</TableCell>
-                            <TableCell align="right">Action</TableCell>
-                            <TableCell align="right"></TableCell>
-                        </TableRow>
-                        </TableHead>
-                        <TableBody>
-                        {selectedTab === 0 && 
-                            player.fights.map((fight) => (
-                            <TableRow
-                                key={fight._id}
-                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                            >
-                                <TableCell component="th" scope="row">
-                                    {new Date(fight.date.split('T')[0]).toLocaleString().split(',')[0]}
-                                </TableCell>
-                                <TableCell align="right"><Link to={`/leagues/${fight.league.id}`}>{fight.league.league}</Link></TableCell>
-                                <TableCell align="right"><Link to={`/games/${fight.game}`} >{fight.teams[0].city}-{fight.teams[1].city}</Link></TableCell>
-                                <TableCell align="right">{player.lastName === fight.players[0].lastName ? <Link to={`/players/${fight.players[1].id}`} >{`${fight.players[1].firstName} ${fight.players[1].lastName}`}</Link> : <Link to={fight.players[0].id}>{`${fight.players[0].firstName} ${fight.players[0].lastName}`}</Link>}</TableCell>
-                                <TableCell align="right">
-                                    {
-                                        outcomeValue(fight.outcome, player._id)
-                                    }
-                                </TableCell>
-                                <TableCell align="right">{fight.actionRating.average === 0 ? `` : fight.actionRating.average}</TableCell>
-                                <TableCell align="right"><Link to={`/fights/${fight._id}`} >View Fight</Link></TableCell>
+                {selectedTab === 0 &&
+                    <TableContainer className={classes.tableContainer} component={Paper}>
+                        <Table aria-label="collapsible table">
+                            <TableHead>
+                            <TableRow>
+                                <TableCell />
+                                <TableCell align='left'>Season</TableCell>
+                                <TableCell align="right">Overall  Action</TableCell>
+                                
                             </TableRow>
-                        ))}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
+                            </TableHead>
+                            <TableBody>
+                            {sortedFights.map((fight) => (
+                                
+                                <Row key={fight._id} row={fight} player={player} outcomeValue={outcomeValue} />
+                            ))}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                }
+
+                {selectedTab === 2 && 
+                    <TableContainer sx={{maxHeight: 440, overflow: 'hidden'}} component={Paper}>
+                        <Table stickyHeader aria-label="simple table">
+                            <TableHead>
+                            <TableRow>
+                                <TableCell>Player</TableCell>
+                                <TableCell align="right">Fights</TableCell>
+                            </TableRow>
+                            </TableHead>
+                            <TableBody>
+                            { 
+                                playerRivals.map((rival) => (
+                                <TableRow
+                                    key={rival[0]}
+                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                >
+                                    <TableCell component="th" scope="row">
+                                        {rival[0]}
+                                    </TableCell>
+                                    <TableCell align="right">{rival[1]}</TableCell>
+                                </TableRow>
+                            ))}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                }
+                
                 </>
             }            
         </>

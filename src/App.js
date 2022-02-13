@@ -2,23 +2,30 @@ import { Grid } from '@material-ui/core';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { UserContext } from './contexts/UserContext';
 import { getUserDetails as getUserDetailsAPI} from './api/auth/authApi';
-
+import { makeStyles } from "@material-ui/core";
 import Header from "./components/Header";
-// import LeftBar from './components/LeftBar';
+import LeftBar from './components/LeftBar';
 import Feed from './components/Feed';
-// import RightBar from './components/RightBar';
+import RightBar from './components/RightBar';
 // import FightCard from "./components/FightCard/FightCard";
 import { useEffect, useState } from 'react';
 
-// const useStyles = makeStyles((theme) =>({
-//   rightBar: {
-//     [theme.breakpoints.down('sm')]: {
-//       display: 'none'
-//     }
-//   }
-// }));
+const useStyles = makeStyles((theme) =>({
+  rightBar: {
+    [theme.breakpoints.down('md')]: {
+      display: 'none'
+    }
+  },
+  leftBar: {
+    [theme.breakpoints.down('md')]: {
+      display: 'none'
+    }
+  }
+}));
 
 function App() {
+  const classes = useStyles();
+
   const [searchValue, setSearchValue] = useState('');
 
   const [user, setUser] = useState(null);
@@ -42,15 +49,15 @@ function App() {
         <UserContext.Provider value={{ user, setUser }}>
           <Header handleSearch={handleSearch} />
           <Grid container>
-            {/* <Grid item sm={2} xs={2}>
+            <Grid item md={2} className={classes.leftBar}>
               <LeftBar />
-            </Grid> */}
-            <Grid item sm={12} xs={12}>
+            </Grid>
+            <Grid item md={8} sm={12} xs={12}>
               <Feed searchQuery={searchValue} />
             </Grid>
-            {/* <Grid item sm={3} className={classes.rightBar}>
+            <Grid item md={2} className={classes.rightBar}>
               <RightBar />
-            </Grid> */}
+            </Grid>
           </Grid>
         </UserContext.Provider>
       </div>

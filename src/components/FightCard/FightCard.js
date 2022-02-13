@@ -55,11 +55,6 @@ const FightCard = () => {
         //eslint-disable-next-line   
     }, []);
 
-    // const voteUpdate = async() => {
-    //     await updateOutcome(fight._id, {outcome: fight.outcome});
-    //     // console.log('updated vote to API')
-    // }
-
     return (
             !isFetching && 
                 <Grid container className={classes.container}>

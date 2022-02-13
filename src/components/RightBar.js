@@ -3,7 +3,10 @@ import { Container, makeStyles } from "@material-ui/core"
 
 const useStyles = makeStyles((theme) => ({
     container: {
-        paddingTop: theme.spacing(10)
+        paddingTop: theme.spacing(10),
+        // backgroundColor: 'red',
+        height: '100vh',
+        border: '1px solid #ece7e7'
     }
 }));
 
