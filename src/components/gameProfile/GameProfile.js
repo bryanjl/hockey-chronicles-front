@@ -1,4 +1,4 @@
-import { makeStyles, Paper, Typography } from "@material-ui/core";
+import { Button, makeStyles, Paper, Typography } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom"
 import { 
@@ -9,6 +9,7 @@ import TeamCard from "../FightCard/TeamCard";
 import DateDisplay from "../FightCard/DateDisplay";
 import GameEvent from "./GameEvent";
 import Comments from "../comments/Comments";
+import CreateFightDialog from "../create/createFight/CreateFightDialog";
 
 const useStyles = makeStyles((theme) => ({
     dateSeasonContainer: {
@@ -47,6 +48,17 @@ const GameProfile = () => {
         });
     }, [gameID]);
 
+    //create fight/event dialog state and open/close functions
+    const [openCreateFight, setOpenCreateFight] = useState(false);
+
+    const handleClickOpenCreateFight = () => {
+        setOpenCreateFight(true);
+    };
+
+    const handleCloseCreateFight = () => {
+        setOpenCreateFight(false);
+    };
+
     return ( 
         <>
             {!isFetching &&
@@ -70,6 +82,8 @@ const GameProfile = () => {
                             </Paper>
                         )
                     })}
+                    <Button onClick={handleClickOpenCreateFight} fullWidth variant='contained'>Add Fight/Event</Button>
+                    <CreateFightDialog game={game} open={openCreateFight} handleClose={handleCloseCreateFight} />
                     <Comments className={classes.comments} model='games' recordId={game._id} comments={game.comments} />
                 </>
             }

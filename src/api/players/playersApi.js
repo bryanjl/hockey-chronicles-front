@@ -25,3 +25,16 @@ export const getAllPlayers = async(query = '') => {
 
     return result;
 }
+
+//fuzzy search for players
+export const playerSearch = async(userInput = '') => {
+    let route = `/players/search?lastName=${userInput}`;
+
+    let options = {
+        path: 'GET'
+    }
+
+    let result = await fetchApi(route, options);
+
+    return result;
+}
