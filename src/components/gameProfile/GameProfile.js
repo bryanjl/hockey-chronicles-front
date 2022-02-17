@@ -9,7 +9,9 @@ import TeamCard from "../FightCard/TeamCard";
 import DateDisplay from "../FightCard/DateDisplay";
 import GameEvent from "./GameEvent";
 import Comments from "../comments/Comments";
+//admin tool components
 import CreateFightDialog from "../create/createFight/CreateFightDialog";
+import EditGameDialog from "../adminTools/edit/EditGameDialog";
 
 const useStyles = makeStyles((theme) => ({
     dateSeasonContainer: {
@@ -26,6 +28,9 @@ const useStyles = makeStyles((theme) => ({
     },
     eventContainer: {
         marginBottom: '5px'
+    },
+    adminBtns: {
+        marginTop: '10px'
     }
 }));
 
@@ -52,8 +57,14 @@ const GameProfile = () => {
         });
     }, [gameID]);
 
+    
+
+    //admin tools event handlers and states
+
     //create fight/event dialog state and open/close functions
     const [openCreateFight, setOpenCreateFight] = useState(false);
+    //create fight/event dialog state and open/close functions
+    const [openEditGame, setOpenEditGame] = useState(false);
 
     const handleClickOpenCreateFight = () => {
         setOpenCreateFight(true);
@@ -63,10 +74,19 @@ const GameProfile = () => {
         setOpenCreateFight(false);
     };
 
+    const handleClickOpenEditGame = () => {
+        setOpenEditGame(true);
+    };
+
+    const handleCloseEditGame = () => {
+        setOpenEditGame(false);
+    };
+
     return ( 
         <>
             {!isFetching &&
                 <>
+                    
                     <Paper className={classes.dateSeasonContainer}>
                         <DateDisplay date={new Date(game.date.split('T')[0]).toDateString()} season={game.season.season} />
                     </Paper>
@@ -86,8 +106,11 @@ const GameProfile = () => {
                             </Paper>
                         )
                     })}
-                    <Button onClick={handleClickOpenCreateFight} fullWidth variant='contained'>Add Fight/Event</Button>
+                    <Typography>Administration Tools:</Typography>
+                    <Button className={classes.adminBtns} onClick={handleClickOpenCreateFight} fullWidth variant='contained'>Add Fight/Event</Button>
+                    <Button className={classes.adminBtns} onClick={handleClickOpenEditGame} fullWidth variant="contained">Edit Game</Button>
                     <CreateFightDialog gameFights={fights} setGameFights={setFights} game={game} open={openCreateFight} handleClose={handleCloseCreateFight} />
+                    <EditGameDialog fights={fights} setFights={setFights} game={game} open={openEditGame} handleClose={handleCloseEditGame} />
                     <Comments className={classes.comments} model='games' recordId={game._id} comments={game.comments} />
                 </>
             }

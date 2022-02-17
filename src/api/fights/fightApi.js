@@ -43,6 +43,19 @@ export const createFight = (fightInfo) => {
     return response;
 }
 
+//delete a fight
+export const deleteFight = (fightId) => {
+    let route = `/fights/${fightId}`;
+
+    let options = {
+        method: 'DELETE',
+    }
+
+    let response = fetchApi(route, options);
+
+    return response;
+}
+
 
 //Post a comment to a fight
 export const postComment = (fightId, comment) => {

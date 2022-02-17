@@ -25,3 +25,16 @@ export const getAllTeams = async(query = '') => {
 
     return result;
 }
+
+//fuzzy search for teams
+export const teamsSearch = async(userInput = '') => {
+    let route = `/teams/search?lastName=${userInput}`;
+
+    let options = {
+        path: 'GET'
+    }
+
+    let result = await fetchApi(route, options);
+
+    return result;
+}
