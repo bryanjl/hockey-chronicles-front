@@ -3,9 +3,14 @@ import { LocalizationProvider, TimePicker } from "@mui/lab";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import { useState } from "react";
 
+const GameTimePicker = ({ setFormGameTime }) => {
 
-const GameTimePicker = () => {
   const [gameTime, setGameTime] = useState('');
+
+  const handleChange = (e, v) => {
+    setGameTime(v);
+    setFormGameTime(v);
+  }
 
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -16,9 +21,7 @@ const GameTimePicker = () => {
           mask="__:__"
           label="Time of fight/event"
           value={gameTime}
-          onChange={(newValue) => {
-            setGameTime(newValue);
-          }}
+          onChange={handleChange}
           renderInput={(params) => <TextField {...params} />}
       />
     </LocalizationProvider>

@@ -36,6 +36,8 @@ const GameProfile = () => {
 
     //state for game data
     const [game, setGame] = useState({});
+    //state for fights/events in game
+    const [fights, setFights] = useState([]);
 
     //state for fetching from API
     const [isFetching, setIsFetching] = useState(true);
@@ -44,6 +46,8 @@ const GameProfile = () => {
         setIsFetching(true);
         getGameAPI(gameID).then(data => {
             setGame(data.data);
+            setFights(data.data.fights);
+            console.log(data.data);
             setIsFetching(false);
         });
     }, [gameID]);
@@ -75,7 +79,7 @@ const GameProfile = () => {
 
                     <Typography className={classes.gameDetailsTitle} align='center'>Game Details</Typography>
                     
-                    {game.fights.map(fight => {
+                    {fights.map(fight => {
                         return (
                             <Paper className={classes.eventContainer} key={fight._id}>
                                 <GameEvent key={fight._id} event={fight} />
@@ -83,7 +87,7 @@ const GameProfile = () => {
                         )
                     })}
                     <Button onClick={handleClickOpenCreateFight} fullWidth variant='contained'>Add Fight/Event</Button>
-                    <CreateFightDialog game={game} open={openCreateFight} handleClose={handleCloseCreateFight} />
+                    <CreateFightDialog gameFights={fights} setGameFights={setFights} game={game} open={openCreateFight} handleClose={handleCloseCreateFight} />
                     <Comments className={classes.comments} model='games' recordId={game._id} comments={game.comments} />
                 </>
             }

@@ -26,6 +26,23 @@ export const getAllFights = (query = '') => {
     return data;
 }
 
+//createFight
+export const createFight = (fightInfo) => {
+    let route = `/fights`;
+
+    let options = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(fightInfo)
+    }
+
+    let response = fetchApi(route, options);
+
+    return response;
+}
+
 
 //Post a comment to a fight
 export const postComment = (fightId, comment) => {
