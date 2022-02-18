@@ -5,7 +5,7 @@ import DateAdapter from '@mui/lab/AdapterDateFns';
 import { useState } from 'react';
 import { LocalizationProvider } from '@mui/lab';
 
-function DatePickerDesktop({gameDate}) {
+function DatePickerDesktop({ gameDate, setDate }) {
     let date;
     if(gameDate === ''){
         date = new Date();
@@ -16,6 +16,7 @@ function DatePickerDesktop({gameDate}) {
 
     const handleChange = (newValue) => {
         setValue(newValue);
+        setDate(newValue);
     };
 
     return (

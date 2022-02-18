@@ -39,7 +39,7 @@ function CreateFightDialog({ gameFights, setGameFights, game, open, handleClose 
   const classes = useStyles();
 
   //form states
-  const [fightType, setFightType] = useState('');
+  const [fightType, setFightType] = useState('Fight');
   const [gameTime, setGameTime] = useState('');
   const [player1, setPlayer1] = useState('');
   const [player2, setPlayer2] = useState('');
@@ -70,11 +70,12 @@ function CreateFightDialog({ gameFights, setGameFights, game, open, handleClose 
     console.log(fightInfo);
     submitToApi(fightInfo);
     handleClose();
-    // console.log(fightInfo);
+    console.log(fightInfo);
   }
 
   const submitToApi = (fightInfo) => {
     createFightAPI(fightInfo).then(data => {
+      console.log(data);
       let newFights = [...gameFights, data.data];
       console.log(newFights);
       setGameFights(newFights);

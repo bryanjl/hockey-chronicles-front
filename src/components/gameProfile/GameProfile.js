@@ -52,7 +52,7 @@ const GameProfile = () => {
         getGameAPI(gameID).then(data => {
             setGame(data.data);
             setFights(data.data.fights);
-            console.log(data.data);
+            // console.log(data.data);
             setIsFetching(false);
         });
     }, [gameID]);

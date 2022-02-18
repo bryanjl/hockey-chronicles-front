@@ -4,7 +4,7 @@ import { Autocomplete } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { teamsSearch as teamsSearchAPI } from '../../api/teams/teamsApi';
 
-const TeamSearch = ({ setFormTeam, team }) => {
+const TeamSearch = ({ updateTeam, team }) => {
     //state for player search results
     const [teamResults, setTeamResults] = useState([]);
 
@@ -16,7 +16,8 @@ const TeamSearch = ({ setFormTeam, team }) => {
 
     const handleChange = (event, value) => {
     //   setFormTeam(value);
-    console.log(value);
+    // console.log(value);
+        updateTeam(value, team);
     }
 
     return (    
