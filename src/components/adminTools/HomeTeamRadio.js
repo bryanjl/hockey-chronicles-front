@@ -10,6 +10,9 @@ const HomeTeamRadio = ({ teams, updateHomeTeam }) => {
         updateHomeTeam(e.target.value);
     }
 
+    // let team1 = teams[0];
+    // let team2 = teams[1];
+
   return (
     <FormControl component="fieldset">
     <FormLabel component="legend">Choose Home Team</FormLabel>
@@ -19,8 +22,11 @@ const HomeTeamRadio = ({ teams, updateHomeTeam }) => {
       name="radio-buttons-group"
       onChange={handleChange}
     >
-      <FormControlLabel value={`${teams[0].id}`} control={<Radio />} label={`${teams[0].city} ${teams[0].name}`} />
-      <FormControlLabel value={`${teams[1].id}`} control={<Radio />} label={`${teams[1].city} ${teams[1].name}`} />
+      {teams.map(team => {
+        return <FormControlLabel value={`${teams.id}`} control={<Radio />} label={`${team.city} ${team.name}`} />
+      })}
+      
+      {/* <FormControlLabel value={`${teams[1].id}`} control={<Radio />} label={`${teams[1].city} ${teams[1].name}`} /> */}
       
     </RadioGroup>
   </FormControl>

@@ -12,7 +12,7 @@ const SeasonSelect = ({ seasonSelect, allSeasons = true, currSeason = '' }) => {
     const [isFetching, setIsFetching] = useState(true);
 
     //state for current selected season
-    const [season, setSeason] = useState(currSeason);
+    const [season, setSeason] = useState('');
 
     //get all the available seasons from API
     useEffect(() => {
@@ -20,7 +20,9 @@ const SeasonSelect = ({ seasonSelect, allSeasons = true, currSeason = '' }) => {
         getAllSeasonsAPI().then(data => {
             setSeasons(data.data);
             setIsFetching(false);
+            setSeason(currSeason);
         });
+        //eslint-disable-next-line
     }, []);
 
     const handleChange = (e) => {

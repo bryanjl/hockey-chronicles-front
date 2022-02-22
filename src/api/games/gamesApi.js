@@ -24,3 +24,19 @@ export const getAllGames = async(query) => {
 
     return result;
 }
+
+export const updateGame = async(gameId, gameInfo) => {
+    let route = `/games/${gameId}`;
+
+    let options = {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(gameInfo)
+    }
+
+    let response = await fetchApi(route, options);
+
+    return response;
+}

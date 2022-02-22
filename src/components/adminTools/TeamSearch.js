@@ -7,6 +7,7 @@ import { teamsSearch as teamsSearchAPI } from '../../api/teams/teamsApi';
 const TeamSearch = ({ updateTeam, team }) => {
     //state for player search results
     const [teamResults, setTeamResults] = useState([]);
+    const [prevTeam, setPrevTeam] = useState(team);
 
     useEffect(() => {
         teamsSearchAPI().then((data) => {
@@ -15,9 +16,11 @@ const TeamSearch = ({ updateTeam, team }) => {
     }, []);
 
     const handleChange = (event, value) => {
+      updateTeam(value, prevTeam);  
+      setPrevTeam(value);
     //   setFormTeam(value);
     // console.log(value);
-        updateTeam(value, team);
+        
     }
 
     return (    

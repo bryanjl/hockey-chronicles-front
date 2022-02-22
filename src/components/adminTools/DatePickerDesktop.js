@@ -15,8 +15,9 @@ function DatePickerDesktop({ gameDate, setDate }) {
     const [value, setValue] = useState(date);
 
     const handleChange = (newValue) => {
+        let date = new Date(newValue).toLocaleString('en-US').split(',')[0];
         setValue(newValue);
-        setDate(newValue);
+        setDate(date);
     };
 
     return (
