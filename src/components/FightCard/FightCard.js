@@ -3,12 +3,14 @@ import FightDescription from './FightDescription';
 import DateDisplay from './DateDisplay';
 import TeamCard from './TeamCard';
 import EmbedYouTube from '../EmbedYouTube';
-import { Grid, makeStyles } from '@material-ui/core';
+import { Button, Grid, makeStyles } from '@material-ui/core';
 import Comments from '../comments/Comments';
 // import OutcomeChart from '../charts/OutcomeChart';
 import Vote from './Vote';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+//admin tool components
+import EditFightCardDialog from '../adminTools/edit/EditFightCardDialog';
 
 //api
 import {
@@ -44,6 +46,18 @@ const FightCard = () => {
     const [isFetching, setIsFetching] = useState(true);
     
     let { fightID } = useParams();
+
+    //Administration tools state and functions
+    const [openEditFight, setOpenEditFight] = useState(false);
+
+    const handleEditFightClose = () => {
+        setOpenEditFight(false);
+    }
+
+    const handleEditFightOpen = () => {
+        setOpenEditFight(true);
+    }
+
 
     useEffect(() => {
         setIsFetching(true);
@@ -89,6 +103,11 @@ const FightCard = () => {
                 <Grid item sm={12} className={classes.item}>
                     <FightDescription description={fight.description} />
                 </Grid>
+                
+                <Typography>Administration Tools:</Typography>
+                <Button onClick={handleEditFightOpen} fullWidth variant='contained'>Edit Fight Card</Button>
+
+                <EditFightCardDialog fight={fight} open={openEditFight} handleClose={handleEditFightClose} />
 
                 <Grid item sm={12} className={classes.item}>
                     <Comments className={classes.comments} model='fights' recordId={fight._id} comments={fight.comments} />

@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import TeamRow from "./TeamRow";
+import TeamGameRow from "./TeamGameRow";
 import TeamTabs from "./TeamTabs";
 import { Grid, makeStyles, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@material-ui/core";
 import LeagueDisplay from "../leagueProfile/LeagueDisplay";
-import SeasonSelect from "../seasonProfile/SeasonSelect";
+// import SeasonSelect from "../seasonProfile/SeasonSelect";
 
 //Team API
 import { 
@@ -16,7 +18,10 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
+
+
 const TeamProfile = () => {
+
     //teamId from URL params
     let { teamID } = useParams();
 
@@ -25,12 +30,12 @@ const TeamProfile = () => {
 
     //teamProfile State for team DATA
     const [team, setTeam] = useState({});
-    //state for games in teams
-    const [teamGames, setTeamGames] = useState([]);
-    //state for fights for teams
-    const [teamFights, setTeamFights] = useState([]);
     //state for rivals
     const [teamRivals, setTeamRivals] = useState({});
+    //state fro sorted fights
+    const [sortedFights, setSortedFights] = useState([]);
+    //state for sorted games
+    const [sortedGames, setSortedGames] = useState([]);
 
     //state for tabs
     const [selectedTab, setSelectedTab] = useState(0);
@@ -53,8 +58,10 @@ const TeamProfile = () => {
                 return new Date(a.date) - new Date(b.date)
             });
             setTeam(data.data);
-            setTeamGames(data.data.games);
-            setTeamFights(data.data.fights);
+            
+            sortFights(data.data.fights);
+            sortGames(data.data.games);
+            
             getRivals(data.data.games);
             setIsFetching(false);
         });
@@ -65,23 +72,76 @@ const TeamProfile = () => {
         setSelectedTab(value);
     }
 
-    const getSeason = (seasonValue) => {
-        // console.log(seasonValue);
-        // setSelectedSeason(seasonValue);
-        if(seasonValue === ''){
-            setTeamGames(team.games);
-            setTeamFights(team.fights);
-        } else {
-            let filteredGames = team.games.filter((game) => {
-                return game.season.season === seasonValue;
-            });
-            setTeamGames(filteredGames);
-    
-            let filteredFights = team.fights.filter((fight) => {
-                return fight.season.season === seasonValue;
-            });
-            setTeamFights(filteredFights);
+    const sortFights = (allFights) => {        
+        //organize fights into seasons by array [[1994-1995], [1995-1996], [etc]]
+        //must be a sorted array
+        let fightArr = [];
+        let currSeason = allFights[0].season.season;
+        let seasonArr = [];
+        let actionAccum = {
+            average: 0,
+            votes: 0
         }
+        allFights.forEach(fight => {
+            if (fight.season.season === currSeason) {
+                seasonArr.push(fight);
+                if(fight.actionRating.average !== 0){
+                    // console.log(fight.actionRating.average, typeof fight.actionRating.average)
+                    actionAccum.average += Number.parseFloat(fight.actionRating.average, 10);
+                    actionAccum.votes += 1;
+                }
+            } else {
+                // console.log(actionAccum);
+                let action = 0;
+                if(actionAccum.average !== 0){
+                    action = (actionAccum.average / actionAccum.votes)
+                }
+                // console.log(action);
+                seasonArr.push(action);
+                fightArr.push(seasonArr);
+                seasonArr = [];
+                actionAccum = {
+                    average: 0,
+                    votes: 0
+                }       
+                currSeason = fight.season.season;
+                seasonArr.push(fight);
+            }
+        });
+        let action = 0;
+        if(actionAccum.average !== 0){
+            action = (actionAccum.average / actionAccum.votes)
+        }
+        seasonArr.push(action);
+        fightArr.push(seasonArr);
+        // console.log(fightArr);
+        setSortedFights(fightArr);
+    }
+
+    const sortGames = (allGames) => {        
+        //organize games into seasons by array [[1994-1995], [1995-1996], [etc]]
+        //must be a sorted array
+        let gameArr = [];
+        let currSeason = allGames[0].season.season;
+        let seasonArr = [];
+
+        allGames.forEach(game => {
+            if (game.season.season === currSeason) {
+                seasonArr.push(game);
+
+            } else {
+
+                gameArr.push(seasonArr);
+                seasonArr = [];
+      
+                currSeason = game.season.season;
+                seasonArr.push(game);
+            }
+        });
+
+        gameArr.push(seasonArr);
+  
+        setSortedGames(gameArr);
     }
 
     const getRivals = (allGames) => {
@@ -95,7 +155,7 @@ const TeamProfile = () => {
                     unsortedRivals[`${game.teams[0].city} ${game.teams[0].name}`] += game.fights.length;
                 }
                 
-            } else {
+            } else if(game.teams[1].city !== team.city) {
                 if(!unsortedRivals[`${game.teams[1].city} ${game.teams[1].name}`]){
                     unsortedRivals[`${game.teams[1].city} ${game.teams[1].name}`] = game.fights.length;    
                 } else {
@@ -131,89 +191,58 @@ const TeamProfile = () => {
                 </Grid>
                 
                 <TeamTabs setTab={setTab} currTab={selectedTab} />
-
+{/* 
                 {selectedTab !== 2 && 
                     <SeasonSelect seasonSelect={getSeason} />
-                }
+                } */}
 
+
+                {selectedTab === 0 && 
+                
+                    <TableContainer className={classes.tableContainer} component={Paper}>
+                        <Table aria-label="collapsible table">
+                            <TableHead>
+                            <TableRow>
+                                <TableCell />
+                                <TableCell align='left'>Season</TableCell>
+                                {/* <TableCell align="right">Overall  Action</TableCell> */}
+                                
+                            </TableRow>
+                            </TableHead>
+                            <TableBody>
+                            {sortedGames.map((game) => (
+                                
+                                <TeamGameRow key={game._id} row={game} team={team} />
+                            ))}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                }
 
                 
-                {selectedTab === 0 &&
-                   <TableContainer sx={{maxHeight: 440, overflow: 'hidden'}} component={Paper}>
-                        <Table stickyHeader aria-label="simple table">
+                {selectedTab === 1 &&
+                    <TableContainer className={classes.tableContainer} component={Paper}>
+                        <Table aria-label="collapsible table">
                             <TableHead>
                             <TableRow>
-                                <TableCell>Date</TableCell>
+                                <TableCell />
+                                <TableCell align='left'>Season</TableCell>
+                                {/* <TableCell align="right">Overall  Action</TableCell> */}
                                 
-                    
-                                <TableCell align="right">Opponent</TableCell>
-                                <TableCell align="right">No. of Events</TableCell>
-                                
-                                <TableCell align="right"></TableCell>
                             </TableRow>
                             </TableHead>
                             <TableBody>
+                            {sortedFights.map((fight) => (
                                 
-                                {teamGames.map((game) => (
-                                <TableRow
-                                    key={game._id}
-                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                >
-                                    <TableCell component="th" scope="row">
-                                        {new Date(game.date.split('T')[0]).toLocaleString().split(',')[0]}
-                                    </TableCell>
-                                    <TableCell align="right">{game.teams[0].city === team.city ? <Link to={`/teams/${game.teams[1].id}`} >{`${game.teams[1].city} ${game.teams[1].name}`}</Link> : <Link to={game.teams[0].id}>{`${game.teams[0].city} ${game.teams[0].name}`}</Link>}</TableCell>
-                                    <TableCell align='right'>{game.fights.length}</TableCell>
-                                    
-                                    <TableCell align="right"><Link to={`/games/${game._id}`} >View Game</Link></TableCell>
-                                </TableRow>
+                                <TeamRow key={fight._id} row={fight} />
                             ))}
                             </TableBody>
                         </Table>
                     </TableContainer>
                     
-                }
-                {selectedTab === 1 && 
-
-
-                    <TableContainer sx={{maxHeight: 440, overflow: 'hidden'}} component={Paper}>
-                        <Table stickyHeader aria-label="simple table">
-                            <TableHead>
-                            <TableRow>
-                                <TableCell>Date</TableCell>
-                                <TableCell align="right">Opponents</TableCell>
-                                <TableCell align="right">Outcome</TableCell>
-                                <TableCell align="right">Action</TableCell>
-                                <TableCell align="right"></TableCell>
-                            </TableRow>
-                            </TableHead>
-                            <TableBody>
-                            { 
-                                teamFights.map((fight) => (
-                                <TableRow
-                                    key={fight._id}
-                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                >
-                                    <TableCell component="th" scope="row">
-                                        {new Date(fight.date.split('T')[0]).toLocaleString().split(',')[0]}
-                                    </TableCell>
-                                    <TableCell align="right">{`${fight.players[0].lastName} vs ${fight.players[1].lastName}`}</TableCell>
-                                    <TableCell align="right">
-                                        
-                                    </TableCell>
-                                    <TableCell align="right">{fight.actionRating.average === 0 ? `` : fight.actionRating.average}</TableCell>
-                                    <TableCell align="right"><Link to={`/fights/${fight._id}`} >View Fight</Link></TableCell>
-                                </TableRow>
-                            ))}
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
                 }
 
                 {selectedTab === 2 && 
-                    
-                    
-                    
                     <TableContainer sx={{maxHeight: 440, overflow: 'hidden'}} component={Paper}>
                         <Table stickyHeader aria-label="simple table">
                             <TableHead>
@@ -238,12 +267,9 @@ const TeamProfile = () => {
                             </TableBody>
                         </Table>
                     </TableContainer>
-
-
                 }
             </>
             }
-            
         </>
     )
 }

@@ -4,7 +4,7 @@ import { Autocomplete } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { playerSearch as playersSearchAPI } from '../../api/players/playersApi';
 
-const PlayerSearch = ({ setFormPlayer }) => {
+const PlayerSearch = ({ setFormPlayer, player }) => {
     //state for player search results
     const [playerResults, setPlayerResults] = useState([]);
 
@@ -26,6 +26,7 @@ const PlayerSearch = ({ setFormPlayer }) => {
               id="Player Search"
               disableClearable
               onChange={handleChange}
+              defaultValue={player}
               options={playerResults}
               getOptionLabel={(option) => `${option.firstName} ${option.lastName}`}
               renderOption={(props, option) => {
