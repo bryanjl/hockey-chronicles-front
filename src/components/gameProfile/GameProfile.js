@@ -26,6 +26,10 @@ const useStyles = makeStyles((theme) => ({
         margin: '15px',
         fontSize: '2em'
     },
+    gameDescriptionText: {
+        marginLeft: '15px',
+
+    },
     eventContainer: {
         marginBottom: '5px'
     },
@@ -65,7 +69,11 @@ const GameProfile = () => {
     const [openCreateFight, setOpenCreateFight] = useState(false);
     //create fight/event dialog state and open/close functions
     const [openEditGame, setOpenEditGame] = useState(false);
-
+    
+    //set game state on update
+    const updateGameData = (newGameData) => {
+        setGame(newGameData);
+    }
     const handleClickOpenCreateFight = () => {
         setOpenCreateFight(true);
     };
@@ -91,13 +99,16 @@ const GameProfile = () => {
                         <DateDisplay date={new Date(game.date.split('T')[0]).toDateString()} season={game.season.season} />
                     </Paper>
      
-                    <TeamCard fight={game} showGameLink={false} />
+                    <TeamCard fight={game} showGameLink={false} home={game.homeTeam} />
 
                     {game.description !== "" &&
-                        <Typography>{game.description}</Typography>
+                        <>
+                            <Typography className={classes.gameDetailsTitle}>Game Description</Typography>
+                            <Typography className={classes.gameDescriptionText}>{game.description}</Typography>
+                        </>
                     }
 
-                    <Typography className={classes.gameDetailsTitle} align='center'>Game Details</Typography>
+                    <Typography className={classes.gameDetailsTitle}>Game Details</Typography>
                     
                     {fights.map(fight => {
                         return (
@@ -110,7 +121,7 @@ const GameProfile = () => {
                     <Button className={classes.adminBtns} onClick={handleClickOpenCreateFight} fullWidth variant='contained'>Add Fight/Event</Button>
                     <Button className={classes.adminBtns} onClick={handleClickOpenEditGame} fullWidth variant="contained">Edit Game</Button>
                     <CreateFightDialog gameFights={fights} setGameFights={setFights} game={game} open={openCreateFight} handleClose={handleCloseCreateFight} />
-                    <EditGameDialog fights={fights} setFights={setFights} game={game} open={openEditGame} handleClose={handleCloseEditGame} />
+                    <EditGameDialog updateGameData={updateGameData} fights={fights} setFights={setFights} game={game} open={openEditGame} handleClose={handleCloseEditGame} />
                     <Comments className={classes.comments} model='games' recordId={game._id} comments={game.comments} />
                 </>
             }

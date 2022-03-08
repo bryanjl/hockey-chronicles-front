@@ -67,10 +67,10 @@ function CreateFightDialog({ gameFights, setGameFights, game, open, handleClose 
       fightInfo.players = players;
     }
 
-    console.log(fightInfo);
+    // console.log(fightInfo);
     submitToApi(fightInfo);
-    handleClose();
-    console.log(fightInfo);
+    
+    // console.log(fightInfo);
   }
 
   const submitToApi = (fightInfo) => {
@@ -79,6 +79,7 @@ function CreateFightDialog({ gameFights, setGameFights, game, open, handleClose 
       let newFights = [...gameFights, data.data];
       console.log(newFights);
       setGameFights(newFights);
+      handleClose();
     });
   }
 

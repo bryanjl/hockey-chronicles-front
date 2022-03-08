@@ -4,7 +4,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 //form components
 import DatePickerDesktop from '../DatePickerDesktop';
 import TeamSearch from "../TeamSearch";
-// import HomeTeamRadio from "../HomeTeamRadio";
+import HomeTeamRadio from "../HomeTeamRadio";
 import SeasonSelect from "../../seasonProfile/SeasonSelect";
 import { useState } from "react";
 //APIs
@@ -41,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-const EditGameDialog = ({ fights, setFights, game, open, handleClose }) => {
+const EditGameDialog = ({ updateGameData, fights, setFights, game, open, handleClose }) => {
     // console.log(fights)
     const classes = useStyles();
 
@@ -49,8 +49,10 @@ const EditGameDialog = ({ fights, setFights, game, open, handleClose }) => {
     const [season, setSeason] = useState(game.season.season);
     const [dateOfGame, setDateOfgame] = useState(game.date);
     const [gameTeams, setGameTeams] = useState(game.teams);
+    
     const [typeOfGame, setTypeOfGame] = useState(game.gameType);
     const [gameDescription, setGameDescription] = useState(game.description);
+    const [homeTeam, setHomeTeam] = useState(game.homeTeam);
 
 
     //successful delete state
@@ -64,15 +66,41 @@ const EditGameDialog = ({ fights, setFights, game, open, handleClose }) => {
     const updateGame = () => {
         let gameInfo = {};
 
-        if(season !== game.season.season){
+        if(season.season !== game.season.season){
             gameInfo.season = season;
         }
         if(dateOfGame !== game.date){
             gameInfo.date = dateOfGame;
         }
-        if(gameTeams !== game.teams){
-            gameInfo.teams = gameTeams;
+        
+        let newTeam;
+        let oldTeam;
+        //check if teams have changed
+        gameTeams.forEach(team => {
+            if(team.id !== game.teams[0].id && team.id !== game.teams[1].id){
+                newTeam = team;
+                if(homeTeam === team.id){
+                    newTeam.home = true;
+                }
+            }
+        });
+        game.teams.forEach(team => {
+            if(team.id !== gameTeams[0].id && team.id !== gameTeams[1].id){
+                oldTeam = team;
+            }
+        });
+        if(newTeam && oldTeam) {
+            gameInfo.teams = {
+                newTeam,
+                oldTeam
+            }
         }
+        //set homeTeam
+        if(homeTeam !== game.homeTeam){
+            gameInfo.homeTeam = homeTeam;
+        }
+        
+        
         if(typeOfGame !== game.gameType){
             gameInfo.gameType = typeOfGame;
         }
@@ -91,7 +119,7 @@ const EditGameDialog = ({ fights, setFights, game, open, handleClose }) => {
                 setGameTeams(response.data.teams);
                 setTypeOfGame(response.data.gameType);
                 setGameDescription(response.data.description);
-
+                updateGameData(response.data);
                 setTimeout(() => {
                     setUpdateSuccessful(false);
                     handleClose();
@@ -107,6 +135,7 @@ const EditGameDialog = ({ fights, setFights, game, open, handleClose }) => {
     }
 
     const updateTeams = (newTeam, oldTeam) => {
+        
         console.log(newTeam, oldTeam)
         let teams = [...gameTeams];
         let newTeams = teams.filter(team => 
@@ -120,18 +149,19 @@ const EditGameDialog = ({ fights, setFights, game, open, handleClose }) => {
         setGameTeams(newTeams);
     }
 
-    // const updateHomeTeam = (teamId) => {
-    //     // console.log(teamId);
-    //     let teams = [...gameTeams];
-    //     if(teams[0].id === teamId){
-    //         teams[0].home = true;
-    //         teams[1].home = false;
-    //     } else {
-    //         teams[1].home = true;
-    //         teams[0].home = false;
-    //     }
-    //     setGameTeams(teams);
-    // }
+    const updateHomeTeam = (teamId) => {
+        // console.log(teamId);
+        let teams = [...gameTeams];
+        if(teams[0].id === teamId){
+            teams[0].home = true;
+            teams[1].home = false;
+        } else {
+            teams[1].home = true;
+            teams[0].home = false;
+        }
+        setHomeTeam(teamId);
+        // console.log(teams);
+    }
 
     const handleGameTypeChange = (e) => {
         setTypeOfGame(e.target.value);
@@ -192,9 +222,9 @@ const EditGameDialog = ({ fights, setFights, game, open, handleClose }) => {
                 <Grid item sm={5} xs={12}>
                     <TeamSearch team={game.teams[1]} updateTeam={updateTeams} />
                 </Grid>
-                {/* <Grid className={classes.homeTeamRadio} align='center' item xs={12}>
-                    <HomeTeamRadio teams={gameTeams} updateHomeTeam={updateHomeTeam} />
-                </Grid> */}
+                <Grid className={classes.homeTeamRadio} align='center' item xs={12}>
+                    <HomeTeamRadio homeTeam={homeTeam} teams={gameTeams} updateHomeTeam={updateHomeTeam} />
+                </Grid>
             
                 <Grid item xs={12}>
                     <TextField 

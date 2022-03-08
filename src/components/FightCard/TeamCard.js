@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-export default function TeamCard({ fight, showGameLink }) {
+export default function TeamCard({ fight, showGameLink, home = '' }) {
     const classes = useStyles();
     const navigate = useNavigate();
 
@@ -43,13 +43,20 @@ export default function TeamCard({ fight, showGameLink }) {
 
     let homeTeam;
     let awayTeam;
-    if(teams[0].home) {
+    if(home === teams[0].id){
         homeTeam = teams[0];
         awayTeam = teams[1];
     } else {
         homeTeam = teams[1];
         awayTeam = teams[0];
     }
+    // if(teams[0].home) {
+    //     homeTeam = teams[0];
+    //     awayTeam = teams[1];
+    // } else {
+    //     homeTeam = teams[1];
+    //     awayTeam = teams[0];
+    // }
 
     const viewGameBtn = () => {
         navigate(`/games/${fight.game}`);
