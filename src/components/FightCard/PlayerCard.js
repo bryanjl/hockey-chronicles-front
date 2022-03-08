@@ -19,7 +19,8 @@ const useStyles = makeStyles((theme) => ({
     },
     card: {
       height: '100%',
-      maxWidth: '275px'
+      maxWidth: '275px',
+      cursor: 'pointer'
     },
     name: {
       display: 'flex',

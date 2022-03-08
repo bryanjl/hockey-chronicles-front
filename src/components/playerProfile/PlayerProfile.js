@@ -217,7 +217,7 @@ const PlayerProfile = () => {
                     </TableContainer>
                 }
 
-                {selectedTab === 2 && 
+                {selectedTab === 1 && 
                     <TableContainer sx={{maxHeight: 440, overflow: 'hidden'}} component={Paper}>
                         <Table stickyHeader aria-label="simple table">
                             <TableHead>

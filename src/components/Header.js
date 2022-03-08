@@ -163,11 +163,11 @@ const Header = ({ handleSearch }) => {
                         'aria-labelledby': 'menu-button',
                     }}
                 >
-                    <MenuItem><Button component={Link} to='/fights'>Fights</Button></MenuItem>
-                    <MenuItem><Button component={Link} to='/teams'>Teams</Button></MenuItem>
-                    <MenuItem><Button component={Link} to='/players'>Players</Button></MenuItem>
-                    <MenuItem><Button component={Link} to='/leagues'>Leagues</Button></MenuItem>
-                    <MenuItem><Button component={Link} to='/seasons'>Seasons</Button></MenuItem>
+                    <MenuItem><Button onClick={handleMainMenuClose} component={Link} to='/teams'>Teams</Button></MenuItem>
+                    <MenuItem><Button onClick={handleMainMenuClose} component={Link} to='/fights'>Fights</Button></MenuItem>
+                    <MenuItem><Button onClick={handleMainMenuClose} component={Link} to='/players'>Players</Button></MenuItem>
+                    <MenuItem><Button onClick={handleMainMenuClose} component={Link} to='/leagues'>Leagues</Button></MenuItem>
+                    <MenuItem><Button onClick={handleMainMenuClose} component={Link} to='/seasons'>Seasons</Button></MenuItem>
                     
                 </Menu>
 

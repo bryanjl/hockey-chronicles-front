@@ -69,7 +69,7 @@ const Teams = () => {
         <Grid container>
             <Grid item sm={12}>
                 <Search handleSearch={teamSearch} />
-                <LeagueSelect leagueSelect={leagueSelect} />
+                {/* <LeagueSelect leagueSelect={leagueSelect} /> */}
             </Grid>
             {!isFetching && 
                 teamResults.map((result) => {

@@ -121,27 +121,30 @@ const TeamProfile = () => {
     const sortGames = (allGames) => {        
         //organize games into seasons by array [[1994-1995], [1995-1996], [etc]]
         //must be a sorted array
-        let gameArr = [];
-        let currSeason = allGames[0].season.season;
-        let seasonArr = [];
+        console.log(allGames);
+        if(allGames.length > 0){
+            let gameArr = [];
+            let currSeason = allGames[0].season.season;
+            let seasonArr = [];
 
-        allGames.forEach(game => {
-            if (game.season.season === currSeason) {
-                seasonArr.push(game);
+            allGames.forEach(game => {
+                if (game.season.season === currSeason) {
+                    seasonArr.push(game);
 
-            } else {
+                } else {
 
-                gameArr.push(seasonArr);
-                seasonArr = [];
-      
-                currSeason = game.season.season;
-                seasonArr.push(game);
-            }
-        });
+                    gameArr.push(seasonArr);
+                    seasonArr = [];
+        
+                    currSeason = game.season.season;
+                    seasonArr.push(game);
+                }
+            });
 
-        gameArr.push(seasonArr);
-  
-        setSortedGames(gameArr);
+            gameArr.push(seasonArr);
+    
+            setSortedGames(gameArr);
+        }
     }
 
     const getRivals = (allGames) => {

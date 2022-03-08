@@ -4,11 +4,14 @@ import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { Container, Grid, makeStyles } from '@material-ui/core';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
+    container: {
+        // maxWidth: '50%'
+    },
     cardContainer: {
-        minWidth: '70vw'
+        // minWidth: '70vw'
     },
     button: {
         textAlign: 'center',
@@ -56,14 +59,20 @@ export default function TeamCard({ fight, showGameLink }) {
         <>
             <CardContent>
                 <Grid container className={classes.cardContainer}>
-                    <Grid item xs={4}>
-                        <img className={classes.teamImg} src={`/images/teams/${awayTeam.city}${awayTeam.name}.png`} alt={`${awayTeam.city}`} />
+                    <Grid align='center' item xs={5}>
+                        <Link to={`/teams/${awayTeam.id}`}>
+                            <img className={classes.teamImg} src={`/images/teams/${awayTeam.city}${awayTeam.name}.png`} alt={`${awayTeam.city}`} />
+                            <Typography>{awayTeam.city} {awayTeam.name}</Typography>
+                        </Link>
                     </Grid>
-                    <Grid item xs={4}>
+                    <Grid align='center' item xs={2}>
                         <Typography className={classes.vsTitle}>At</Typography>    
                     </Grid>
-                    <Grid item xs={4}>
-                        <img className={classes.teamImg} src={`/images/teams/${homeTeam.city}${homeTeam.name}.png`} alt={`${homeTeam.city}`} />
+                    <Grid align='center' item xs={5}>
+                        <Link to={`/teams/${homeTeam.id}`}>
+                            <img className={classes.teamImg} src={`/images/teams/${homeTeam.city}${homeTeam.name}.png`} alt={`${homeTeam.city}`} />
+                            <Typography>{homeTeam.city} {homeTeam.name}</Typography>
+                        </Link>
                     </Grid>
                 </Grid>
             </CardContent>

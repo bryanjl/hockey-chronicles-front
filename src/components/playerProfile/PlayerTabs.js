@@ -8,7 +8,7 @@ const PlayerTabs = ({ setTab, currTab }) => {
     return (
         <Tabs value={currTab} onChange={handleChange}>
             <Tab label="All Fights" />
-            <Tab label="Highest Action" />
+            {/* <Tab label="Highest Action" /> */}
             <Tab label="Rivals" />
             {/* <Tab label="Win by Type" />
             <Tab label="Fights by Season" /> */}

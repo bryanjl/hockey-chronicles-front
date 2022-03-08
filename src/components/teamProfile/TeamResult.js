@@ -1,10 +1,10 @@
 import { Button, Card, CardActions, Grid, makeStyles, Typography } from "@material-ui/core"
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
     cardContainer: {
         width: '100%',
-        height: '150px',
+        // height: '150px',
         marginTop: '15px',
 
     },
@@ -13,13 +13,18 @@ const useStyles = makeStyles((theme) => ({
     },
     gridItem: {
         paddingLeft: '10px',
-        paddingTop: '3px'
+        paddingTop: '3px',
+        
     },
     cardButton: {
         height: '100%',
         display: 'flex',
         alignContent: 'flex-end',
         justifyContent: 'center'
+    },
+    teamImg: {
+        maxHeight: '100px',
+        margin: '10px'
     }
 }));
 
@@ -39,14 +44,19 @@ const TeamResult = ({ team, id }) => {
             variant="elevation"
         >
             <Grid container className={classes.gridContainer}>
-                <Grid item xs={10}>
+                <Grid item xs={5}>
+                    <Link to={`/teams/${id}`}>
+                        <img className={classes.teamImg} src={`/images/teams/${team.city}${team.name}.png`} alt={`${team.fullName}`} />
+                    </Link>
+                </Grid>
+                <Grid item xs={5}>
                     <Grid item sm={2} className={classes.gridItem}>
                         {/* <Typography>{result.teams[0].city} {result.teams[0].name} VS {result.teams[1].city} {result.teams[1].name}</Typography> */}
                     </Grid>
-                    <Grid item sm={5} className={classes.gridItem}>
+                    <Grid align='center' item sm={5} className={classes.gridItem}>
                         <Typography>{team.city}</Typography>
                     </Grid>
-                    <Grid item sm={5} className={classes.gridItem}>
+                    <Grid align='center' item sm={5} className={classes.gridItem}>
                         <Typography>{team.name}</Typography>
                     </Grid>
                 </Grid>
@@ -63,4 +73,4 @@ const TeamResult = ({ team, id }) => {
 
 }
 
-export default TeamResult
+export default TeamResult;
