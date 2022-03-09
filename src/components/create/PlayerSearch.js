@@ -27,6 +27,7 @@ const PlayerSearch = ({ setFormPlayer, player }) => {
               disableClearable
               onChange={handleChange}
               defaultValue={player}
+              isOptionEqualToValue={(option, value) => option._id === value.id || option._id === value._id}
               options={playerResults}
               getOptionLabel={(option) => `${option.firstName} ${option.lastName}`}
               renderOption={(props, option) => {

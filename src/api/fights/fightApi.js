@@ -43,6 +43,23 @@ export const createFight = (fightInfo) => {
     return response;
 }
 
+//updateFight
+export const updateFight = (fightInfo, fightId) => {
+    let route = `/fights/${fightId}`;
+
+    let options = {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(fightInfo)
+    }
+
+    let response = fetchApi(route, options);
+
+    return response;
+}
+
 //delete a fight
 export const deleteFight = (fightId) => {
     let route = `/fights/${fightId}`;

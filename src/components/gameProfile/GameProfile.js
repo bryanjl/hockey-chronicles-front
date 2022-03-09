@@ -54,6 +54,7 @@ const GameProfile = () => {
     useEffect(() => {
         setIsFetching(true);
         getGameAPI(gameID).then(data => {
+            console.log(data)
             setGame(data.data);
             setFights(data.data.fights);
             // console.log(data.data);

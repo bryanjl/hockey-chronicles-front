@@ -88,8 +88,7 @@ function CreateFightDialog({ gameFights, setGameFights, game, open, handleClose 
   }
 
   const handleYoutubeLinkChange = (e) => {
-    setYoutubeLink(e.target.value)
-    
+    setYoutubeLink(e.target.value);
   }
 
   return (

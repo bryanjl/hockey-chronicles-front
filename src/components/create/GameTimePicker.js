@@ -3,12 +3,25 @@ import { LocalizationProvider, TimePicker } from "@mui/lab";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import { useState } from "react";
 
-const GameTimePicker = ({ setFormGameTime }) => {
+// const useStyles = makeStyles((theme) => ({
+//   input: {
+    
+//   },
+//   floatingLabelFocusStyle: {
+//     color: 'blue'
+//   },
+//   root: {
+//     color: 'blue'
+//   }
+// }));
 
+const GameTimePicker = ({ setFormGameTime, currentTime = '' }) => {
+
+  // const classes = useStyles();
   
   
 
-  const [gameTime, setGameTime] = useState('');
+  const [gameTime, setGameTime] = useState(currentTime);
 
   const handleChange = (e, v) => {
     // console.log(v);
@@ -21,6 +34,9 @@ const GameTimePicker = ({ setFormGameTime }) => {
       <TimePicker
           ampm={false}
           views={['minutes', 'seconds']}
+          // inputProps={{ className: classes.root }}
+          // inputLabelProps={{ className: classes.root }}
+          color='success'
           inputFormat="mm:ss"
           mask="__:__"
           label="Time of fight/event"

@@ -77,7 +77,7 @@ const FightCard = () => {
                     <DateDisplay date={new Date(fight.date.split('T')[0]).toDateString()} season={fight.season.season} />
                 </Grid>
                 <Grid item sm={12} className={classes.item}>  
-                    <TeamCard fight={fight} showGameLink={true} />
+                    <TeamCard fight={fight} showGameLink={true} home={fight.game.homeTeam} />
                 </Grid>
                 <Grid item xs={6} className={classes.item}>  
                     <PlayerCard player={fight.players[1]} />

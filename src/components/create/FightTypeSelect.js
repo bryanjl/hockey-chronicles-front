@@ -1,9 +1,9 @@
 import { FormControl, InputLabel, MenuItem, Select } from '@material-ui/core';
 import { useState } from 'react';
 
-const FightTypeSelect = ({ setFormFightType }) => {
+const FightTypeSelect = ({ setFormFightType, currFightType = 'Fight' }) => {
     //state for fight-select
-    const [fightType, setFightType] = useState('Fight');
+    const [fightType, setFightType] = useState(currFightType);
 
     const handleFightSelectChange = (e) => {
         setFightType(e.target.value);
