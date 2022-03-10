@@ -107,7 +107,7 @@ const FightCard = () => {
                 <Typography>Administration Tools:</Typography>
                 <Button onClick={handleEditFightOpen} fullWidth variant='contained'>Edit Fight Card</Button>
 
-                <EditFightCardDialog fight={fight} open={openEditFight} handleClose={handleEditFightClose} />
+                <EditFightCardDialog fight={fight} setFight={setFight} open={openEditFight} handleClose={handleEditFightClose} />
 
                 <Grid item sm={12} className={classes.item}>
                     <Comments className={classes.comments} model='fights' recordId={fight._id} comments={fight.comments} />

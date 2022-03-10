@@ -1,14 +1,13 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, TextField } from "@material-ui/core";
+import { Alert } from "@mui/material";
 import { useState } from "react";
 import PlayerSearch from "../../create/PlayerSearch";
 import GameTimePicker from "../../create/GameTimePicker";
 import FightTypeSelect from "../../create/FightTypeSelect";
 //APIs
 import { updateFight as updateFightAPI } from "../../../api/fights/fightApi";
-// import GameTimePicker from "../../create/GameTimePicker";
 
-
-const EditFightCardDialog = ({ fight, open, handleClose }) => {
+const EditFightCardDialog = ({ fight, setFight, open, handleClose }) => {
     // console.log('rerender', fight);
     //state for form values
     const [player1, setPlayer1] = useState(fight.players[0]);
@@ -17,12 +16,14 @@ const EditFightCardDialog = ({ fight, open, handleClose }) => {
     const [youtubeLink, setYoutubeLink] = useState(fight.videoLink);
     const [gameTime, setGameTime] = useState(fight.time);
     const [fightType, setFightType] = useState(fight.fightType);
+
+    //state for successful/unsuccessful update
+    const [successfulUpdate, setSuccessfulUpdate] = useState(false);
+    const [unsuccessfulUpdate, setUnsuccessfulUpdate] = useState(false);
     
     
     const handleDescriptionChange = (e) => {
-        // console.log(fightDescriptionRef.current);
-        setFightDescription(e.target.value);
-        // console.log(fightDescriptionRef.current);
+        setFightDescription(e.target.value);        
     }
 
     const handleYoutubeLinkChange = (e) => {
@@ -73,12 +74,28 @@ const EditFightCardDialog = ({ fight, open, handleClose }) => {
             fightInfo.fightType = fightType;
         }
         console.log(fightInfo);
-        // updateFightAPI(fightInfo, fight._id).then(data => {
-        //     console.log(data);
-        // });
+        updateFightAPI(fightInfo, fight._id).then(data => {
+            console.log(data);
+            if(data.success){
+                setSuccessfulUpdate(true);
+
+                setFight(data.data);
+
+                setTimeout(() => {
+                    setSuccessfulUpdate(false);
+                    handleClose();
+                }, 2000);
+            }
+
+            if(!data.success) {
+                setUnsuccessfulUpdate(true);
+
+                setTimeout(() => {
+                    setUnsuccessfulUpdate(false);
+                }, 2000);
+            }
+        });
     }
-
-
   return (
     
 
@@ -119,7 +136,6 @@ const EditFightCardDialog = ({ fight, open, handleClose }) => {
 
                 <Grid item xs={12}>
                     <TextField 
-                        // className={classes.youtubeLinkTextField}
                         fullWidth
                         id='video-link' 
                         defaultValue={fight.videoLink}
@@ -128,6 +144,12 @@ const EditFightCardDialog = ({ fight, open, handleClose }) => {
                         variant='outlined' 
                     />
                 </Grid>
+                {successfulUpdate &&
+                    <Alert severity='success'>Fight/Event updated</Alert>
+                }
+                {unsuccessfulUpdate &&
+                    <Alert severity='error'>Fight/Event cannot be updated</Alert>
+                }                
             </Grid>
         </DialogContent>
         <DialogActions>
