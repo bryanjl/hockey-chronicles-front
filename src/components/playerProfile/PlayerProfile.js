@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import PlayerTabs from "./PlayerTabs";
+import EditPlayerDialog from "../adminTools/edit/EditPlayerDialog";
 // import GameEvent from "../gameProfile/GameEvent";
 import WinLossDrawChart from "../charts/WinLossDrawChart";
 import { 
     getPlayer as getPlayerAPI 
 } from "../../api/players/playersApi";
-import { Grid, makeStyles, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@material-ui/core";
+import { Button, Grid, makeStyles, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@material-ui/core";
 import Row from "./Row";
 
 //utils
@@ -49,12 +50,9 @@ const PlayerProfile = () => {
     useEffect(() => {
         setIsFetching(true);
         getPlayerAPI(playerID).then(data => {
-            // console.log(data);
             data.data.fights.sort((a, b) => {
                 return new Date(a.date) - new Date(b.date)
             });
-            // console.log(checkIfInitialOutcome(data.data.fights[0].outcome))
-            // console.log(data.data.fights);
             setPlayer(data.data);
             getRivals(data.data.fights);
             sortFights(data.data.fights);
@@ -161,6 +159,17 @@ const PlayerProfile = () => {
         setPlayerRivals(sortedRivals);
     }
 
+    //administration tools
+    const [openEditPlayer, setOpenEditPlayer] = useState(false);
+
+    const handleEditPlayerOpen = () => {
+        setOpenEditPlayer(true);
+    }
+
+    const handleEditPlayerClose = () => {
+        setOpenEditPlayer(false);
+    }
+
     return (
         <>
             {!isFetching && 
@@ -193,6 +202,9 @@ const PlayerProfile = () => {
                             </Grid>
                         </Grid>
                     </Paper>
+                    <Typography>Administration Tools:</Typography>
+                    <Button onClick={handleEditPlayerOpen} fullWidth variant='contained'>Edit Player Details</Button>
+                    <EditPlayerDialog player={player} setPlayer={setPlayer} open={openEditPlayer} handleClose={handleEditPlayerClose} />
 
                 <PlayerTabs setTab={setTab} currTab={selectedTab} />
 

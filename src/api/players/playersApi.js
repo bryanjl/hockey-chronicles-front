@@ -5,7 +5,7 @@ export const getPlayer = async(playerId) => {
     let route = `/players/${playerId}`;
 
     let options = {
-        path: 'GET'
+        method: 'GET'
     }
 
     let result = await fetchApi(route, options);
@@ -18,7 +18,23 @@ export const getAllPlayers = async(query = '') => {
     let route = `/players?${query}`;
 
     let options = {
-        path: 'GET'
+        method: 'GET'
+    }
+
+    let result = await fetchApi(route, options);
+
+    return result;
+}
+
+export const updatePlayer = async(playerId, playerInfo) => {
+    let route = `/players/${playerId}`;
+
+    let options = {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(playerInfo)
     }
 
     let result = await fetchApi(route, options);
@@ -31,7 +47,7 @@ export const playerSearch = async(userInput = '') => {
     let route = `/players/search?lastName=${userInput}`;
 
     let options = {
-        path: 'GET'
+        method: 'GET'
     }
 
     let result = await fetchApi(route, options);
