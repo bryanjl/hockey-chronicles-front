@@ -5,7 +5,7 @@ export const getGame = async(gameId) => {
     let route = `/games/${gameId}`;
 
     let options = {
-        path: 'GET'
+        method: 'GET'
     }
 
     let result = await fetchApi(route, options);
@@ -17,7 +17,7 @@ export const getAllGames = async(query) => {
     let route = `/games?${query}`;
 
     let options = {
-        path: 'GET'
+        method: 'GET'
     }
 
     let result = await fetchApi(route, options);

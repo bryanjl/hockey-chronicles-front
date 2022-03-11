@@ -24,7 +24,7 @@ const LeagueSelect = ({ leagueSelect }) => {
 
     //handlechange for select
     const handleChange = (e) => {
-        console.log(e.target.value);
+        // console.log(e.target.value);
         setLeague(e.target.value);
         leagueSelect(e.target.value);
     }
