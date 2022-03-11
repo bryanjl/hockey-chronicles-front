@@ -35,12 +35,16 @@ class ActionRatingChart extends Component {
               },
               dataLabels: {
                 name: {
-                  show: true
+                  show: false
                 },
                 value: {
                   offsetY: -2,
                   fontSize: '22px',
-                  show: false
+                  //eslint-disable-next-line
+                  formatter: function(value, {}){
+                    return value/10
+                  },
+                  show: true
                 }
               }
             }

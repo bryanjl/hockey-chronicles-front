@@ -88,7 +88,7 @@ const FightCard = () => {
                 </Grid>
 
                 <Grid item xs={12} align='center'>
-                    <Typography>{fight.fightType} at {fight.time ? fight.time : 'Time in Game'}</Typography>
+                    <Typography variant='h6'>{fight.fightType} at {fight.time ? fight.time : 'Time in Game'}</Typography>
                 </Grid>
 
                 <Grid item sm={12} className={classes.item}>

@@ -19,6 +19,9 @@ const useStyles = makeStyles((theme) => ({
     },
     title: {
         
+    },
+    actionRatingTitle: {
+        padding: '15px'
     }
 }));
 
@@ -125,7 +128,11 @@ const Vote = ({ fight }) => {
             <Grid item xs={12} align='center'>
                 <WinBy winBy={winBy} />
             </Grid>
-
+            <Grid item xs={12} align='center'>
+                <div className={classes.actionRatingtitle}>
+                <Typography className={classes.actionRatingTitle} variant='h5'>Action Rating</Typography>
+                </div>
+            </Grid>
             <Grid item xs={12} align='center'>
                 <ActionRatingChart key={rerenderKey} actionRating={action.average} />
             </Grid>
