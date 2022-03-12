@@ -10,6 +10,7 @@ import LeagueProfile from "./leagueProfile/LeagueProfile";
 import SeasonProfile from "./seasonProfile/SeasonProfile";
 import TeamProfile from "./teamProfile/TeamProfile";
 
+import Admin from "./pages/admin/Admin";
 import Fights from "./pages/Fights";
 import Players from "./pages/Players";
 import Leagues from "./pages/Leagues";
@@ -34,8 +35,12 @@ const Feed = ({ searchQuery }) => {
         <Container className={classes.container}>
             <Routes>
                 <Route path='/' element={<Home />} />
+                
+                <Route path='/admin' element={<Admin />} />
+
                 <Route path='/fights' element={<Fights />} />
                 <Route path='/fights/:fightID' element={<FightCard />} />
+
                 <Route path='/players' element={<Players />} />
                 <Route path='/players/:playerID' element={<PlayerProfile />} />
 
