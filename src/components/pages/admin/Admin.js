@@ -2,6 +2,7 @@ import { makeStyles } from "@material-ui/core";
 import { FormControl, Grid, InputLabel, MenuItem, Select, Typography } from "@mui/material"
 import { Box } from "@mui/system";
 import { useState } from "react";
+import CreateSeason from "../admin/create/CreateSeason";
 
 const useStyles = makeStyles((theme) => ({
     adminTitle: {
@@ -48,6 +49,7 @@ const Admin = () => {
                                     <MenuItem value='game'>Game</MenuItem>
                                     <MenuItem value='player'>Player</MenuItem>
                                     <MenuItem value='team'>Team</MenuItem>
+                                    <MenuItem value='league'>League</MenuItem>
                                 </Select>
                             </FormControl>
                         </Box>
@@ -60,11 +62,9 @@ const Admin = () => {
         </Grid>
 
         {createSelect === 'season' &&
-            <Grid container>
-                <Grid item xs={12}>
-                    <Typography variant='h6'>Create a New Season</Typography>
-                </Grid>
-            </Grid>
+            <>
+                <CreateSeason />
+            </>
         }
 
         {createSelect === 'game' &&
@@ -87,6 +87,13 @@ const Admin = () => {
             <Grid container>
                 <Grid item xs={12}>
                     <Typography variant='h6'>Create a New Team</Typography>
+                </Grid>
+            </Grid>
+        }
+        {createSelect === 'league' &&
+            <Grid container>
+                <Grid item xs={12}>
+                    <Typography variant='h6'>Create a New League</Typography>
                 </Grid>
             </Grid>
         }
