@@ -5,8 +5,9 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { useEffect, useState } from 'react';
 import { getAllLeagues as getAllLeaguesAPI } from '../../api/leagues/leaguesApi';
+import { FormHelperText } from '@material-ui/core';
 
-const LeagueSelect = ({ leagueSelect }) => {
+const LeagueSelect = ({ leagueSelect, formError = false }) => {
     //state for leagues api
     const [leagues, setLeagues] = useState([]);
     const [isFetching, setIsFetching] = useState(true);
@@ -34,6 +35,7 @@ const LeagueSelect = ({ leagueSelect }) => {
         <FormControl fullWidth>
           <InputLabel id="league-select-label">League</InputLabel>
           <Select
+            error={formError}
             labelId="league-select-label"
             id="league-select"
             value={league}
@@ -45,10 +47,8 @@ const LeagueSelect = ({ leagueSelect }) => {
                     return <MenuItem key={result._id} value={result.name}>{result.name}</MenuItem>
                 })
             }
-            {/* <MenuItem value={10}>Ten</MenuItem>
-            <MenuItem value={20}>Twenty</MenuItem>
-            <MenuItem value={30}>Thirty</MenuItem> */}
           </Select>
+          <FormHelperText error={formError}>{formError ? 'Please select a league' : ''}</FormHelperText>
         </FormControl>
       </Box>
     )

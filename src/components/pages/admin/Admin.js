@@ -3,6 +3,10 @@ import { FormControl, Grid, InputLabel, MenuItem, Select, Typography } from "@mu
 import { Box } from "@mui/system";
 import { useState } from "react";
 import CreateSeason from "../admin/create/CreateSeason";
+import CreatePlayer from "./create/CreatePlayer";
+import CreateLeague from "./create/CreateLeague";
+import CreateGame from "./create/CreateGame";
+import CreateTeam from "./create/CreateTeam";
 
 const useStyles = makeStyles((theme) => ({
     adminTitle: {
@@ -68,34 +72,25 @@ const Admin = () => {
         }
 
         {createSelect === 'game' &&
-            <Grid container>
-                <Grid item xs={12}>
-                    <Typography variant='h6'>Create a New Game</Typography>
-                </Grid>
-            </Grid>
+            <>
+                <CreateGame />
+            </>
         }
 
         {createSelect === 'player' &&
-            <Grid container>
-                <Grid item xs={12}>
-                    <Typography variant='h6'>Create a New Player</Typography>
-                </Grid>
-            </Grid>
+            <>
+                <CreatePlayer />
+            </>
         }
 
         {createSelect === 'team' &&
-            <Grid container>
-                <Grid item xs={12}>
-                    <Typography variant='h6'>Create a New Team</Typography>
-                </Grid>
-            </Grid>
+            <CreateTeam />
         }
+        
         {createSelect === 'league' &&
-            <Grid container>
-                <Grid item xs={12}>
-                    <Typography variant='h6'>Create a New League</Typography>
-                </Grid>
-            </Grid>
+            <>
+                <CreateLeague />
+            </>
         }
     </>
   )
