@@ -26,6 +26,35 @@ export const getAllPlayers = async(query = '') => {
     return result;
 }
 
+//create a new player
+export const createPlayer = async(playerInfo) => {
+    let route = `/players`;
+
+    //send in form data
+
+    let fdPlayerInfo = new FormData();
+  
+    fdPlayerInfo.append('firstName', playerInfo.firstName);
+    fdPlayerInfo.append('lastName', playerInfo.lastName);
+    fdPlayerInfo.append('nickname', playerInfo.nickname);
+    fdPlayerInfo.append('yearsActive', playerInfo.yearsActive);
+    fdPlayerInfo.append('position', playerInfo.position);
+    fdPlayerInfo.append('shoots', playerInfo.shoots);
+    fdPlayerInfo.append('weight', playerInfo.weight);
+    fdPlayerInfo.append('height', playerInfo.height);
+    fdPlayerInfo.append('playerImg', playerInfo.playerImg);
+
+    let options = {
+        method: 'POST',
+        
+        body: fdPlayerInfo
+    }
+
+    let response = await fetchApi(route, options);
+
+    return response;
+}
+
 export const updatePlayer = async(playerId, playerInfo) => {
     let route = `/players/${playerId}`;
 

@@ -2,6 +2,8 @@ import { Button, FormControl, Grid, makeStyles, TextField, Typography } from "@m
 import { Alert } from "@mui/material";
 import { useState } from "react";
 import LeagueSelect from "../../../leagueProfile/LeagueSelect";
+//API
+import { createTeam as createTeamAPI } from "../../../../api/teams/teamsApi";
 
 const useStyles = makeStyles((theme) => ({
     formMargin: {
@@ -17,10 +19,16 @@ const CreateTeam = () => {
     const [teamName, setTeamName] = useState('');
     const [teamLeague, setTeamLeague] = useState('');
     const [teamActiveYears, setTeamActiveYears] = useState('');
+    const [teamImageFile, setTeamImageFile] = useState(null);
 
     //success/error state
     const [formError, setFormError] = useState('');
     const [teamCreated, setTeamCreated] = useState(false);
+    const [unsuccessfulTeamCreated, setUnsuccessfulTeamCreated] = useState(false);
+
+    const handleImageFileChange = (e) => {
+        setTeamImageFile(e.target.files[0]);
+    }
 
     const submitTeam = () => {
         setTeamCreated(false);
@@ -32,22 +40,42 @@ const CreateTeam = () => {
         } else if(teamLeague === ''){
             setFormError('teamLeague');
         } else {
-            setTeamCreated(true);
-
+            setFormError('');
+            
             let activeYearsArr = teamActiveYears.split(' ');
-
+            //made into form data in api module
             let teamInfo = {
                 city: teamCity,
                 name: teamName,
                 league: teamLeague,
-                yearsActive: activeYearsArr
+                yearsActive: activeYearsArr,
+                teamImg: teamImageFile
             };
 
-            console.log(teamInfo);
+            createTeamAPI(teamInfo).then(response => {
+                if(response.success){
+                    setTeamCreated(true);
 
-            setTimeout(() => {
-                setTeamCreated(false);
-            }, 2000);
+                    console.log(response);
+
+                    setTeamActiveYears('');
+                    setTeamCity('');
+                    setTeamImageFile(null)
+                    setTeamLeague('');
+                    setTeamName('');
+
+                    setTimeout(() => {
+                        setTeamCreated(false);
+                    }, 2000);
+                }
+                if(!response.success){
+                    setUnsuccessfulTeamCreated(true);
+
+                    setTimeout(() => {
+                        setUnsuccessfulTeamCreated(false);
+                    }, 2000);
+                }
+            });
         }
     }
 
@@ -112,6 +140,7 @@ const CreateTeam = () => {
                     <Typography variant='h6'>Choose an image to upload</Typography>
                     <div className={classes.formMargin}>
                         <input
+                            onChange={handleImageFileChange}
                             accept="image/*"
                             className={classes.input}
                             id="raised-button-file"
@@ -122,6 +151,9 @@ const CreateTeam = () => {
 
                 {teamCreated && 
                     <Alert severity="success">Team Created</Alert>
+                }
+                {unsuccessfulTeamCreated && 
+                    <Alert severity="error">Unable to create team</Alert>
                 }
 
                 <Grid item xs={12}>

@@ -25,6 +25,22 @@ export const getAllGames = async(query) => {
     return result;
 }
 
+export const createGame = async(gameInfo) => {
+    let route = `/games`;
+
+    let options = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(gameInfo)
+    }
+
+    let response = await fetchApi(route, options);
+
+    return response;
+}
+
 export const updateGame = async(gameId, gameInfo) => {
     let route = `/games/${gameId}`;
 

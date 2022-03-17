@@ -4,7 +4,7 @@ import { Autocomplete } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { teamsSearch as teamsSearchAPI } from '../../api/teams/teamsApi';
 
-const TeamSearch = ({ updateTeam, team, inputLabel = 'Search Teams' }) => {
+const TeamSearch = ({ updateTeam, team, inputLabel = 'Search Teams', formError = false }) => {
     //state for player search results
     const [teamResults, setTeamResults] = useState([]);
     const [prevTeam, setPrevTeam] = useState(team);
@@ -44,6 +44,8 @@ const TeamSearch = ({ updateTeam, team, inputLabel = 'Search Teams' }) => {
                 }}
               renderInput={(params) => (
               <TextField
+                error={formError}
+                helperText={formError ? 'Please choose a team' : ''}
                   {...params}
                   label={inputLabel}
                   InputProps={{

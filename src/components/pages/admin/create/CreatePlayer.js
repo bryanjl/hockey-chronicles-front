@@ -1,6 +1,9 @@
 import { Button, FormControl, Grid, InputLabel, makeStyles, MenuItem, Select, TextField, Typography } from "@material-ui/core";
 import { Alert } from "@mui/material";
 import { useState } from "react";
+//api
+import { createPlayer as createPlayerAPI } from "../../../../api/players/playersApi";
+
 
 const useStyles = makeStyles((theme) => ({
     formText: {
@@ -20,10 +23,16 @@ const CreatePlayer = () => {
     const [playerShoots, setPlayerShoots] = useState('');
     const [playerWeight, setPlayerWeight] = useState('');
     const [playerHeight, setPlayerHeight] = useState('');
+    const [playerImageFile, setPlayerImageFile] = useState(null);
 
     //success/error state
     const [formError, setFormError] = useState('');
-    const [playerCreated, setPlayerCreated] = useState(false)
+    const [playerCreated, setPlayerCreated] = useState(false);
+    const [unsuccessfulCreate, setUnsuccessfulCreate] = useState(false);
+
+    const handleImageFileChange = (e) => {
+        setPlayerImageFile(e.target.files[0]);
+    }
 
     const submitPlayer = () => {
         setFormError('');
@@ -44,13 +53,37 @@ const CreatePlayer = () => {
                 shoots: playerShoots,
                 weight: playerWeight,
                 height: playerHeight,
-                yearsActive: activeYearArr
+                yearsActive: activeYearArr,
+                playerImg: playerImageFile
             };
-            console.log(playerInfo);
-            setPlayerCreated(true);
-            setTimeout(() => {
-                setPlayerCreated(false);
-            }, 2000);
+
+            createPlayerAPI(playerInfo).then(response => {
+                if(response.success){
+                    setPlayerCreated(true);
+                
+                    setPlayerAcitiveYears('');
+                    setPlayerFirstName('');
+                    setPlayerHeight('');
+                    setPlayerImageFile(null);
+                    setPlayerLastName('');
+                    setPlayerNickname('');
+                    setPlayerPosition('');
+                    setPlayerShoots('');
+                    setPlayerWeight('');
+
+                    setTimeout(() => {
+                        setPlayerCreated(false);
+                    }, 3000);
+                }
+                if(!response.success){
+                    setUnsuccessfulCreate(true);
+
+                    setTimeout(() => {
+                        setUnsuccessfulCreate(false);
+                    }, 3000);
+                }
+
+            });
         }
     }
 
@@ -173,6 +206,7 @@ const CreatePlayer = () => {
                     <Typography variant='h6'>Choose an image to upload</Typography>
                     <div className={classes.formText}>
                         <input
+                            onChange={handleImageFileChange}
                             accept="image/*"
                             className={classes.input}
                             id="raised-button-file"
@@ -182,6 +216,9 @@ const CreatePlayer = () => {
                 </Grid>
                 {playerCreated && 
                     <Alert severity="success">Player Created</Alert>
+                }
+                {unsuccessfulCreate &&
+                    <Alert severity='error'>Unable to Create Player</Alert>
                 }
                 <Grid item xs={12}>
                     <div className={classes.formText}>

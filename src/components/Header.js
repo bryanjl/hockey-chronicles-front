@@ -168,6 +168,7 @@ const Header = ({ handleSearch }) => {
                     <MenuItem><Button onClick={handleMainMenuClose} component={Link} to='/players'>Players</Button></MenuItem>
                     <MenuItem><Button onClick={handleMainMenuClose} component={Link} to='/leagues'>Leagues</Button></MenuItem>
                     <MenuItem><Button onClick={handleMainMenuClose} component={Link} to='/seasons'>Seasons</Button></MenuItem>
+                    <MenuItem><Button onClick={handleMainMenuClose} component={Link} to='/admin'>Administration</Button></MenuItem>
                     
                 </Menu>
 
