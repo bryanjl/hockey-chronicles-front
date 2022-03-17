@@ -2,7 +2,8 @@ import { Box, makeStyles } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
     footerBox: {
-        minHeight: '100px'
+        minHeight: '100px',
+        borderTop: '1px solid #ece7e7'
     }
 }));
 

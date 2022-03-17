@@ -1,12 +1,14 @@
-import { Container, makeStyles } from "@material-ui/core"
+import { Container, makeStyles } from "@material-ui/core";
+import TopFive from "./pages/home/TopFive";
+import FightStats from "./pages/home/FightStats";
 
 
 const useStyles = makeStyles((theme) => ({
     container: {
         paddingTop: theme.spacing(10),
         // backgroundColor: 'red',
-        height: '100vh',
-        border: '1px solid #ece7e7'
+        height: '100%',
+        borderLeft: '1px solid #ece7e7'
     }
 }));
 
@@ -14,7 +16,8 @@ const RightBar = () => {
     const classes = useStyles();
     return (
         <Container className={classes.container}>
-            RightBar
+            <TopFive />
+            <FightStats />
         </Container>
     )
 }

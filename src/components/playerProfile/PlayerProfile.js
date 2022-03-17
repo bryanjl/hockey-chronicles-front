@@ -54,9 +54,10 @@ const PlayerProfile = () => {
                 return new Date(a.date) - new Date(b.date)
             });
             setPlayer(data.data);
-            getRivals(data.data.fights);
+            
             sortFights(data.data.fights);
-            setIsFetching(false);    
+            setIsFetching(false);  
+              
         });
         
         //eslint-disable-next-line
@@ -64,6 +65,7 @@ const PlayerProfile = () => {
 
     const setTab = (value) => {
         setSelectedTab(value);
+        getRivals(player.fights);
     }
 
     //check to see if player had won lost, drawed or if there is no votes for outcome chart
@@ -125,6 +127,7 @@ const PlayerProfile = () => {
         fightArr.push(seasonArr);
         // console.log(fightArr);
         setSortedFights(fightArr);
+        
     }
 
 
@@ -133,14 +136,16 @@ const PlayerProfile = () => {
         let unsortedRivals = {};
         allFights.forEach(fight => {
             if(fight.players[0].lastName !== player.lastName){
-                // console.log('here');
+                
                 if(!unsortedRivals[`${fight.players[0].firstName} ${fight.players[0].lastName}`]){
                     unsortedRivals[`${fight.players[0].firstName} ${fight.players[0].lastName}`] = 1;    
                 } else {
                     unsortedRivals[`${fight.players[0].firstName} ${fight.players[0].lastName}`] += 1;
                 }
+            }
+            
+            if(fight.players[1].lastName !== player.lastName){
                 
-            } else {
                 if(!unsortedRivals[`${fight.players[1].firstName} ${fight.players[1].lastName}`]){
                     unsortedRivals[`${fight.players[1].firstName} ${fight.players[1].lastName}`] = 1;    
                 } else {
@@ -155,7 +160,7 @@ const PlayerProfile = () => {
         sortedRivals.sort((a, b) => {
             return b[1] - a[1];
         });
-        // console.log(sortedRivals);
+
         setPlayerRivals(sortedRivals);
     }
 
@@ -169,6 +174,8 @@ const PlayerProfile = () => {
     const handleEditPlayerClose = () => {
         setOpenEditPlayer(false);
     }
+
+    
 
     return (
         <>
@@ -229,7 +236,8 @@ const PlayerProfile = () => {
                     </TableContainer>
                 }
 
-                {selectedTab === 1 && 
+                {selectedTab === 1  &&
+    
                     <TableContainer sx={{maxHeight: 440, overflow: 'hidden'}} component={Paper}>
                         <Table stickyHeader aria-label="simple table">
                             <TableHead>

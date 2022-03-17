@@ -62,7 +62,7 @@ const TeamProfile = () => {
             sortFights(data.data.fights);
             sortGames(data.data.games);
             
-            getRivals(data.data.games);
+            
             setIsFetching(false);
         });
         //eslint-disable-next-line
@@ -70,6 +70,7 @@ const TeamProfile = () => {
 
     const setTab = (value) => {
         setSelectedTab(value);
+        getRivals(team.games);
     }
 
     const sortFights = (allFights) => {        

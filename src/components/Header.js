@@ -1,5 +1,5 @@
-import { AppBar, Toolbar, Typography, makeStyles, InputBase, alpha, Avatar } from '@material-ui/core';
-import { Search, Cancel, AccountCircleRounded, MenuOutlined } from '@material-ui/icons';
+import { AppBar, Toolbar, Typography, makeStyles, Avatar } from '@material-ui/core';
+import { AccountCircleRounded, MenuOutlined } from '@material-ui/icons';
 import { LoginRounded, LogoutRounded } from '@mui/icons-material';
 import { Button, Menu, MenuItem } from '@mui/material';
 import { useState } from 'react';
@@ -16,7 +16,8 @@ const useStyles = makeStyles((theme) => ({
         display: 'none',
         [theme.breakpoints.up('md')]: {
             display: 'block'
-        }
+        },
+        cursor: 'pointer'
     },
     logoSm: {
         display: 'none',
@@ -29,21 +30,6 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         justifyContent: 'space-between'
     },
-    search: {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        backgroundColor: alpha(theme.palette.common.white, 0.15),
-        '&:hover': {
-            backgroundColor: alpha(theme.palette.common.white, 0.25)
-        },
-        borderRadius: theme.shape.borderRadius,
-        width: '50%',
-        [theme.breakpoints.down('sm')]: {
-            display: (props) => (props.open ? 'flex' : 'none'),
-            // width: '70%'
-        }
-    },
     input: {
         color: 'white',
         marginLeft: theme.spacing(1)
@@ -54,28 +40,20 @@ const useStyles = makeStyles((theme) => ({
         margin: theme.spacing(1)
     },
     avatar: {
-        marginLeft: theme.spacing(2)
+        marginLeft: theme.spacing(2),
+        cursor: 'pointer'
     },
-    searchBtn: {
-        // display: 'flex',
-        [theme.breakpoints.up('md')]: {
-            display: 'none'
-        },
-        marginRight: theme.spacing(1)
-    },
-    cancelSearch: {
+    hamburgerMenu: {
+        cursor: 'pointer',
         [theme.breakpoints.up('md')]: {
             display: 'none'
         }
     }
-}))
+}));
 
 const Header = ({ handleSearch }) => {
     let navigate = useNavigate();
-
-    //state for search bar
-    const [open, setOpen] = useState(false);
-    const classes = useStyles({ open });
+    const classes = useStyles();
 
     //state for Auth -> login/register
     const [openLogin, setOpenLogin] = useState(false);
@@ -135,18 +113,11 @@ const Header = ({ handleSearch }) => {
         navigate('/');
     }
 
-    const handleSearchSubmit = (e) => {
-        // handleSearch(e.target.value);
-        if (e.keyCode === 13) {
-            handleSearch(e.target.value);
-            navigate(`/search`);
-        }
-    }
-
     return (
         <AppBar className={classes.header} position='fixed'>
             <Toolbar className={classes.toolbar}>
-                <MenuOutlined 
+                <MenuOutlined
+                    className={classes.hamburgerMenu} 
                     id="menu-button"
                     aria-controls={openMainMenu ? 'main-menu' : undefined}
                     aria-haspopup="true"
@@ -177,15 +148,8 @@ const Header = ({ handleSearch }) => {
                 </Typography>
                 
                 <Typography onClick={goHome} variant='h5' component='h2' className={classes.logoSm}>
-                    HFC
+                    Hockey Fight Chronicles
                 </Typography>
-                
-                
-                
-                
-                
-                
-
 
                 <Login open={openLogin} onClose={onLoginClose} />
                 
@@ -193,16 +157,8 @@ const Header = ({ handleSearch }) => {
 
                 <Logout open={openLogout} onClose={onLogoutClose} />
                 
-                <div className={classes.search}>
-                    <Search />
-                    <InputBase onKeyDown={handleSearchSubmit} placeholder='Search' className={classes.input} fullWidth/>
-                    <Cancel className={classes.cancelSearch} onClick={() => setOpen(false)} />
-                </div>
                 <div className={classes.icons}>
-                    {/* <Search className={classes.searchBtn} onClick={() => setOpen(true)} />
-                    <Badge badgeContent={4} color='secondary'>
-                        <Notifications />
-                    </Badge> */}
+
                     <Avatar 
                         className={classes.avatar} src='#'
                         id="basic-button"
@@ -224,7 +180,6 @@ const Header = ({ handleSearch }) => {
                         <MenuItem onClick={loginBtnClick}><LoginRounded />   Login</MenuItem>
                         <MenuItem onClick={logoutBtnClick}><LogoutRounded />   Logout</MenuItem>
                         <MenuItem onClick={registerBtnClick}><AccountCircleRounded />  Register</MenuItem>
-                        {/* <MenuItem onClick={getMe}>Get Me</MenuItem> */}
                     </Menu>
 
                 </div>

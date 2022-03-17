@@ -53,10 +53,10 @@ function App() {
             <Grid item md={2} className={classes.leftBar}>
               <LeftBar />
             </Grid>
-            <Grid item md={8} sm={12} xs={12}>
+            <Grid item md={7} sm={12} xs={12}>
               <Feed searchQuery={searchValue} />
             </Grid>
-            <Grid item md={2} className={classes.rightBar}>
+            <Grid item md={3} className={classes.rightBar}>
               <RightBar />
             </Grid>
             <Grid item xs={12}>

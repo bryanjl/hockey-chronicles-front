@@ -4,7 +4,7 @@ import SeasonSelect from "../../seasonProfile/SeasonSelect";
 const useStyles = makeStyles((theme) => ({
     container: {
         height: '200px',
-        width: '350px',
+        // width: '350px',
         padding: '15px',
         margin: '15px'
     }
