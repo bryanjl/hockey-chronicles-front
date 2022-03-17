@@ -7,6 +7,7 @@ import Header from "./components/Header";
 import LeftBar from './components/LeftBar';
 import Feed from './components/Feed';
 import RightBar from './components/RightBar';
+import Footer from './components/Footer';
 // import FightCard from "./components/FightCard/FightCard";
 import { useEffect, useState } from 'react';
 
@@ -57,6 +58,9 @@ function App() {
             </Grid>
             <Grid item md={2} className={classes.rightBar}>
               <RightBar />
+            </Grid>
+            <Grid item xs={12}>
+              <Footer />
             </Grid>
           </Grid>
         </UserContext.Provider>

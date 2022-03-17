@@ -25,3 +25,20 @@ export const getAllSeasons = async() => {
 
     return result;
 }
+
+//create a new season
+export const createSeason = async(seasonInfo) => {
+    let route = `/seasons`;
+
+    let options = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(seasonInfo)
+    }
+
+    let response = await fetchApi(route, options);
+
+    return response;
+}
