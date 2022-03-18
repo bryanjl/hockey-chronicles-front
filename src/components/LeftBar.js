@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { Box, Divider, List, ListItem, ListItemText, makeStyles } from "@material-ui/core"
 import { ListItemButton } from "@mui/material";
 import { Link } from "react-router-dom";
@@ -7,6 +7,8 @@ import Register from './auth/Register';
 import Logout from './auth/Logout';
 //css
 import './LeftBarStyles.css'
+//user context
+import { UserContext } from "../contexts/UserContext";
 
 
 
@@ -21,6 +23,13 @@ const useStyles = makeStyles((theme) => ({
 
 
 const LeftBar = () => {
+    //user context -> or guest
+    let { user } = useContext(UserContext);
+    if(!user){
+        user = {}
+        user.role = 'guest'
+    }
+
     const classes = useStyles();
 
     //state for Auth -> login/register
@@ -103,16 +112,21 @@ const LeftBar = () => {
                     </ListItem>
                 </List>
             </nav>
-            <Divider />
-            <nav>
-                <List>
-                    <ListItem>
-                        <ListItemButton component={Link} to='/admin'>
-                            <ListItemText secondary='Administration' />
-                        </ListItemButton>
-                    </ListItem>
-                </List>
-            </nav>
+            {(user.role === 'admin' || user.role === 'super') &&
+                <>
+                <Divider />
+                <nav>
+                    <List>
+                        <ListItem>
+                            <ListItemButton component={Link} to='/admin'>
+                                <ListItemText secondary='Administration' />
+                            </ListItemButton>
+                        </ListItem>
+                    </List>
+                </nav>
+                </>
+            }
+
                
             <Login open={openLogin} onClose={onLoginClose} />
                 

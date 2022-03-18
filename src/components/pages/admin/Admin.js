@@ -1,12 +1,14 @@
 import { makeStyles } from "@material-ui/core";
 import { FormControl, Grid, InputLabel, MenuItem, Select, Typography } from "@mui/material"
 import { Box } from "@mui/system";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import CreateSeason from "../admin/create/CreateSeason";
 import CreatePlayer from "./create/CreatePlayer";
 import CreateLeague from "./create/CreateLeague";
 import CreateGame from "./create/CreateGame";
 import CreateTeam from "./create/CreateTeam";
+//userContext
+import { UserContext } from "../../../contexts/UserContext";
 
 const useStyles = makeStyles((theme) => ({
     adminTitle: {
@@ -16,6 +18,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Admin = () => {
+    //user context -> or guest
+    let { user } = useContext(UserContext);
+    if(!user){
+        user = {}
+        user.role = 'guest'
+    }
 
     const classes = useStyles();
 
@@ -29,7 +37,10 @@ const Admin = () => {
 
 
   return (
-      <>
+    <>
+        {(user.role === 'admin' || user.role === 'super') && 
+    
+    <>
         <Grid container>
             <Grid item xs={12}>
                 <Typography variant='h3' className={classes.adminTitle}>Administration</Typography>
@@ -93,6 +104,16 @@ const Admin = () => {
             </>
         }
     </>
+
+        }
+        {(user.role !== 'admin' && user.role !== 'super') &&
+            <>
+                <Typography variant='h2'>Not Authorized</Typography>
+                <Typography variant='h4'>Please Log in to administration account</Typography>
+            </>
+        }
+    </>
+      
   )
 }
 

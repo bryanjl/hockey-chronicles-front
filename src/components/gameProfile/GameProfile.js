@@ -1,14 +1,14 @@
 import { Button, makeStyles, Paper, Typography } from "@material-ui/core";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useParams } from "react-router-dom"
-import { 
-    getGame as getGameAPI 
-} from "../../api/games/gamesApi";
-
 import TeamCard from "../FightCard/TeamCard";
 import DateDisplay from "../FightCard/DateDisplay";
 import GameEvent from "./GameEvent";
 import Comments from "../comments/Comments";
+//api
+import { getGame as getGameAPI } from "../../api/games/gamesApi";
+//user context
+import { UserContext } from "../../contexts/UserContext";
 //admin tool components
 import CreateFightDialog from "../create/createFight/CreateFightDialog";
 import EditGameDialog from "../adminTools/edit/EditGameDialog";
@@ -39,6 +39,13 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const GameProfile = () => {
+    //user context -> or guest
+    let { user } = useContext(UserContext);
+    if(!user){
+        user = {}
+        user.role = 'guest'
+    }
+
     let { gameID } = useParams();
 
     const classes = useStyles();
@@ -118,11 +125,18 @@ const GameProfile = () => {
                             </Paper>
                         )
                     })}
-                    <Typography>Administration Tools:</Typography>
-                    <Button className={classes.adminBtns} onClick={handleClickOpenCreateFight} fullWidth variant='contained'>Add Fight/Event</Button>
-                    <Button className={classes.adminBtns} onClick={handleClickOpenEditGame} fullWidth variant="contained">Edit Game</Button>
+                    {(user.role === 'admin' || user.role ==='super') &&
+                        <>
+                            <Typography>Administration Tools:</Typography>
+                            <Button className={classes.adminBtns} onClick={handleClickOpenCreateFight} fullWidth variant='contained'>Add Fight/Event</Button>
+                            <Button className={classes.adminBtns} onClick={handleClickOpenEditGame} fullWidth variant="contained">Edit Game</Button>    
+                        </>
+                    }
+                    
+
                     <CreateFightDialog gameFights={fights} setGameFights={setFights} game={game} open={openCreateFight} handleClose={handleCloseCreateFight} />
                     <EditGameDialog updateGameData={updateGameData} fights={fights} setFights={setFights} game={game} open={openEditGame} handleClose={handleCloseEditGame} />
+
                     <Comments className={classes.comments} model='games' recordId={game._id} comments={game.comments} />
                 </>
             }

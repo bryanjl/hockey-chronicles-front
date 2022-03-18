@@ -1,15 +1,14 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useParams } from "react-router-dom";
+import { Button, Grid, makeStyles, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@material-ui/core";
 import PlayerTabs from "./PlayerTabs";
 import EditPlayerDialog from "../adminTools/edit/EditPlayerDialog";
-// import GameEvent from "../gameProfile/GameEvent";
 import WinLossDrawChart from "../charts/WinLossDrawChart";
-import { 
-    getPlayer as getPlayerAPI 
-} from "../../api/players/playersApi";
-import { Button, Grid, makeStyles, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@material-ui/core";
 import Row from "./Row";
-
+//api
+import { getPlayer as getPlayerAPI } from "../../api/players/playersApi";
+//user context
+import { UserContext } from "../../contexts/UserContext";
 //utils
 import { checkIfInitialOutcome, checkIfDrawOutcome, checkOutcomeWinner } from "../../utils/checkFightOutcome";
 
@@ -28,6 +27,13 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const PlayerProfile = () => {
+    //user context -> or guest
+    let { user } = useContext(UserContext);
+    if(!user){
+        user = {}
+        user.role = 'guest'
+    }
+
     let { playerID } = useParams();
 
     const classes = useStyles();
@@ -209,9 +215,15 @@ const PlayerProfile = () => {
                             </Grid>
                         </Grid>
                     </Paper>
-                    <Typography>Administration Tools:</Typography>
-                    <Button onClick={handleEditPlayerOpen} fullWidth variant='contained'>Edit Player Details</Button>
-                    <EditPlayerDialog player={player} setPlayer={setPlayer} open={openEditPlayer} handleClose={handleEditPlayerClose} />
+                    
+                    {(user.role === 'admin' || user.role === 'super') &&
+                        <>
+                            <Typography>Administration Tools:</Typography>
+                            <Button onClick={handleEditPlayerOpen} fullWidth variant='contained'>Edit Player Details</Button>
+                            <EditPlayerDialog player={player} setPlayer={setPlayer} open={openEditPlayer} handleClose={handleEditPlayerClose} />    
+                        </>
+                    }
+                    
 
                 <PlayerTabs setTab={setTab} currTab={selectedTab} />
 

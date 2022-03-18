@@ -5,7 +5,7 @@ import TeamGameRow from "./TeamGameRow";
 import TeamTabs from "./TeamTabs";
 import { Grid, makeStyles, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@material-ui/core";
 import LeagueDisplay from "../leagueProfile/LeagueDisplay";
-// import SeasonSelect from "../seasonProfile/SeasonSelect";
+
 
 //Team API
 import { 
@@ -87,17 +87,14 @@ const TeamProfile = () => {
             if (fight.season.season === currSeason) {
                 seasonArr.push(fight);
                 if(fight.actionRating.average !== 0){
-                    // console.log(fight.actionRating.average, typeof fight.actionRating.average)
                     actionAccum.average += Number.parseFloat(fight.actionRating.average, 10);
                     actionAccum.votes += 1;
                 }
             } else {
-                // console.log(actionAccum);
                 let action = 0;
                 if(actionAccum.average !== 0){
                     action = (actionAccum.average / actionAccum.votes)
                 }
-                // console.log(action);
                 seasonArr.push(action);
                 fightArr.push(seasonArr);
                 seasonArr = [];
@@ -115,7 +112,6 @@ const TeamProfile = () => {
         }
         seasonArr.push(action);
         fightArr.push(seasonArr);
-        // console.log(fightArr);
         setSortedFights(fightArr);
     }
 
@@ -151,7 +147,6 @@ const TeamProfile = () => {
     const getRivals = (allGames) => {
         let unsortedRivals = {};
         allGames.forEach(game => {
-            // console.log(game.fights.length)
             if(game.teams[0].city !== team.city){
                 if(!unsortedRivals[`${game.teams[0].city} ${game.teams[0].name}`]){
                     unsortedRivals[`${game.teams[0].city} ${game.teams[0].name}`] = game.fights.length;    
@@ -195,10 +190,6 @@ const TeamProfile = () => {
                 </Grid>
                 
                 <TeamTabs setTab={setTab} currTab={selectedTab} />
-{/* 
-                {selectedTab !== 2 && 
-                    <SeasonSelect seasonSelect={getSeason} />
-                } */}
 
 
                 {selectedTab === 0 && 

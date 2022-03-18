@@ -1,37 +1,31 @@
+import { useEffect, useState, useContext } from 'react';
+import { useParams } from 'react-router-dom';
+import { Button, Grid, makeStyles } from '@material-ui/core';
+import { Typography } from '@mui/material';
 import PlayerCard from './PlayerCard';
 import FightDescription from './FightDescription';
 import DateDisplay from './DateDisplay';
 import TeamCard from './TeamCard';
 import EmbedYouTube from '../EmbedYouTube';
-import { Button, Grid, makeStyles } from '@material-ui/core';
 import Comments from '../comments/Comments';
-// import OutcomeChart from '../charts/OutcomeChart';
 import Vote from './Vote';
-import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
 //admin tool components
 import EditFightCardDialog from '../adminTools/edit/EditFightCardDialog';
-
+//user context
+import { UserContext } from '../../contexts/UserContext';
 //api
-import {
-    getFight
-} from '../../api/fights/fightApi';
-import { Typography } from '@mui/material';
+import { getFight } from '../../api/fights/fightApi';
+
 
 const useStyles = makeStyles((theme) => ({
     container: {
         display: 'flex',
         justifyContent: 'center',
-        // backgroundColor: 'red'
     },
     item: {
         display: 'flex',
         justifyContent: 'center',
         marginBottom: '10px',
-        // border: '1px solid black'
-    },
-    comments: {
-        
     },
     chart: {
         marginTop: 'auto'
@@ -39,6 +33,13 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const FightCard = () => {
+    //user context -> or guest
+    let { user } = useContext(UserContext);
+    if(!user){
+        user = {}
+        user.role = 'guest'
+    }
+
     const classes = useStyles();
 
     const [fight, setFight] = useState({});   
@@ -104,8 +105,12 @@ const FightCard = () => {
                     <FightDescription description={fight.description} />
                 </Grid>
                 
-                <Typography>Administration Tools:</Typography>
-                <Button onClick={handleEditFightOpen} fullWidth variant='contained'>Edit Fight Card</Button>
+                {(user.role === 'admin' || user.role === 'super') && 
+                    <>
+                        <Typography>Administration Tools:</Typography>
+                        <Button onClick={handleEditFightOpen} fullWidth variant='contained'>Edit Fight Card</Button>    
+                    </>
+                }
 
                 <EditFightCardDialog fight={fight} setFight={setFight} open={openEditFight} handleClose={handleEditFightClose} />
 
