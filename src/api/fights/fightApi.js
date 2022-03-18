@@ -111,11 +111,38 @@ export const getTopFive = (season) => {
 
     let options = {
         method: 'GET',
-
     }
 
     let data = fetchApi(route, options);
 
     return data;
+}
+
+export const getFeaturedFight = async() => {
+    let route = `/fights/featuredfight`;
+
+    let options = {
+        method: 'GET'
+    }
+
+    let response = await fetchApi(route, options);
+
+    return response;
+}
+
+export const setFeaturedFight = async(fightId) => {
+    let route = '/fights/featuredfight';
+
+    let options = {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(fightId)
+    }
+
+    let response = await fetchApi(route, options);
+
+    return response;
 }
 

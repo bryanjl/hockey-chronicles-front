@@ -3,7 +3,7 @@ import YouTube from "react-youtube";
 
 const useStyles = makeStyles((theme) => ({
     container: {
-        width: '75%',
+        width: '100%',
         [theme.breakpoints.down('sm')]: {
             width: '100%'
         },
