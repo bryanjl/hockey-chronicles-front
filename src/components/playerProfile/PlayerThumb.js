@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
     playerThumbCard: {
-
+        minHeight: '150px'
     },
     playerName: {
         padding: '5px',
@@ -22,11 +22,11 @@ const PlayerThumb = ({ player }) => {
     }
     
     return (
-        <Card className={classes.playerThumbCard}>
+        <Card className={classes.playerThumbCard} onClick={handleClick}>
             <Typography className={classes.playerName}>{`${player.firstName} ${player.lastName}`}</Typography>
-            <CardActions>
+            {/* <CardActions>
                 <Button onClick={handleClick} size='small'>View PLayer</Button>
-            </CardActions>
+            </CardActions> */}
         </Card>
     )
 }

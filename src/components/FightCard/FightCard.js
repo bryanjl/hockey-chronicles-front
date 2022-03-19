@@ -71,53 +71,91 @@ const FightCard = () => {
     }, []);
 
     return (
-            !isFetching && 
+        <>
+            {!isFetching && fight.players.length > 0 &&
+
                 <Grid container className={classes.container}>
-            
-                <Grid item xs={12} className={classes.item}>  
-                    <DateDisplay date={new Date(fight.date.split('T')[0]).toDateString()} season={fight.season.season} />
-                </Grid>
-                <Grid item sm={12} className={classes.item}>  
-                    <TeamCard fight={fight} showGameLink={true} home={fight.game.homeTeam} />
-                </Grid>
-                <Grid item xs={6} className={classes.item}>  
-                    <PlayerCard player={fight.players[1]} />
-                </Grid>
                 
-                <Grid item xs={6} className={classes.item}>
-                    <PlayerCard player={fight.players[0]} />
-                </Grid>
+                    <Grid item xs={12} className={classes.item}>  
+                        <DateDisplay date={new Date(fight.date.split('T')[0]).toDateString()} season={fight.season.season} />
+                    </Grid>
+                    <Grid item sm={12} className={classes.item}>  
+                        <TeamCard fight={fight} showGameLink={true} home={fight.game.homeTeam} />
+                    </Grid>
+                    <Grid item xs={6} className={classes.item}>  
+                        <PlayerCard player={fight.players[1]} />
+                    </Grid>
+                    
+                    <Grid item xs={6} className={classes.item}>
+                        <PlayerCard player={fight.players[0]} />
+                    </Grid>
 
-                <Grid item xs={12} align='center'>
-                    <Typography variant='h6'>{fight.fightType} at {fight.time ? fight.time : 'Time in Game'}</Typography>
-                </Grid>
+                    <Grid item xs={12} align='center'>
+                        <Typography variant='h6'>{fight.fightType} at {fight.time ? fight.time : 'Time in Game'}</Typography>
+                    </Grid>
 
-                <Grid item sm={12} className={classes.item}>
-                    <EmbedYouTube videoLink={fight.videoLink} />
-                </Grid>
-                
-                <Grid item xs={12} className={`${classes.item} ${classes.chart}`}>  
-                    <Vote fight={fight} />
-                </Grid>
+                    <Grid item sm={12} className={classes.item}>
+                        <EmbedYouTube videoLink={fight.videoLink} />
+                    </Grid>
+                    
+                    <Grid item xs={12} className={`${classes.item} ${classes.chart}`}>  
+                        <Vote fight={fight} />
+                    </Grid>
 
 
-                <Grid item sm={12} className={classes.item}>
-                    <FightDescription description={fight.description} />
-                </Grid>
-                
-                {(user.role === 'admin' || user.role === 'super') && 
-                    <>
-                        <Typography>Administration Tools:</Typography>
-                        <Button onClick={handleEditFightOpen} fullWidth variant='contained'>Edit Fight Card</Button>    
-                    </>
-                }
+                    <Grid item sm={12} className={classes.item}>
+                        <FightDescription description={fight.description} />
+                    </Grid>
+                    
+                    {(user.role === 'admin' || user.role === 'super') && 
+                        <>
+                            <Typography>Administration Tools:</Typography>
+                            <Button onClick={handleEditFightOpen} fullWidth variant='contained'>Edit Fight Card</Button>    
+                        </>
+                    }
 
-                <EditFightCardDialog fight={fight} setFight={setFight} open={openEditFight} handleClose={handleEditFightClose} />
+                    <EditFightCardDialog fight={fight} setFight={setFight} open={openEditFight} handleClose={handleEditFightClose} />
 
-                <Grid item sm={12} className={classes.item}>
-                    <Comments className={classes.comments} model='fights' recordId={fight._id} comments={fight.comments} />
+                    <Grid item sm={12} className={classes.item}>
+                        <Comments className={classes.comments} model='fights' recordId={fight._id} comments={fight.comments} />
+                    </Grid>
                 </Grid>
-            </Grid>
+            }
+            {!isFetching && fight.players.length === 0 &&
+                <Grid container className={classes.container}>
+                    <Grid item xs={12} className={classes.item}>  
+                        <DateDisplay date={new Date(fight.date.split('T')[0]).toDateString()} season={fight.season.season} />
+                    </Grid>
+                    <Grid item sm={12} className={classes.item}>  
+                        <TeamCard fight={fight} showGameLink={true} home={fight.game.homeTeam} />
+                    </Grid>
+                    <Grid item xs={12} align='center'>
+                        <Typography variant='h6'>{fight.fightType === 'Event' ? fight.eventDescription : fight.fightType} at {fight.time ? fight.time : 'Time in Game'}</Typography>
+                    </Grid>
+
+                    <Grid item sm={12} className={classes.item}>
+                        <EmbedYouTube videoLink={fight.videoLink} />
+                    </Grid>
+                    
+                    <Grid item sm={12} className={classes.item}>
+                        <FightDescription description={fight.description} />
+                    </Grid>
+
+                    {(user.role === 'admin' || user.role === 'super') && 
+                        <>
+                            <Typography>Administration Tools:</Typography>
+                            <Button onClick={handleEditFightOpen} fullWidth variant='contained'>Edit Fight Card</Button>    
+                        </>
+                    }
+
+                    <EditFightCardDialog fight={fight} setFight={setFight} open={openEditFight} handleClose={handleEditFightClose} />
+
+                    <Grid item sm={12} className={classes.item}>
+                        <Comments className={classes.comments} model='fights' recordId={fight._id} comments={fight.comments} />
+                    </Grid>
+                </Grid>
+            }
+        </>
     )
 }
 

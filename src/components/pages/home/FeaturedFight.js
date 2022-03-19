@@ -1,7 +1,8 @@
-import { Button, Grid, makeStyles, Paper, Typography } from "@material-ui/core";
+import { Box, Button, Grid, makeStyles, Paper, Typography } from "@material-ui/core";
 import { useEffect, useState } from "react";
 import EmbedYouTube from '../../EmbedYouTube';
 import PlayerCard from '../../FightCard/PlayerCard';
+import PlayerThumb from '../../playerProfile/PlayerThumb';
 //api
 import { getFeaturedFight as getFeaturedFightAPI } from "../../../api/fights/fightApi";
 
@@ -10,7 +11,19 @@ const useStyles = makeStyles((theme) => ({
         minHeight: '300px',
         // width: '100%',
         padding: '5px',
-        margin: '15px'
+        margin: '15px',
+        marginBottom: '100px'
+    },
+    viewFightBtn: {
+        backgroundColor: theme.palette.primary.light,
+        marginTop: '10px'
+    },
+    descriptionBox:{
+        minHeight: '100%',
+        width: '95%',
+        // border: '1px solid black',
+        marginTop: '10px',
+        marginLeft: '7px'
     }
 }));
 
@@ -50,20 +63,26 @@ const FeaturedFight = () => {
                     <Grid item xs={5}>
                         <Grid container>
                             <Grid item xs={6} align='center'>
-                                <PlayerCard player={featuredFight.players[0]} />
+                                {/* <PlayerCard player={featuredFight.players[0]} /> */}
+                                <PlayerThumb player={featuredFight.players[0]} />
                             </Grid>
                             <Grid item xs={6} align='center'>
-                                <PlayerCard player={featuredFight.players[1]} />
+                                {/* <PlayerCard player={featuredFight.players[1]} /> */}
+                                <PlayerThumb player={featuredFight.players[1]} />
                             </Grid>
                             <Grid item xs={12}>
-                                <Typography>{featuredFight.description}</Typography>
+                                <Box className={classes.descriptionBox}>
+                                    <Typography>{featuredFight.description}</Typography>
+                                </Box>
+                                
                             </Grid>
                         </Grid>
                     </Grid>
                     <Grid item xs={12}>
                         <Button
                             fullWidth
-                            // variant='filled'
+                            variant='outlined'
+                            className={classes.viewFightBtn}
                         >
                             View Fight
                         </Button>

@@ -6,7 +6,8 @@ import { useNavigate } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
     container: {
-        padding: '15px'
+        padding: '15px',
+        marginTop: '15px'
     },
     tabs: {
         marginBottom: '7px'

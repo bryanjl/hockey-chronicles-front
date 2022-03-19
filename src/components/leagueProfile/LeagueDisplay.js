@@ -7,7 +7,8 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        margin: '15px'
     },
     leagueLogo: {
         maxHeight: '80px',
@@ -27,9 +28,9 @@ const LeagueDisplay = ({ league }) => {
         <Card className={classes.leagueCard}>
             <Typography>{league.name}</Typography>
             <img className={classes.leagueLogo} src={`/images/leagues/${league.name}.png`} alt='nhl' />
-            <CardActions>
+            {/* <CardActions>
                 <Button onClick={handleClick} size='small'>View League</Button>
-            </CardActions>
+            </CardActions> */}
         </Card>
     )
 }
