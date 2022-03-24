@@ -1,36 +1,30 @@
-import { Button, Card, makeStyles, Typography } from "@material-ui/core";
-import { CardActions } from "@mui/material";
-import { useNavigate } from 'react-router-dom';
+import { Card, makeStyles, Typography } from "@material-ui/core";
+import { Grid } from "@mui/material";
+
 
 const useStyles = makeStyles((theme) => ({
-    leagueCard: {
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        margin: '15px'
-    },
     leagueLogo: {
         maxHeight: '80px',
-        width: 'auto'
+        width: 'auto',
+        margin: '15px'
     }
 }))
 
 const LeagueDisplay = ({ league }) => {
     const classes = useStyles();
-    const navigate = useNavigate();
-
-    const handleClick = () => {
-        navigate(`/leagues/${league.id}`);
-    }
 
     return (
-        <Card className={classes.leagueCard}>
-            <Typography>{league.name}</Typography>
-            <img className={classes.leagueLogo} src={`/images/leagues/${league.name}.png`} alt='nhl' />
-            {/* <CardActions>
-                <Button onClick={handleClick} size='small'>View League</Button>
-            </CardActions> */}
+        <Card>
+            <Grid container>
+                <Grid item xs={4}>
+                    <img className={classes.leagueLogo} src={`/images/leagues/${league.name}.png`} alt='nhl' />
+                </Grid>
+                <Grid item xs={8}>
+                    <Typography>
+                        {league.description ? league.description : ''}
+                    </Typography>
+                </Grid>
+            </Grid>            
         </Card>
     )
 }

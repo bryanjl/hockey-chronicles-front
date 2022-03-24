@@ -42,15 +42,23 @@ const CreateTeam = () => {
         } else {
             setFormError('');
             
-            let activeYearsArr = teamActiveYears.split(' ');
+            let teamInfo = {};
+
+            if(teamActiveYears !== ''){
+                let activeYearsArr = teamActiveYears.split(' ');
+                teamInfo.yearsActive = activeYearsArr;
+            }
+            if(teamImageFile){
+                teamInfo.teamImg = teamImageFile;
+            }
+        
             //made into form data in api module
-            let teamInfo = {
-                city: teamCity,
-                name: teamName,
-                league: teamLeague,
-                yearsActive: activeYearsArr,
-                teamImg: teamImageFile
-            };
+            teamInfo.city = teamCity;
+            teamInfo.name = teamName;
+            teamInfo.league = teamLeague;
+    
+        
+            console.log(teamInfo);
 
             createTeamAPI(teamInfo).then(response => {
                 if(response.success){

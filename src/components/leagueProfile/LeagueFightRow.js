@@ -1,12 +1,23 @@
 import { Box, Collapse, IconButton, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@mui/material";
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { getAllFights as getAllFightsAPI } from "../../api/fights/fightApi";
 
 const LeagueFightRow = (props) => {
     const { row } = props;
     const [open, setOpen] = useState(false);
+
+    useEffect(() => {
+
+    }, []);
+
+    const fetchData = (season) => {
+        getAllFightsAPI(`term=season=${season}&league=NHL`).then(response => {
+            console.log(response);
+        })
+    }
 
     return (
     <>
@@ -15,13 +26,16 @@ const LeagueFightRow = (props) => {
                 <IconButton
                 aria-label="expand row"
                 size="small"
-                onClick={() => setOpen(!open)}
+                onClick={() => {
+                    setOpen(!open)
+                    // console.log(row)
+                }}
                 >
-                {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+                {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon onClick={() => fetchData(row)} />}
                 </IconButton>
             </TableCell>
             <TableCell component="th" scope="row">
-                {row[0].season.season}
+                {row}
             </TableCell>
             {/* <TableCell align="right">{actionRating === 0 ? 'No Votes' : actionRating.toFixed(2)}</TableCell> */}
             </TableRow>
@@ -43,7 +57,7 @@ const LeagueFightRow = (props) => {
                         <TableCell align="right"></TableCell>
                         </TableRow>
                     </TableHead>
-                    <TableBody>
+                    {/* <TableBody>
                         {row.filter(fight => {
                             if(typeof fight === 'number') {
                                 return false;
@@ -65,7 +79,7 @@ const LeagueFightRow = (props) => {
                             <TableCell align="right"><Link to={`/fights/${fight._id}`}>{fight.players.length > 0 ? 'View Fight' : 'View Event'}</Link></TableCell> 
                         </TableRow>
                         ))}
-                    </TableBody>
+                    </TableBody> */}
                     </Table>
                 </Box>
                 </Collapse>

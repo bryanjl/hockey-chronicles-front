@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 const LeagueGameRow = (props) => {
     const { row } = props;
     const [open, setOpen] = useState(false);
+    const [season, setSeason] = useState('');
 
     return (
     <>
@@ -21,7 +22,7 @@ const LeagueGameRow = (props) => {
                 </IconButton>
             </TableCell>
             <TableCell component="th" scope="row">
-                {row[0].season.season}
+                {row}
             </TableCell>
             
             </TableRow>
@@ -43,7 +44,7 @@ const LeagueGameRow = (props) => {
                         <TableCell align="right"></TableCell>
                         </TableRow>
                     </TableHead>
-                    <TableBody>
+                    {/* <TableBody>
                         {row.filter(game => {
                             if(typeof game === 'number') {
                                 return false;
@@ -68,7 +69,7 @@ const LeagueGameRow = (props) => {
                             
                         </TableRow>
                         ))}
-                    </TableBody>
+                    </TableBody> */}
                     </Table>
                 </Box>
                 </Collapse>

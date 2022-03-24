@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import TeamRow from "./TeamRow";
 import TeamGameRow from "./TeamGameRow";
 import TeamTabs from "./TeamTabs";
+import TeamTable from "./TeamTable";
 import { Grid, makeStyles, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@material-ui/core";
 import LeagueDisplay from "../leagueProfile/LeagueDisplay";
 
@@ -41,106 +42,110 @@ const TeamProfile = () => {
     const [selectedTab, setSelectedTab] = useState(0);
 
     //state for fetching
-    const [isFetching, setIsFetching] = useState(true);
+    const [isFetching, setIsFetching] = useState(false);
 
-    useEffect(() => {
-        setIsFetching(true);
-        getTeamAPI(teamID).then(data => {
-            console.log(data);
+    // useEffect(() => {
+    //     setIsFetching(true);
+    //     getTeamAPI(teamID).then(data => {
+    //         console.log(data);
             
-            data.data.games.sort((a, b) => {
-                return new Date(a.date) - new Date(b.date)
-            });
-            data.data.fights = data.data.fights.filter((fight) => {
-                return fight.players.length !== 0;
-            })
-            data.data.fights.sort((a, b) => {
-                return new Date(a.date) - new Date(b.date)
-            });
-            setTeam(data.data);
+    //         data.data.games.sort((a, b) => {
+    //             return new Date(a.date) - new Date(b.date)
+    //         });
+    //         data.data.fights = data.data.fights.filter((fight) => {
+    //             return fight.players.length !== 0;
+    //         })
+    //         data.data.fights.sort((a, b) => {
+    //             return new Date(a.date) - new Date(b.date)
+    //         });
+    //         setTeam(data.data);
             
-            sortFights(data.data.fights);
-            sortGames(data.data.games);
+    //         sortFights(data.data.fights);
+    //         sortGames(data.data.games);
             
             
-            setIsFetching(false);
-        });
-        //eslint-disable-next-line
-    }, [teamID]);
+    //         setIsFetching(false);
+    //     });
+    //     //eslint-disable-next-line
+    // }, [teamID]);
 
     const setTab = (value) => {
         setSelectedTab(value);
         getRivals(team.games);
     }
 
-    const sortFights = (allFights) => {        
-        //organize fights into seasons by array [[1994-1995], [1995-1996], [etc]]
-        //must be a sorted array
-        let fightArr = [];
-        let currSeason = allFights[0].season.season;
-        let seasonArr = [];
-        let actionAccum = {
-            average: 0,
-            votes: 0
-        }
-        allFights.forEach(fight => {
-            if (fight.season.season === currSeason) {
-                seasonArr.push(fight);
-                if(fight.actionRating.average !== 0){
-                    actionAccum.average += Number.parseFloat(fight.actionRating.average, 10);
-                    actionAccum.votes += 1;
-                }
-            } else {
-                let action = 0;
-                if(actionAccum.average !== 0){
-                    action = (actionAccum.average / actionAccum.votes)
-                }
-                seasonArr.push(action);
-                fightArr.push(seasonArr);
-                seasonArr = [];
-                actionAccum = {
-                    average: 0,
-                    votes: 0
-                }       
-                currSeason = fight.season.season;
-                seasonArr.push(fight);
+    const sortFights = (allFights) => {  
+        if(allFights.length > 0){
+            //organize fights into seasons by array [[1994-1995], [1995-1996], [etc]]
+            //must be a sorted array
+            let fightArr = [];
+            let currSeason = allFights[0].season.season;
+            let seasonArr = [];
+            let actionAccum = {
+                average: 0,
+                votes: 0
             }
-        });
-        let action = 0;
-        if(actionAccum.average !== 0){
-            action = (actionAccum.average / actionAccum.votes)
-        }
-        seasonArr.push(action);
-        fightArr.push(seasonArr);
-        setSortedFights(fightArr);
+            allFights.forEach(fight => {
+                if (fight.season.season === currSeason) {
+                    seasonArr.push(fight);
+                    if(fight.actionRating.average !== 0){
+                        actionAccum.average += Number.parseFloat(fight.actionRating.average, 10);
+                        actionAccum.votes += 1;
+                    }
+                } else {
+                    let action = 0;
+                    if(actionAccum.average !== 0){
+                        action = (actionAccum.average / actionAccum.votes)
+                    }
+                    seasonArr.push(action);
+                    fightArr.push(seasonArr);
+                    seasonArr = [];
+                    actionAccum = {
+                        average: 0,
+                        votes: 0
+                    }       
+                    currSeason = fight.season.season;
+                    seasonArr.push(fight);
+                }
+            });
+            let action = 0;
+            if(actionAccum.average !== 0){
+                action = (actionAccum.average / actionAccum.votes)
+            }
+            seasonArr.push(action);
+            fightArr.push(seasonArr);
+            setSortedFights(fightArr);
+        }        
     }
 
     const sortGames = (allGames) => {        
-        //organize games into seasons by array [[1994-1995], [1995-1996], [etc]]
-        //must be a sorted array
-        console.log(allGames);
         if(allGames.length > 0){
-            let gameArr = [];
-            let currSeason = allGames[0].season.season;
-            let seasonArr = [];
+            //organize games into seasons by array [[1994-1995], [1995-1996], [etc]]
+            //must be a sorted array
+            console.log(allGames);
+            if(allGames.length > 0){
+                let gameArr = [];
+                let currSeason = allGames[0].season.season;
+                let seasonArr = [];
 
-            allGames.forEach(game => {
-                if (game.season.season === currSeason) {
-                    seasonArr.push(game);
+                allGames.forEach(game => {
+                    if (game.season.season === currSeason) {
+                        seasonArr.push(game);
 
-                } else {
+                    } else {
 
-                    gameArr.push(seasonArr);
-                    seasonArr = [];
+                        gameArr.push(seasonArr);
+                        seasonArr = [];
+            
+                        currSeason = game.season.season;
+                        seasonArr.push(game);
+                    }
+                });
+
+                gameArr.push(seasonArr);
         
-                    currSeason = game.season.season;
-                    seasonArr.push(game);
-                }
-            });
-
-            gameArr.push(seasonArr);
-    
-            setSortedGames(gameArr);
+                setSortedGames(gameArr);
+            }
         }
     }
 
@@ -176,7 +181,7 @@ const TeamProfile = () => {
         <>
             {!isFetching && 
             <>
-                <Grid container>
+                {/* <Grid container>
                     <Grid item xs={12}>
                         
                         <Typography variant='h3'>{team.fullName}</Typography>
@@ -189,29 +194,31 @@ const TeamProfile = () => {
                     </Grid>
                 </Grid>
                 
-                <TeamTabs setTab={setTab} currTab={selectedTab} />
+                <TeamTabs setTab={setTab} currTab={selectedTab} /> */}
 
 
                 {selectedTab === 0 && 
                 
-                    <TableContainer className={classes.tableContainer} component={Paper}>
-                        <Table aria-label="collapsible table">
-                            <TableHead>
-                            <TableRow>
-                                <TableCell />
-                                <TableCell align='left'>Season</TableCell>
-                                {/* <TableCell align="right">Overall  Action</TableCell> */}
+                    // <TableContainer className={classes.tableContainer} component={Paper}>
+                    //     <Table aria-label="collapsible table">
+                    //         <TableHead>
+                    //         <TableRow>
+                    //             <TableCell />
+                    //             <TableCell align='left'>Season</TableCell>
+                    //             {/* <TableCell align="right">Overall  Action</TableCell> */}
                                 
-                            </TableRow>
-                            </TableHead>
-                            <TableBody>
-                            {sortedGames.map((game) => (
+                    //         </TableRow>
+                    //         </TableHead>
+                    //         <TableBody>
+                    //         {sortedGames.map((game) => (
                                 
-                                <TeamGameRow key={game._id} row={game} team={team} />
-                            ))}
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
+                    //             <TeamGameRow key={game._id} row={game} team={team} />
+                    //         ))}
+                    //         </TableBody>
+                    //     </Table>
+                    // </TableContainer>
+
+                    <TeamTable />
                 }
 
                 
