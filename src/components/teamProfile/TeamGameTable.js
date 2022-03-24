@@ -20,7 +20,7 @@ const columns = [
     id: 'league',
     label: 'League', 
     minWidth: 80,
-    format: (league) => `${league.league}`
+    format: (league) => `${league.name}`
   },
   { 
     id: 'teams', 
@@ -58,7 +58,7 @@ const columns = [
   },
 ];
 
-const TeamTable = ({ seasonData }) => {
+const TeamGameTable = ({ seasonData }) => {
 
     
 
@@ -92,7 +92,7 @@ const TeamTable = ({ seasonData }) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {/* {seasonData
+            {seasonData
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row) => {
                 return (
@@ -109,7 +109,7 @@ const TeamTable = ({ seasonData }) => {
                     })}
                   </TableRow>
                 );
-              })} */}
+              })}
           </TableBody>
         </Table>
       </TableContainer>
@@ -126,4 +126,4 @@ const TeamTable = ({ seasonData }) => {
   );
 }
 
-export default TeamTable;
+export default TeamGameTable;

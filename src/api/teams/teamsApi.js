@@ -13,6 +13,18 @@ export const getTeam = async(teamId) => {
     return result;
 }
 
+export const getTeamSeasonData = async(teamId, seasonValue) => {
+    let route = `/teams/${teamId}?season=${seasonValue}`;
+
+    let options = {
+        method: 'GET'
+    }
+
+    let result = await fetchApi(route, options);
+
+    return result;
+}
+
 //get all teams
 export const getAllTeams = async(query = '') => {
     let route = `/teams?${query}`;

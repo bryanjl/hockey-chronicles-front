@@ -1,16 +1,17 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import TeamRow from "./TeamRow";
-import TeamGameRow from "./TeamGameRow";
 import TeamTabs from "./TeamTabs";
-import TeamTable from "./TeamTable";
+import TeamGameTable from "./TeamGameTable";
+import TeamFightTable from "./TeamFightTable";
 import { Grid, makeStyles, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@material-ui/core";
 import LeagueDisplay from "../leagueProfile/LeagueDisplay";
+import SeasonSelect from "../seasonProfile/SeasonSelect";
 
 
 //Team API
 import { 
-    getTeam as getTeamAPI
+    getTeam as getTeamAPI,
+    getTeamSeasonData as getTeamSeasonDataAPI
 } from "../../api/teams/teamsApi";
 
 const useStyles = makeStyles((theme) => ({
@@ -33,120 +34,25 @@ const TeamProfile = () => {
     const [team, setTeam] = useState({});
     //state for rivals
     const [teamRivals, setTeamRivals] = useState({});
-    //state fro sorted fights
-    const [sortedFights, setSortedFights] = useState([]);
-    //state for sorted games
-    const [sortedGames, setSortedGames] = useState([]);
 
     //state for tabs
     const [selectedTab, setSelectedTab] = useState(0);
 
     //state for fetching
-    const [isFetching, setIsFetching] = useState(false);
+    const [isFetching, setIsFetching] = useState(true);
 
-    // useEffect(() => {
-    //     setIsFetching(true);
-    //     getTeamAPI(teamID).then(data => {
-    //         console.log(data);
+    useEffect(() => {
+        setIsFetching(true);
+        getTeamAPI(teamID).then(response => {
+            setTeam(response.data);
             
-    //         data.data.games.sort((a, b) => {
-    //             return new Date(a.date) - new Date(b.date)
-    //         });
-    //         data.data.fights = data.data.fights.filter((fight) => {
-    //             return fight.players.length !== 0;
-    //         })
-    //         data.data.fights.sort((a, b) => {
-    //             return new Date(a.date) - new Date(b.date)
-    //         });
-    //         setTeam(data.data);
-            
-    //         sortFights(data.data.fights);
-    //         sortGames(data.data.games);
-            
-            
-    //         setIsFetching(false);
-    //     });
-    //     //eslint-disable-next-line
-    // }, [teamID]);
+            setIsFetching(false);
+        });
+    }, [teamID]);
 
     const setTab = (value) => {
         setSelectedTab(value);
-        getRivals(team.games);
-    }
-
-    const sortFights = (allFights) => {  
-        if(allFights.length > 0){
-            //organize fights into seasons by array [[1994-1995], [1995-1996], [etc]]
-            //must be a sorted array
-            let fightArr = [];
-            let currSeason = allFights[0].season.season;
-            let seasonArr = [];
-            let actionAccum = {
-                average: 0,
-                votes: 0
-            }
-            allFights.forEach(fight => {
-                if (fight.season.season === currSeason) {
-                    seasonArr.push(fight);
-                    if(fight.actionRating.average !== 0){
-                        actionAccum.average += Number.parseFloat(fight.actionRating.average, 10);
-                        actionAccum.votes += 1;
-                    }
-                } else {
-                    let action = 0;
-                    if(actionAccum.average !== 0){
-                        action = (actionAccum.average / actionAccum.votes)
-                    }
-                    seasonArr.push(action);
-                    fightArr.push(seasonArr);
-                    seasonArr = [];
-                    actionAccum = {
-                        average: 0,
-                        votes: 0
-                    }       
-                    currSeason = fight.season.season;
-                    seasonArr.push(fight);
-                }
-            });
-            let action = 0;
-            if(actionAccum.average !== 0){
-                action = (actionAccum.average / actionAccum.votes)
-            }
-            seasonArr.push(action);
-            fightArr.push(seasonArr);
-            setSortedFights(fightArr);
-        }        
-    }
-
-    const sortGames = (allGames) => {        
-        if(allGames.length > 0){
-            //organize games into seasons by array [[1994-1995], [1995-1996], [etc]]
-            //must be a sorted array
-            console.log(allGames);
-            if(allGames.length > 0){
-                let gameArr = [];
-                let currSeason = allGames[0].season.season;
-                let seasonArr = [];
-
-                allGames.forEach(game => {
-                    if (game.season.season === currSeason) {
-                        seasonArr.push(game);
-
-                    } else {
-
-                        gameArr.push(seasonArr);
-                        seasonArr = [];
-            
-                        currSeason = game.season.season;
-                        seasonArr.push(game);
-                    }
-                });
-
-                gameArr.push(seasonArr);
-        
-                setSortedGames(gameArr);
-            }
-        }
+        getRivals(teamSeasonGameData);
     }
 
     const getRivals = (allGames) => {
@@ -177,11 +83,26 @@ const TeamProfile = () => {
         setTeamRivals(sortedRivals);
     }
 
+    const [teamSeasonGameData, setTeamSeasonGameData] = useState([]);
+    const [teamSeasonFightData, setTeamSeasonFightData] = useState([]);
+
+    const fetchData = (seasonValue) => {
+        getTeamSeasonDataAPI(teamID, seasonValue).then(response => {
+            setTeamSeasonGameData(response.data.games);
+            setTeamSeasonFightData(response.data.fights);
+        })
+    }
+
+    const handleSeasonChange = (seasonValue) => {
+        console.log(seasonValue);
+        fetchData(seasonValue);
+    }
+
     return (
         <>
             {!isFetching && 
             <>
-                {/* <Grid container>
+                <Grid container>
                     <Grid item xs={12}>
                         
                         <Typography variant='h3'>{team.fullName}</Typography>
@@ -194,54 +115,16 @@ const TeamProfile = () => {
                     </Grid>
                 </Grid>
                 
-                <TeamTabs setTab={setTab} currTab={selectedTab} /> */}
+                <TeamTabs setTab={setTab} currTab={selectedTab} /> 
 
+                <SeasonSelect seasonSelect={handleSeasonChange} />
 
                 {selectedTab === 0 && 
-                
-                    // <TableContainer className={classes.tableContainer} component={Paper}>
-                    //     <Table aria-label="collapsible table">
-                    //         <TableHead>
-                    //         <TableRow>
-                    //             <TableCell />
-                    //             <TableCell align='left'>Season</TableCell>
-                    //             {/* <TableCell align="right">Overall  Action</TableCell> */}
-                                
-                    //         </TableRow>
-                    //         </TableHead>
-                    //         <TableBody>
-                    //         {sortedGames.map((game) => (
-                                
-                    //             <TeamGameRow key={game._id} row={game} team={team} />
-                    //         ))}
-                    //         </TableBody>
-                    //     </Table>
-                    // </TableContainer>
-
-                    <TeamTable />
+                    <TeamGameTable seasonData={teamSeasonGameData} />
                 }
 
-                
                 {selectedTab === 1 &&
-                    <TableContainer className={classes.tableContainer} component={Paper}>
-                        <Table aria-label="collapsible table">
-                            <TableHead>
-                            <TableRow>
-                                <TableCell />
-                                <TableCell align='left'>Season</TableCell>
-                                {/* <TableCell align="right">Overall  Action</TableCell> */}
-                                
-                            </TableRow>
-                            </TableHead>
-                            <TableBody>
-                            {sortedFights.map((fight) => (
-                                
-                                <TeamRow key={fight._id} row={fight} />
-                            ))}
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
-                    
+                    <TeamFightTable seasonData={teamSeasonFightData} />
                 }
 
                 {selectedTab === 2 && 

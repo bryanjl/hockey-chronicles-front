@@ -14,7 +14,7 @@ const LeagueFightRow = (props) => {
     }, []);
 
     const fetchData = (season) => {
-        getAllFightsAPI(`term=season=${season}&league=NHL`).then(response => {
+        getAllFightsAPI(`season=${season}&league=NHL`).then(response => {
             console.log(response);
         })
     }
