@@ -47,6 +47,7 @@ const TeamProfile = () => {
             setTeam(response.data);
             
             setIsFetching(false);
+            
         });
     }, [teamID]);
 

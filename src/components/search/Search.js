@@ -34,6 +34,7 @@ import {
       },
       inputRoot: {
         color: 'inherit',
+        border: '1px solid black'
       },
       inputInput: {
         
@@ -61,7 +62,7 @@ import {
             if(e.target.value === ''){
               return;
             }
-            let query = `?term=${e.target.value}`;
+            let query = `term=${e.target.value}`;
             handleSearch(query);
             // console.log(query);
         }
@@ -74,7 +75,7 @@ import {
         </div>
         <InputBase
           placeholder="Search..."
-          
+          fullWidth
           onKeyDown={search}
           classes={{
             root: classes.inputRoot,

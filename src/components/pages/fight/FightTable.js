@@ -23,26 +23,29 @@ const columns = [
     format: (league) => `${league.name}`
   },
   { 
-    id: 'teams', 
-    label: 'Teams', 
+    id: 'players', 
+    label: 'Players', 
     minWidth: 170,
-    format: (teams) => {
-      return (<><Link style={{cursor: 'pointer'}} to={`/teams/${teams[0].id}`}>{teams[0].city}</Link> Vs <Link style={{cursor: 'pointer'}} to={`/teams/${teams[1].id}`}>{teams[1].city}</Link></>)
+    format: (players) => {
+        if(players.length === 0){
+            return ``;
+        }
+      return (<><Link style={{cursor: 'pointer'}} to={`/players/${players[0].id}`}>{players[0].lastName}</Link> Vs <Link style={{cursor: 'pointer'}} to={`/players/${players[1].id}`}>{players[1].lastName}</Link></>)
     } 
   },
   {
-    id: 'gameType',
-    label: 'Game Type',
+    id: 'fightType',
+    label: 'Fight Type',
     minWidth: 150,
     align: 'right',
   },
-  {
-    id: 'fights',
-    label: 'No. of Events',
-    minWidth: 170,
-    align: 'right',
-    format: (fights) => fights ? fights.length : 0
-  },
+//   {
+//     id: 'fights',
+//     label: 'No. of Events',
+//     minWidth: 170,
+//     align: 'right',
+//     format: (fights) => fights ? fights.length : 0
+//   },
   {
     id: '_id',
     label: '',
@@ -51,26 +54,33 @@ const columns = [
     format: (id) => {
       return (
         <>
-          <Link style={{cursor: 'pointer'}} to={`/games/${id}`}>View Game</Link>
+          <Link style={{cursor: 'pointer'}} to={`/fights/${id}`}>View Fight</Link>
         </>
       )
     }
   },
 ];
 
-const SeasonTable = ({ seasonData }) => {
+const FightTable = ({ seasonData, pageChange, totalDocuments, currPage }) => {
 
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(25);
+    // console.log(currPage);
+
+  const [page, setPage] = useState(currPage - 1);
+//   const [rowsPerPage, setRowsPerPage] = useState(50);
+// console.log('page', page)
+  
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
+    pageChange(newPage + 1);
+    // console.log(newPage);
   };
 
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
-  };
+//   const handleChangeRowsPerPage = (event) => {
+//     console.log(event.target.value);
+//     // setRowsPerPage(+event.target.value);
+//     // setPage(0);
+//   };
 
   return (
     <Paper sx={{ width: '100%', overflow: 'hidden', marginTop: '15px' }}>
@@ -90,8 +100,10 @@ const SeasonTable = ({ seasonData }) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {seasonData
-              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+            {seasonData.length > 0 &&
+            
+            seasonData
+            //   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row) => {
                 return (
                   <TableRow hover role="checkbox" tabIndex={-1} key={row._id}>
@@ -112,16 +124,16 @@ const SeasonTable = ({ seasonData }) => {
         </Table>
       </TableContainer>
       <TablePagination
-        rowsPerPageOptions={[25, 50, 100]}
+        rowsPerPageOptions={[]}
         component="div"
-        count={seasonData.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
+        count={totalDocuments}
+        rowsPerPage={50}
+        page={currPage === 1 ? 0 : page}
         onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
+        // onRowsPerPageChange={handleChangeRowsPerPage}
       />
     </Paper>
   );
 }
 
-export default SeasonTable;
+export default FightTable;

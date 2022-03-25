@@ -2,6 +2,7 @@ import { useEffect, useState, useContext } from "react";
 import { useParams } from "react-router-dom";
 import { Button, Grid, makeStyles, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@material-ui/core";
 import PlayerTabs from "./PlayerTabs";
+import PlayerFightTable from "./PlayerFightTable";
 import EditPlayerDialog from "../adminTools/edit/EditPlayerDialog";
 import WinLossDrawChart from "../charts/WinLossDrawChart";
 import Row from "./Row";
@@ -59,9 +60,9 @@ const PlayerProfile = () => {
             data.data.fights.sort((a, b) => {
                 return new Date(a.date) - new Date(b.date)
             });
-            setPlayer(data.data);
-            
-            sortFights(data.data.fights);
+            setPlayer(data.data.player);
+            setPlayerFights(data.data.fights);
+            // sortFights(data.data.fights);
             setIsFetching(false);  
               
         });
@@ -182,6 +183,8 @@ const PlayerProfile = () => {
     }
 
     
+    const [playerFights, setPlayerFights] = useState([]);
+
 
     return (
         <>
@@ -228,24 +231,25 @@ const PlayerProfile = () => {
                 <PlayerTabs setTab={setTab} currTab={selectedTab} />
 
                 {selectedTab === 0 &&
-                    <TableContainer className={classes.tableContainer} component={Paper}>
-                        <Table aria-label="collapsible table">
-                            <TableHead>
-                            <TableRow>
-                                <TableCell />
-                                <TableCell align='left'>Season</TableCell>
-                                <TableCell align="right">Overall  Action</TableCell>
+                    // <TableContainer className={classes.tableContainer} component={Paper}>
+                    //     <Table aria-label="collapsible table">
+                    //         <TableHead>
+                    //         <TableRow>
+                    //             <TableCell />
+                    //             <TableCell align='left'>Season</TableCell>
+                    //             <TableCell align="right">Overall  Action</TableCell>
                                 
-                            </TableRow>
-                            </TableHead>
-                            <TableBody>
-                            {sortedFights.map((fight) => (
+                    //         </TableRow>
+                    //         </TableHead>
+                    //         <TableBody>
+                    //         {sortedFights.map((fight) => (
                                 
-                                <Row key={fight._id} row={fight} player={player} outcomeValue={outcomeValue} />
-                            ))}
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
+                    //             <Row key={fight._id} row={fight} player={player} outcomeValue={outcomeValue} />
+                    //         ))}
+                    //         </TableBody>
+                    //     </Table>
+                    // </TableContainer>
+                    <PlayerFightTable seasonData={playerFights} />
                 }
 
                 {selectedTab === 1  &&
