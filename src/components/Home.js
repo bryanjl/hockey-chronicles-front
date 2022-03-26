@@ -16,7 +16,7 @@ const Home = () => {
     }
 
     const handleFightSearch = (searchTerm) => {
-        navigate(`/fights?term=${searchTerm}`);
+        navigate(`/fights?search=${searchTerm}`);
     }
 
     const handleTeamSearch = (searchTerm) => {

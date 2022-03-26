@@ -1,5 +1,6 @@
 import { Grid } from "@material-ui/core";
 import { useEffect, useState } from "react";
+// import { useSearchParams } from "react-router-dom";
 import { getAllFights as getAllFightsAPI } from "../../api/fights/fightApi"
 import SeasonSelect from "../seasonProfile/SeasonSelect";
 import LeagueSelect from "../leagueProfile/LeagueSelect";
@@ -29,6 +30,14 @@ const Fights = () => {
 
     //Get all fights
     useEffect(() => {
+        // let searchTerm = searchParams.get('search');
+        // if(!searchTerm){
+        //     setSearchParams(`${searchQuery}${seasonQuery}${leagueQuery}&page=${page}`);
+            
+        // } else {
+        //     setSearchQuery(`term=${searchTerm}`);
+        //     setSearchParams(`term=${searchParams}&page=1`);
+        // }
         fetchData();
         //eslint-disable-next-line
     }, [page, seasonQuery, leagueQuery, searchQuery]);
@@ -38,6 +47,30 @@ const Fights = () => {
     const fetchData = () => {
         setIsFetching(true);
         setFightResults([]);
+        // let searchTerm = searchParams.get('term');
+        // if(searchTerm){
+        //     getAllFightsAPI(`${searchTerm}&page=${page}`).then(data => {
+        //         console.log(data);
+        //         setFightResults(data.data);
+        //         // setNumberOfPages(data.pagination.totalPages);
+        //         setTotalDocuments(data.pagination.totalDocuments);
+        //         // setSearchQuery('');
+        //         setIsFetching(false);
+        //     });
+        // }
+        // let seasonSearch = searchParams.get('season');
+        // let leagueSearch = searchParams.get('league');
+        // let termSearch = searchParams.get('term');
+        // let query = '';
+        // if(seasonSearch){
+        //     query = `season=${seasonSearch}`;
+        // }
+        // if(leagueSearch){
+        //     query += `&league=${leagueSearch}`;
+        // } 
+        // if(termSearch){
+        //     query = `term=${termSearch}`
+        // }
         getAllFightsAPI(`${searchQuery}${seasonQuery}${leagueQuery}&page=${page}`).then(data => {
             console.log(data);
             setFightResults(data.data);
@@ -51,6 +84,7 @@ const Fights = () => {
     // get fights by season -> select
     const seasonSelect = (season) => {
         setSeasonQuery(`&season=${season}`);
+        // setSearchParams(`?season=${season}`);
         setPage(1);
     }
 
