@@ -5,13 +5,12 @@ import PlayerTabs from "./PlayerTabs";
 import PlayerFightTable from "./PlayerFightTable";
 import EditPlayerDialog from "../adminTools/edit/EditPlayerDialog";
 import WinLossDrawChart from "../charts/WinLossDrawChart";
-import Row from "./Row";
 //api
 import { getPlayer as getPlayerAPI } from "../../api/players/playersApi";
 //user context
 import { UserContext } from "../../contexts/UserContext";
 //utils
-import { checkIfInitialOutcome, checkIfDrawOutcome, checkOutcomeWinner } from "../../utils/checkFightOutcome";
+// import { checkIfInitialOutcome, checkIfDrawOutcome, checkOutcomeWinner } from "../../utils/checkFightOutcome";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -41,9 +40,7 @@ const PlayerProfile = () => {
 
     //state for player data
     const [player, setPlayer] = useState({});
-
-    //fights organized by season [[1994-1995], [1995-1996], [etc]]
-    const [sortedFights, setSortedFights] = useState([]);
+    const [playerFights, setPlayerFights] = useState([]);
 
     //state for current tab
     const [selectedTab, setSelectedTab] = useState(0);
@@ -57,85 +54,34 @@ const PlayerProfile = () => {
     useEffect(() => {
         setIsFetching(true);
         getPlayerAPI(playerID).then(data => {
-            data.data.fights.sort((a, b) => {
-                return new Date(a.date) - new Date(b.date)
-            });
             setPlayer(data.data.player);
             setPlayerFights(data.data.fights);
-            // sortFights(data.data.fights);
-            setIsFetching(false);  
-              
+            setIsFetching(false); 
         });
-        
         //eslint-disable-next-line
-    }, []);
+    }, [playerID]);
 
     const setTab = (value) => {
         setSelectedTab(value);
-        getRivals(player.fights);
+        if(value === 1) {
+            getRivals(playerFights);
+        }
+        
     }
 
     //check to see if player had won lost, drawed or if there is no votes for outcome chart
-    const outcomeValue = (outcomeObj, playerId) => {
-        if(checkIfInitialOutcome(outcomeObj)){
-            return '';
-        } else if (checkIfDrawOutcome(outcomeObj)) {
-            return 'Draw';
-        } else {
-            if(checkOutcomeWinner(outcomeObj, playerId)){
-                return 'Win';
-            }         
-            return 'Loss';
-        }
-    }
-
-    //organize fights into seasons
-    const sortFights = (allFights) => {        
-        //organize fights into seasons by array [[1994-1995], [1995-1996], [etc]]
-        //must be a sorted array
-        let fightArr = [];
-        let currSeason = allFights[0].season.season;
-        let seasonArr = [];
-        let actionAccum = {
-            average: 0,
-            votes: 0
-        }
-        allFights.forEach(fight => {
-            if (fight.season.season === currSeason) {
-                seasonArr.push(fight);
-                if(fight.actionRating.average !== 0){
-                    // console.log(fight.actionRating.average, typeof fight.actionRating.average)
-                    actionAccum.average += Number.parseFloat(fight.actionRating.average, 10);
-                    actionAccum.votes += 1;
-                }
-            } else {
-                // console.log(actionAccum);
-                let action = 0;
-                if(actionAccum.average !== 0){
-                    action = (actionAccum.average / actionAccum.votes)
-                }
-                // console.log(action);
-                seasonArr.push(action);
-                fightArr.push(seasonArr);
-                seasonArr = [];
-                actionAccum = {
-                    average: 0,
-                    votes: 0
-                }       
-                currSeason = fight.season.season;
-                seasonArr.push(fight);
-            }
-        });
-        let action = 0;
-        if(actionAccum.average !== 0){
-            action = (actionAccum.average / actionAccum.votes)
-        }
-        seasonArr.push(action);
-        fightArr.push(seasonArr);
-        // console.log(fightArr);
-        setSortedFights(fightArr);
-        
-    }
+    // const outcomeValue = (outcomeObj, playerId) => {
+    //     if(checkIfInitialOutcome(outcomeObj)){
+    //         return '';
+    //     } else if (checkIfDrawOutcome(outcomeObj)) {
+    //         return 'Draw';
+    //     } else {
+    //         if(checkOutcomeWinner(outcomeObj, playerId)){
+    //             return 'Win';
+    //         }         
+    //         return 'Loss';
+    //     }
+    // }
 
 
     //this could be a custom hook
@@ -181,10 +127,6 @@ const PlayerProfile = () => {
     const handleEditPlayerClose = () => {
         setOpenEditPlayer(false);
     }
-
-    
-    const [playerFights, setPlayerFights] = useState([]);
-
 
     return (
         <>
