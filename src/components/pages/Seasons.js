@@ -26,10 +26,10 @@ const Seasons = () => {
 
         let query = '';
         if(season !== ''){
-            query = `season=${season}&`;
+            query = `season=${season}`;
         }
         if(league !== ''){
-            query += `league=${league}`;
+            query += `&league=${league}`;
         }
 
         getAllGamesAPI(query).then(response => {
