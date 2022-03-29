@@ -1,8 +1,9 @@
 import { Box, Button, Grid, makeStyles, Paper, Typography } from "@material-ui/core";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import EmbedYouTube from '../../EmbedYouTube';
-import PlayerCard from '../../FightCard/PlayerCard';
-import PlayerThumb from '../../playerProfile/PlayerThumb';
+// import PlayerCard from '../../FightCard/PlayerCard';
+// import PlayerThumb from '../../playerProfile/PlayerThumb';
 //api
 import { getFeaturedFight as getFeaturedFightAPI } from "../../../api/fights/fightApi";
 
@@ -10,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
     container: {
         minHeight: '300px',
         // width: '100%',
-        padding: '5px',
+        padding: '15px',
         margin: '15px',
         marginBottom: '100px'
     },
@@ -22,13 +23,13 @@ const useStyles = makeStyles((theme) => ({
         minHeight: '100%',
         width: '95%',
         // border: '1px solid black',
-        marginTop: '10px',
-        marginLeft: '7px'
+        margin: '15px'
     }
 }));
 
 const FeaturedFight = () => {
     const classes = useStyles();
+    const navigate = useNavigate();
 
     //state for feature fight
     const [featuredFight, setFeaturedFight] = useState({});
@@ -37,11 +38,14 @@ const FeaturedFight = () => {
     useEffect(() => {
         //get featuredf fight from DB
         getFeaturedFightAPI().then(response => {
-            console.log(response);
             setFeaturedFight(response.data);
             setIsFetching(false);
         });
     }, []);
+
+    const handleClick = () => {
+        navigate(`/fights/${featuredFight._id}`)
+    }
 
     return (
         <Paper elevation={8} className={classes.container}>
@@ -49,37 +53,34 @@ const FeaturedFight = () => {
                 <Grid container>
                     <Grid item xs={12}>
                         <Typography variant='h5'>Featured Fight</Typography>
+                        
                     </Grid>
-                    <Grid item xs={12}>
+                    <Grid align='center' item xs={12}>
                         <Typography variant='h6'>
-                            {new Date(featuredFight.date).toDateString()}
+                            {new Date(featuredFight.date).toDateString()}   
                         </Typography>
                     </Grid>
-                    <Grid item xs={7}>
+                    <Grid align='center' item xs={12}>
+                        <Typography variant='h4'>{`${featuredFight.players[0].firstName} ${featuredFight.players[0].lastName} Vs ${featuredFight.players[1].firstName} ${featuredFight.players[1].lastName}`}</Typography>
+                    </Grid>
+                    <Grid item xs={12}>
+                        
+                    </Grid>
+                    <Grid item xs={12}>
                         <EmbedYouTube 
                             videoLink={featuredFight.videoLink} 
                         />
                     </Grid>
-                    <Grid item xs={5}>
-                        <Grid container>
-                            <Grid item xs={6} align='center'>
-                                {/* <PlayerCard player={featuredFight.players[0]} /> */}
-                                <PlayerThumb player={featuredFight.players[0]} />
-                            </Grid>
-                            <Grid item xs={6} align='center'>
-                                {/* <PlayerCard player={featuredFight.players[1]} /> */}
-                                <PlayerThumb player={featuredFight.players[1]} />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <Box className={classes.descriptionBox}>
-                                    <Typography>{featuredFight.description}</Typography>
-                                </Box>
-                                
-                            </Grid>
-                        </Grid>
+                    <Grid item xs={12}>
+                        <Box className={classes.descriptionBox}>
+                            <Typography variant='subtitle1'>{featuredFight.description}</Typography>
+                        </Box>
+                        
                     </Grid>
+                    
                     <Grid item xs={12}>
                         <Button
+                            onClick={handleClick}
                             fullWidth
                             variant='outlined'
                             className={classes.viewFightBtn}

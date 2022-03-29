@@ -29,6 +29,15 @@ const useStyles = makeStyles((theme) => ({
 const EmbedYouTube = ({ videoLink = '' }) => {
     const classes = useStyles();
 
+    if(videoLink !== ''){
+      let vidID = videoLink.split('=')[1];
+      return (
+        <Container className={classes.container}>
+            <YouTube className={classes.youtube} videoId={vidID} />
+        </Container>     
+      )   
+    }
+
     if(videoLink === ''){
         return (
             <Container className={classes.noVideoContainer}>
@@ -36,14 +45,6 @@ const EmbedYouTube = ({ videoLink = '' }) => {
             </Container>
         )
     }
-
-    return (
-        
-    <Container className={classes.container}>
-        <YouTube className={classes.youtube} videoId={videoLink} />
-    </Container>
-        
-    )
 }
 
 export default EmbedYouTube;
