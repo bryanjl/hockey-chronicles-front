@@ -33,7 +33,7 @@ const Seasons = () => {
         }
 
         getAllGamesAPI(query).then(response => {
-            // console.log(response)
+            console.log(response)
             setGameResults(response.data);
             setIsFetching(false);
         });
