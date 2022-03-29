@@ -58,19 +58,20 @@ const columns = [
   },
 ];
 
-const SeasonTable = ({ seasonData }) => {
+const SeasonTable = ({ seasonData, pageChange, totalDocuments, currPage }) => {
 
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(25);
+  const [page, setPage] = useState(currPage - 1);
+  // const [rowsPerPage, setRowsPerPage] = useState(25);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
-  };
+    pageChange(newPage + 1);
+  }
 
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
-  };
+  // const handleChangeRowsPerPage = (event) => {
+  //   setRowsPerPage(+event.target.value);
+  //   setPage(0);
+  // };
 
   return (
     <Paper sx={{ width: '100%', overflow: 'hidden', marginTop: '15px' }}>
@@ -91,7 +92,7 @@ const SeasonTable = ({ seasonData }) => {
           </TableHead>
           <TableBody>
             {seasonData
-              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              // .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row) => {
                 return (
                   <TableRow hover role="checkbox" tabIndex={-1} key={row._id}>
@@ -112,13 +113,13 @@ const SeasonTable = ({ seasonData }) => {
         </Table>
       </TableContainer>
       <TablePagination
-        rowsPerPageOptions={[25, 50, 100]}
+        rowsPerPageOptions={[]}
         component="div"
-        count={seasonData.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
+        count={totalDocuments}
+        rowsPerPage={50}
+        page={currPage === 1 ? 0 : page}
         onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
+        // onRowsPerPageChange={handleChangeRowsPerPage}
       />
     </Paper>
   );

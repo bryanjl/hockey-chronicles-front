@@ -1,6 +1,6 @@
 import { Grid } from "@material-ui/core";
 import { useEffect, useState } from "react";
-// import { useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import { getAllFights as getAllFightsAPI } from "../../api/fights/fightApi"
 import SeasonSelect from "../seasonProfile/SeasonSelect";
 import LeagueSelect from "../leagueProfile/LeagueSelect";
@@ -10,86 +10,84 @@ import FightTable from "./fight/FightTable";
 
 const Fights = () => {
     //search params
-    // const [searchParams, setSearchParams] = useSearchParams();
+    const [searchParams, setSearchParams] = useSearchParams();
 
     //fight data state
-    const [isFetching, setIsFetching] = useState(true);
     const [fightResults, setFightResults] = useState([]);
-
+    
     // state for current page for pagination
     const [page, setPage] = useState(1);
+    const [totalDocuments, setTotalDocuments] = useState(0);
 
     const [searchQuery, setSearchQuery] = useState('');
     const [seasonQuery, setSeasonQuery] = useState('');
-    const [leagueQuery, setLeagueQuery] = useState('');
+    const [leagueQuery, setLeagueQuery] = useState('');    
 
-    //state for total number of pages 
-    // const [numberOfPages, setNumberOfPages] = useState(0);
-
-    const [totalDocuments, setTotalDocuments] = useState(0);
-
-    //Get all fights
     useEffect(() => {
-        // let searchTerm = searchParams.get('search');
-        // if(!searchTerm){
-        //     setSearchParams(`${searchQuery}${seasonQuery}${leagueQuery}&page=${page}`);
-            
-        // } else {
-        //     setSearchQuery(`term=${searchTerm}`);
-        //     setSearchParams(`term=${searchParams}&page=1`);
-        // }
-        fetchData();
+        let query = '';
+        let searchTerm = searchParams.get('term');
+        let seasonTerm = searchParams.get('season');
+        let leagueTerm = searchParams.get('league');
+        let pageTerm = parseInt(searchParams.get('page') || 1);
+        if(searchTerm) {
+            query = `term=${searchTerm}&`;
+        }
+        if(seasonTerm){
+            query += `season=${seasonTerm}&`;
+        }
+        if(leagueTerm){
+            query += `league=${leagueTerm}&`;
+        }
+        query += `page=${pageTerm}`;
+
+        fetchData(`${query}`);
+        
+    }, [searchParams]);
+
+    useEffect(() => {
+        setParams();
         //eslint-disable-next-line
-    }, [page, seasonQuery, leagueQuery, searchQuery]);
+    }, [seasonQuery, leagueQuery, page, searchQuery]);
     
     //fetch data
     //api route /fights?term=&page
-    const fetchData = () => {
-        setIsFetching(true);
+    const fetchData = (query) => {
         setFightResults([]);
-        // let searchTerm = searchParams.get('term');
-        // if(searchTerm){
-        //     getAllFightsAPI(`${searchTerm}&page=${page}`).then(data => {
-        //         console.log(data);
-        //         setFightResults(data.data);
-        //         // setNumberOfPages(data.pagination.totalPages);
-        //         setTotalDocuments(data.pagination.totalDocuments);
-        //         // setSearchQuery('');
-        //         setIsFetching(false);
-        //     });
-        // }
-        // let seasonSearch = searchParams.get('season');
-        // let leagueSearch = searchParams.get('league');
-        // let termSearch = searchParams.get('term');
-        // let query = '';
-        // if(seasonSearch){
-        //     query = `season=${seasonSearch}`;
-        // }
-        // if(leagueSearch){
-        //     query += `&league=${leagueSearch}`;
-        // } 
-        // if(termSearch){
-        //     query = `term=${termSearch}`
-        // }
-        getAllFightsAPI(`${searchQuery}${seasonQuery}${leagueQuery}&page=${page}`).then(data => {
+
+        getAllFightsAPI(query).then(data => {
             console.log(data);
             setFightResults(data.data);
-            // setNumberOfPages(data.pagination.totalPages);
             setTotalDocuments(data.pagination.totalDocuments);
-            // setSearchQuery('');
-            setIsFetching(false);
         });
+    }
+    
+    const setParams = () => {
+        let urlParams = '?';
+        if(searchQuery !== ''){
+            urlParams += `${searchQuery}&`;
+        } else {
+            if(seasonQuery !== ''){
+                urlParams += `season=${seasonQuery}&`;
+            }
+            if(leagueQuery !== '') {
+                urlParams += `league=${leagueQuery}&`;
+            }
+        }
+
+        urlParams += `page=${page}`;
+        
+        setSearchParams(`${urlParams}`);
     }
 
     // get fights by season -> select
     const seasonSelect = (season) => {
-        setSeasonQuery(`&season=${season}`);
-        // setSearchParams(`?season=${season}`);
+        setSeasonQuery(season);
         setPage(1);
     }
 
-    const leagueSelect = (value) => {
-        setLeagueQuery(`&league=${value}`);
+    const leagueSelect = (league) => {
+        setLeagueQuery(league);
+        setPage(1);
     }
 
     //fight search
@@ -97,41 +95,29 @@ const Fights = () => {
         setSeasonQuery('');
         setLeagueQuery('');
         setSearchQuery(query);
+        setPage(1);
     }
 
     //page change function
     const pageChange = (value) => {
         setPage(value);
-
     }
 
     return (
-        <Grid container>
-            <Grid item xs={12}>
-                <Search handleSearch={fightSearch} />
-            </Grid>
-            <Grid item xs={6}>
-                    <SeasonSelect seasonSelect={seasonSelect} />
+        <>
+            <Grid container>
+                <Grid item xs={12}>
+                    <Search handleSearch={fightSearch} />
                 </Grid>
                 <Grid item xs={6}>
-                    <LeagueSelect leagueSelect={leagueSelect} />    
-                </Grid> 
+                        <SeasonSelect seasonSelect={seasonSelect} />
+                    </Grid>
+                    <Grid item xs={6}>
+                        <LeagueSelect leagueSelect={leagueSelect} />    
+                    </Grid> 
+            </Grid>
             <FightTable seasonData={fightResults} pageChange={pageChange} totalDocuments={totalDocuments} currPage={page} />
-            {/* {!isFetching && 
-                // fightResults.map((result) => {
-                //     if(result.fightType === 'Event' || result.players.length === 0) {
-                //         return <></>
-                //     } else {
-                //         return <SearchResult key={result._id} result={result} id={result._id} />
-                //     }                    
-                // })
-                
-            } */}
-            {/* {numberOfPages !== 0 && 
-                <Paging currPage={page} pageChange={pageChange} totalPages={numberOfPages} />
-            } */}
-            
-        </Grid>
+        </>
     )
 }
 

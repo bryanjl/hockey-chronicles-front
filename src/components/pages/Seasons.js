@@ -1,58 +1,114 @@
 import { useEffect, useState } from "react";
+import { Grid } from "@mui/material";
+import { useSearchParams } from 'react-router-dom';
 import SeasonTable from "../seasonProfile/SeasonTable";
 import SeasonSelect from "../seasonProfile/SeasonSelect";
 import LeagueSelect from "../leagueProfile/LeagueSelect";
+import Search from "../search/Search";
 
 //APIs
 import { getAllGames as getAllGamesAPI } from "../../api/games/gamesApi";
-import { Grid } from "@mui/material";
+
 
 const Seasons = () => {
+    const [searchParams, setSearchParams] = useSearchParams();
     //state for API data
     const [gameResults, setGameResults] = useState([]);
-    const [isFetching, setIsFetching] = useState(true);
+
+    //pagination
+    const [page, setPage] = useState(1);
+    const [totalDocuments, setTotalDocuments] = useState(0);
 
     //state for season and league selects
     const [season, setSeason] = useState('');
     const [league, setLeague] = useState('');
+    const [searchQuery, setSearchQuery] = useState('');
 
     useEffect(() => {
-        fetchData();
-        //eslint-disable-next-line
-    }, [season, league]);
-
-    const fetchData = () => {
-        setIsFetching(true);
-
         let query = '';
-        if(season !== ''){
-            query = `season=${season}`;
+        let searchTerm = searchParams.get('term');
+        let seasonTerm = searchParams.get('season');
+        let leagueTerm = searchParams.get('league');
+        let pageTerm = parseInt(searchParams.get('page') || 1);
+        if(searchTerm) {
+            query = `term=${searchTerm}&`;
         }
-        if(league !== ''){
-            query += `&league=${league}`;
+        if(seasonTerm){
+            query += `season=${seasonTerm}&`;
         }
+        if(leagueTerm){
+            query += `league=${leagueTerm}&`;
+        }
+        query += `page=${pageTerm}`;
+
+        // let pageParam = parseInt(searchParams.get('page') || 1);
+        // setPage(pageTerm);
+        fetchData(`${query}`);
+        
+    }, [searchParams]);
+
+    useEffect(() => {
+        setParams();
+        //eslint-disable-next-line
+    }, [season, league, page, searchQuery]);
+
+    const fetchData = (query) => {
+        // setIsFetching(true);
+        setGameResults([]);
 
         getAllGamesAPI(query).then(response => {
-            console.log(response)
             setGameResults(response.data);
-            setIsFetching(false);
+            setTotalDocuments(response.pagination.totalDocuments);
         });
+    }
+
+    const setParams = () => {
+        let urlParams = '?';
+        if(searchQuery !== ''){
+            urlParams += `${searchQuery}&`;
+        } else {
+            if(season !== ''){
+                urlParams += `season=${season}&`;
+            }
+            if(league !== '') {
+                urlParams += `league=${league}&`;
+            }
+        }
+
+        urlParams += `page=${page}`;
+        
+        setSearchParams(`${urlParams}`);
     }
 
     //get games by season -> select
     const seasonChange = (seasonValue) => {
-        console.log(seasonValue);
         setSeason(seasonValue);
+        setPage(1);
     }
 
     const leagueChange = (leagueValue) => {
-        console.log(leagueValue);
         setLeague(leagueValue);
+        setPage(1);
+    }
+
+    const gameSearch = (queryValue) => {
+        setSeason('');
+        setLeague('');
+        setSearchQuery(queryValue);
+        setPage(1);
+    }
+
+    //page change function
+    const pageChange = (value) => {
+        setPage(value);
     }
 
     return (
         <>
             <Grid container>
+                <Grid item xs={12}>
+                    <Search handleSearch={gameSearch} />
+                </Grid>
                 <Grid item xs={6}>
                     <SeasonSelect seasonSelect={seasonChange} />     
                 </Grid>
@@ -61,9 +117,7 @@ const Seasons = () => {
                 </Grid>
             </Grid>
             
-            {!isFetching && 
-                <SeasonTable seasonData={gameResults} />
-            }
+            <SeasonTable seasonData={gameResults} pageChange={pageChange} totalDocuments={totalDocuments} currPage={page} />
         </>
     )
 }
