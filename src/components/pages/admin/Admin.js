@@ -1,4 +1,4 @@
-import { makeStyles } from "@material-ui/core";
+import { Button, makeStyles } from "@material-ui/core";
 import { FormControl, Grid, InputLabel, MenuItem, Select, Typography } from "@mui/material"
 import { Box } from "@mui/system";
 import { useContext, useState } from "react";
@@ -7,6 +7,7 @@ import CreatePlayer from "./create/CreatePlayer";
 import CreateLeague from "./create/CreateLeague";
 import CreateGame from "./create/CreateGame";
 import CreateTeam from "./create/CreateTeam";
+import ManageUsers from "./users/ManageUsers";
 //userContext
 import { UserContext } from "../../../contexts/UserContext";
 
@@ -14,6 +15,9 @@ const useStyles = makeStyles((theme) => ({
     adminTitle: {
         paddingBottom: '25px',
         
+    },
+    manageUsersBtn: {
+        margin: '10px'
     }
 }));
 
@@ -33,6 +37,10 @@ const Admin = () => {
     const handleCreateSelectChange = (e) => {
         // console.log(e.target.value);
         setCreateSelect(e.target.value);
+    }
+
+    const manageUsersHandleClick = () => {
+        setCreateSelect('manageUsers');
     }
 
 
@@ -70,7 +78,12 @@ const Admin = () => {
                         </Box>
                     </Grid>
                     <Grid item xs={6}>
-                        
+                        <Button
+                            className={classes.manageUsersBtn}
+                            onClick={manageUsersHandleClick}
+                            variant='outlined'
+                            fullWidth
+                        >Manage Users</Button>
                     </Grid>
                 </Grid>
             </Grid>
@@ -101,6 +114,12 @@ const Admin = () => {
         {createSelect === 'league' &&
             <>
                 <CreateLeague />
+            </>
+        }
+
+        {createSelect === 'manageUsers' &&
+            <>
+                <ManageUsers />
             </>
         }
     </>
