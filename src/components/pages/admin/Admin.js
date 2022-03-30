@@ -77,14 +77,17 @@ const Admin = () => {
                             </FormControl>
                         </Box>
                     </Grid>
-                    <Grid item xs={6}>
-                        <Button
-                            className={classes.manageUsersBtn}
-                            onClick={manageUsersHandleClick}
-                            variant='outlined'
-                            fullWidth
-                        >Manage Users</Button>
-                    </Grid>
+                    {user.role === 'super' &&
+                        <Grid item xs={6}>
+                            <Button
+                                className={classes.manageUsersBtn}
+                                onClick={manageUsersHandleClick}
+                                variant='outlined'
+                                fullWidth
+                            >
+                                Manage Users</Button>
+                        </Grid>
+                    }
                 </Grid>
             </Grid>
         </Grid>
@@ -116,12 +119,13 @@ const Admin = () => {
                 <CreateLeague />
             </>
         }
-
         {createSelect === 'manageUsers' &&
             <>
                 <ManageUsers />
             </>
         }
+
+
     </>
 
         }
@@ -131,6 +135,8 @@ const Admin = () => {
                 <Typography variant='h4'>Please Log in to administration account</Typography>
             </>
         }
+
+        
     </>
       
   )
