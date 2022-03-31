@@ -5,6 +5,7 @@ import SeasonTable from "../seasonProfile/SeasonTable";
 import SeasonSelect from "../seasonProfile/SeasonSelect";
 import LeagueSelect from "../leagueProfile/LeagueSelect";
 import Search from "../search/Search";
+import LinearLoadingAnimation from "../feedback/LinearLoadingAnimation";
 
 //APIs
 import { getAllGames as getAllGamesAPI } from "../../api/games/gamesApi";
@@ -14,6 +15,8 @@ const Seasons = () => {
     const [searchParams, setSearchParams] = useSearchParams();
     //state for API data
     const [gameResults, setGameResults] = useState([]);
+
+    const [isFetching, setIsFetching] = useState(false);
 
     //pagination
     const [page, setPage] = useState(1);
@@ -53,12 +56,13 @@ const Seasons = () => {
     }, [season, league, page, searchQuery]);
 
     const fetchData = (query) => {
-        // setIsFetching(true);
+        setIsFetching(true);
         setGameResults([]);
 
         getAllGamesAPI(query).then(response => {
             setGameResults(response.data);
             setTotalDocuments(response.pagination.totalDocuments);
+            setIsFetching(false);
         });
     }
 
@@ -116,7 +120,9 @@ const Seasons = () => {
                     <LeagueSelect leagueSelect={leagueChange} />
                 </Grid>
             </Grid>
-            
+            {isFetching &&
+                <LinearLoadingAnimation />
+            }
             <SeasonTable seasonData={gameResults} pageChange={pageChange} totalDocuments={totalDocuments} currPage={page} />
         </>
     )

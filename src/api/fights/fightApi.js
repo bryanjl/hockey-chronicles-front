@@ -1,4 +1,5 @@
 import fetchApi from "../fetchApi";
+import { getToken } from "../auth/authApi";
 
 //Get fight by ID
 export const getFight = (fightId = '') => {
@@ -131,11 +132,13 @@ export const getFeaturedFight = async() => {
 }
 
 export const setFeaturedFight = async(fightId) => {
+    let token = getToken();
     let route = '/fights/featuredfight';
 
     let options = {
         method: 'PUT',
         headers: {
+            'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(fightId)

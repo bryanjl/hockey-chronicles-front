@@ -6,6 +6,7 @@ import PlayerCard from '../FightCard/PlayerCard';
 import Paging from "../Paging";
 import PositionSelect from "../playerProfile/PositionSelect";
 import Search from "../search/Search";
+import LinearLoadingAnimation from "../feedback/LinearLoadingAnimation";
 
 
 
@@ -18,12 +19,6 @@ const Players = () => {
     //state for pagination
     const [page, setPage] = useState(1);
     const [numberOfPages, setNumberOfPages] = useState(0);
-
-    //state for position select
-    // const [positionValue, setPositionValue] = useState('');
-
-    //state for search query
-    // const [searchQuery, setSearchQuery] = useState('');
 
     //Get all fights
     useEffect(() => {
@@ -85,6 +80,10 @@ const Players = () => {
                 <Search handleSearch={playerSearch} />
                 <PositionSelect positionSelect={positionSelect} />
             </Grid>
+
+            {isFetching &&
+                <LinearLoadingAnimation />
+            }
             
             {!isFetching && 
                 playerResults.map((result) => {

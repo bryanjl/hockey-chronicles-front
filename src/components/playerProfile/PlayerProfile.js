@@ -5,6 +5,7 @@ import PlayerTabs from "./PlayerTabs";
 import PlayerFightTable from "./PlayerFightTable";
 import EditPlayerDialog from "../adminTools/edit/EditPlayerDialog";
 import WinLossDrawChart from "../charts/WinLossDrawChart";
+import CircularLoadingAnimation from "../feedback/CircularLoadingAnimation";
 //api
 import { getPlayer as getPlayerAPI } from "../../api/players/playersApi";
 //user context
@@ -130,6 +131,10 @@ const PlayerProfile = () => {
 
     return (
         <>
+            {isFetching &&
+                <CircularLoadingAnimation />
+            }
+
             {!isFetching && 
                 <>
                     <Paper className={classes.paperContainer}>

@@ -4,8 +4,9 @@ import { useSearchParams } from "react-router-dom";
 import { getAllTeams as getAllTeamsAPI } from "../../api/teams/teamsApi";
 import TeamResult from '../teamProfile/TeamResult';
 import Paging from "../Paging";
-import LeagueSelect from "../leagueProfile/LeagueSelect";
+// import LeagueSelect from "../leagueProfile/LeagueSelect";
 import Search from "../search/Search";
+import LinearLoadingAnimation from "../feedback/LinearLoadingAnimation";
 
 const Teams = () => {
     const [searchParams, setSearchParams] = useSearchParams();
@@ -42,13 +43,13 @@ const Teams = () => {
         });
     }
 
-    const leagueSelect = (league) => {
-        if(league) {
-            setSearchParams(`?term=${league}&page=1`);      
-        } else {
-            setSearchParams(`?page=1`);
-        }
-    }
+    // const leagueSelect = (league) => {
+    //     if(league) {
+    //         setSearchParams(`?term=${league}&page=1`);      
+    //     } else {
+    //         setSearchParams(`?page=1`);
+    //     }
+    // }
 
     const teamSearch = (inputQuery) => {
         setSearchParams(`${inputQuery}&page=1`);
@@ -71,6 +72,9 @@ const Teams = () => {
                 <Search handleSearch={teamSearch} />
                 {/* <LeagueSelect leagueSelect={leagueSelect} /> */}
             </Grid>
+            {isFetching &&
+                <LinearLoadingAnimation />
+            }
             {!isFetching && 
                 teamResults.map((result) => {
                     return <TeamResult key={result._id} team={result} id={result._id} />

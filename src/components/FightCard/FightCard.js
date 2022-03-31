@@ -2,6 +2,7 @@ import { useEffect, useState, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import { Button, Grid, makeStyles } from '@material-ui/core';
 import { Typography } from '@mui/material';
+import CircularLoadingAnimation from '../feedback/CircularLoadingAnimation';
 import PlayerCard from './PlayerCard';
 import FightDescription from './FightDescription';
 import DateDisplay from './DateDisplay';
@@ -72,6 +73,10 @@ const FightCard = () => {
 
     return (
         <>
+            {isFetching &&
+                <CircularLoadingAnimation />
+            }
+
             {!isFetching && fight.players.length > 0 &&
 
                 <Grid container className={classes.container}>

@@ -6,11 +6,14 @@ import SeasonSelect from "../seasonProfile/SeasonSelect";
 import LeagueSelect from "../leagueProfile/LeagueSelect";
 import Search from "../search/Search";
 import FightTable from "./fight/FightTable";
+import LinearLoadingAnimation from "../feedback/LinearLoadingAnimation";
 
 
 const Fights = () => {
     //search params
     const [searchParams, setSearchParams] = useSearchParams();
+
+    const [isFetching, setIsFetching] = useState(false);
 
     //fight data state
     const [fightResults, setFightResults] = useState([]);
@@ -19,6 +22,7 @@ const Fights = () => {
     const [page, setPage] = useState(1);
     const [totalDocuments, setTotalDocuments] = useState(0);
 
+    //query state
     const [searchQuery, setSearchQuery] = useState('');
     const [seasonQuery, setSeasonQuery] = useState('');
     const [leagueQuery, setLeagueQuery] = useState('');    
@@ -52,12 +56,14 @@ const Fights = () => {
     //fetch data
     //api route /fights?term=&page
     const fetchData = (query) => {
+        setIsFetching(true);
         setFightResults([]);
 
         getAllFightsAPI(query).then(data => {
             console.log(data);
             setFightResults(data.data);
             setTotalDocuments(data.pagination.totalDocuments);
+            setIsFetching(false);
         });
     }
     
@@ -116,6 +122,9 @@ const Fights = () => {
                         <LeagueSelect leagueSelect={leagueSelect} />    
                     </Grid> 
             </Grid>
+            {isFetching && 
+                <LinearLoadingAnimation />
+            }
             <FightTable seasonData={fightResults} pageChange={pageChange} totalDocuments={totalDocuments} currPage={page} />
         </>
     )

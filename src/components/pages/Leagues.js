@@ -4,6 +4,7 @@ import { useSearchParams } from "react-router-dom";
 import { getAllLeagues as getAllLeaguesAPI } from "../../api/leagues/leaguesApi";
 import LeagueResult from '../leagueProfile/LeagueResult';
 import Paging from "../Paging";
+import LinearLoadingAnimation from "../feedback/LinearLoadingAnimation";
 
 const Leagues = () => {
     //use searchparams for browser history
@@ -58,6 +59,9 @@ const Leagues = () => {
 
     return (
         <Grid container>
+            {isFetching &&
+                <LinearLoadingAnimation />
+            }
             {!isFetching && 
                 leagueResults.map((result) => {
                     return <LeagueResult key={result._id} league={result} id={result._id} />

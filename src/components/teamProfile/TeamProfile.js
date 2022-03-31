@@ -6,6 +6,7 @@ import TeamFightTable from "./TeamFightTable";
 import { Grid, makeStyles, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@material-ui/core";
 import LeagueDisplay from "../leagueProfile/LeagueDisplay";
 import SeasonSelect from "../seasonProfile/SeasonSelect";
+import CircularLoadingAnimation from "../feedback/CircularLoadingAnimation";
 
 
 //Team API
@@ -101,6 +102,10 @@ const TeamProfile = () => {
 
     return (
         <>
+            {isFetching &&
+                <CircularLoadingAnimation />
+            }
+
             {!isFetching && 
             <>
                 <Grid container>

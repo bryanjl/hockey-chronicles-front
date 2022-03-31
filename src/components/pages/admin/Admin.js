@@ -8,6 +8,7 @@ import CreateLeague from "./create/CreateLeague";
 import CreateGame from "./create/CreateGame";
 import CreateTeam from "./create/CreateTeam";
 import ManageUsers from "./users/ManageUsers";
+import ChooseFeaturedFight from "./create/ChooseFeaturedFight";
 //userContext
 import { UserContext } from "../../../contexts/UserContext";
 
@@ -16,8 +17,10 @@ const useStyles = makeStyles((theme) => ({
         paddingBottom: '25px',
         
     },
-    manageUsersBtn: {
-        margin: '10px'
+    adminBtns: {
+        marginLeft: '10px',
+        marginBottom: '10px',
+        height: '56px'
     }
 }));
 
@@ -41,6 +44,10 @@ const Admin = () => {
 
     const manageUsersHandleClick = () => {
         setCreateSelect('manageUsers');
+    }
+
+    const chooseFeaturedHandleClick = () => {
+        setCreateSelect('chooseFeaturedFight');
     }
 
 
@@ -78,15 +85,29 @@ const Admin = () => {
                         </Box>
                     </Grid>
                     {user.role === 'super' &&
+                    <>
                         <Grid item xs={6}>
                             <Button
-                                className={classes.manageUsersBtn}
+                                
+                                className={classes.adminBtns}
+                                onClick={chooseFeaturedHandleClick}
+                                variant='outlined'
+                                fullWidth
+                            >
+                                Choose Featured Fight</Button>
+                        </Grid>
+                        <Grid item xs={6}></Grid>
+                        <Grid item xs={6}>
+                            <Button
+                                
+                                className={classes.adminBtns}
                                 onClick={manageUsersHandleClick}
                                 variant='outlined'
                                 fullWidth
                             >
                                 Manage Users</Button>
                         </Grid>
+                    </>
                     }
                 </Grid>
             </Grid>
@@ -122,6 +143,11 @@ const Admin = () => {
         {createSelect === 'manageUsers' &&
             <>
                 <ManageUsers />
+            </>
+        }
+        {createSelect === 'chooseFeaturedFight' &&
+            <>
+                <ChooseFeaturedFight />
             </>
         }
 

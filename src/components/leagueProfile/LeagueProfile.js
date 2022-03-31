@@ -5,6 +5,7 @@ import LeagueTabs from "./LeagueTabs";
 import SeasonSelect from "../seasonProfile/SeasonSelect";
 import LeagueGameTable from "../leagueProfile/LeagueGameTable";
 import LeagueFightTable from "./LeagueFightTable";
+import CircularLoadingAnimation from "../feedback/CircularLoadingAnimation";
 
 // api
 import { 
@@ -49,6 +50,9 @@ const LeagueProfile = () => {
 
     return (
         <>
+            {isFetching &&
+                <CircularLoadingAnimation />
+            }
             { !isFetching &&
                 <>
                     <LeagueDisplay league={league} />
