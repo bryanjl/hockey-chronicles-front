@@ -23,6 +23,12 @@ const columns = [
     format: (league) => `${league.name}`
   },
   { 
+    id: 'season',
+    label: 'Season', 
+    minWidth: 80,
+    format: (season) => `${season.season}`
+  },
+  { 
     id: 'players', 
     label: 'Players', 
     minWidth: 170,

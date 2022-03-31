@@ -65,7 +65,7 @@ const LeagueProfile = () => {
                     {selectedTab === 1 &&
                         <LeagueFightTable seasonData={seasonFightData} />
                     }
-                  </>                      
+                </>                      
             }
         </>
     )

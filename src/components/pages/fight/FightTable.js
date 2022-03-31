@@ -23,6 +23,12 @@ const columns = [
     format: (league) => `${league.name}`
   },
   { 
+    id: 'season',
+    label: 'Season', 
+    minWidth: 80,
+    format: (season) => `${season.season}`
+  },
+  { 
     id: 'players', 
     label: 'Players', 
     minWidth: 170,
@@ -36,16 +42,9 @@ const columns = [
   {
     id: 'fightType',
     label: 'Fight Type',
-    minWidth: 150,
+    minWidth: 100,
     align: 'right',
   },
-//   {
-//     id: 'fights',
-//     label: 'No. of Events',
-//     minWidth: 170,
-//     align: 'right',
-//     format: (fights) => fights ? fights.length : 0
-//   },
   {
     id: '_id',
     label: '',
