@@ -10,42 +10,99 @@ import CircularLoadingAnimation from "../feedback/CircularLoadingAnimation";
 // api
 import { 
     getLeague as getLeagueAPI, 
-    getLeagueSeasonData as getLeagueSeasonDataAPI 
 } from "../../api/leagues/leaguesApi";
+
+import {
+    getAllFights as getAllFightsAPI
+} from '../../api/fights/fightApi';
+
+import {
+    getAllGames as getAllGamesAPI
+} from '../../api/games/gamesApi';
+
 
 const LeagueProfile = () => {
     
     let { leagueID } = useParams();
 
     //state for league data
-    const [league, setLeague] = useState({});
+    const [league, setLeague] = useState(0);
+    const [seasonSelect, setSeasonSelect] = useState('');
     const [selectedTab, setSelectedTab] = useState(0);
 
     //state for isfetching from server
     const [isFetching, setIsFetching] = useState(false);
 
+    const [gameData, setGameData] = useState([]);
+    const [fightData, setFightData] =useState([]);
+
+    //game table states
+    const [gamePage, setGamePage] = useState(0);
+    const [totalGameDocuments, setTotalGameDocuments] = useState(0);
+
+    //fight table states
+    const [fightPage, setFightPage] = useState(0);
+    const [totalFightDocuments, setTotalFightDocuments] = useState(0);
+
     useEffect(() => {
         setIsFetching(true);
         getLeagueAPI(leagueID).then(response => {
+            console.log(response);
             setLeague(response.data);
+            setGamePage(1);
+            setFightPage(1);
             setIsFetching(false);
         });
+        //eslint-disable-next-line
     }, [leagueID]);
 
-    const [seasonGameData, setSeasonGameData] = useState([]);
-    const [seasonFightData, setSeasonFightData] =useState([]);
+    //fetch the game data
+    useEffect(() => {
+        if(league && selectedTab === 0){
+            fetchGameData();
+        }
+        //eslint-disable-next-line
+    }, [gamePage, selectedTab, seasonSelect]);
 
-    const fetchData = (seasonValue) => {
-        getLeagueSeasonDataAPI(leagueID, seasonValue).then(response => {
-            console.log(response)
-            setSeasonGameData(response.data.games);
-            setSeasonFightData(response.data.fights);
-        })
+    //game page change function
+    const gamePageChange = (value) => {
+        setGamePage(value);
+    }
+
+    const fetchGameData = () => {
+        setIsFetching(true);
+        getAllGamesAPI(`league=${league.name}&season=${seasonSelect}&page=${gamePage}`).then(response => {
+            setGameData(response.data);
+            setTotalGameDocuments(response.pagination.totalDocuments);
+            setIsFetching(false);
+        });
+    }
+
+    //fetch the fight data
+    useEffect(() => {
+        if(league && selectedTab === 1){
+            fetchFightData();
+        }
+        // eslint-disable-next-line
+    }, [fightPage, selectedTab, seasonSelect]);
+
+    //fight page change function
+    const fightPageChange = (value) => {
+        setFightPage(value);
+    }
+
+    const fetchFightData = () => {
+        setIsFetching(true);
+        getAllFightsAPI(`league=${league.name}&season=${seasonSelect}&page=${fightPage}`).then(response => {
+            setFightData(response.data);
+            setTotalFightDocuments(response.pagination.totalDocuments);
+            setIsFetching(false);
+        });
     }
 
     const handleSeasonSelect = (seasonValue) => {
         console.log(seasonValue);
-        fetchData(seasonValue);
+        setSeasonSelect(seasonValue);
     }
 
     return (
@@ -60,10 +117,10 @@ const LeagueProfile = () => {
                     <SeasonSelect seasonSelect={handleSeasonSelect} allSeasons={false} />
 
                     {selectedTab === 0 &&
-                        <LeagueGameTable seasonData={seasonGameData} />
+                        <LeagueGameTable seasonData={gameData} pageChange={gamePageChange} totalDocuments={totalGameDocuments} currPage={gamePage} />
                     } 
                     {selectedTab === 1 &&
-                        <LeagueFightTable seasonData={seasonFightData} />
+                        <LeagueFightTable seasonData={fightData} pageChange={fightPageChange} totalDocuments={totalFightDocuments} currPage={fightPage} />
                     }
                 </>                      
             }
@@ -72,6 +129,3 @@ const LeagueProfile = () => {
 }
 
 export default LeagueProfile;
-
-
-
