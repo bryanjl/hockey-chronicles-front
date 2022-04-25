@@ -7,7 +7,11 @@ import { useNavigate } from "react-router-dom";
 const useStyles = makeStyles((theme) => ({
     container: {
         padding: '15px',
-        marginTop: '15px'
+        marginTop: '15px',
+        borderLeft: '3px solid black',
+        borderBottom: '3px solid black',
+        borderTop: '3px solid #F74902',
+        borderRight: '3px solid #F74902',
     },
     tabs: {
         marginBottom: '7px'
@@ -70,8 +74,8 @@ const TopFive = () => {
 
   return (
       <Paper className={classes.container}>
-          <Typography variant="h5">Fight Leaders</Typography>
-          <Tabs className={classes.tabs} value={currTab} onChange={handleTabChange}>
+          <Typography variant="h5" style={{backgroundColor: 'black', color: 'white', borderBottom: '3px solid #F74902', padding: '5px'}}>Fight<Typography variant="h5" display='inline' style={{color: '#F74902', fontWeight: 'bolder'}}>Leaders</Typography></Typography>
+          <Tabs className={classes.tabs} value={currTab} onChange={handleTabChange} TabIndicatorProps={{style: {backgroundColor: '#F74902'}}}>
               <Tab label='Players' />
               <Tab label='Teams' />
           </Tabs>

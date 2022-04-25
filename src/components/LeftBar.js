@@ -16,7 +16,20 @@ const useStyles = makeStyles((theme) => ({
     container: {
         paddingTop: theme.spacing(10),
         height: '100%',
-        borderRight: '1px solid #ece7e7'
+        borderRight: '1px solid black'
+    },
+    root: {
+        '&:hover': {
+            backgroundColor: theme.palette.black.main,
+            color: theme.palette.orange.main,
+            
+            '& span': {
+                fontWeight: 'bolder',
+                paddingLeft: '10px',
+                // textAlign: 'right',
+                borderLeft: '3px solid #F74902',
+            }
+        }
     }
 }));
 
@@ -64,30 +77,30 @@ const LeftBar = () => {
     return (
         <Box className={classes.container}>
             <nav>
-                <List>
-                    <ListItem>
-                        <ListItemButton component={Link} to='/fights' >
-                            <ListItemText primary='Fights' />
+                <List >
+                    <ListItem className={classes.root}>
+                        <ListItemButton  component={Link} to='/fights' >
+                            <ListItemText primary='FIGHTS' />
                         </ListItemButton>
                     </ListItem>
-                    <ListItem>
+                    <ListItem className={classes.root}>
                         <ListItemButton component={Link} to='/leagues'>
-                            <ListItemText primary='Leagues' />
+                            <ListItemText primary='LEAGUES' />
                         </ListItemButton>
                     </ListItem>
-                    <ListItem>
+                    <ListItem className={classes.root}>
                         <ListItemButton component={Link} to='/seasons'>
-                            <ListItemText primary='Seasons' />
+                            <ListItemText primary='SEASONS' />
                         </ListItemButton>
                     </ListItem>
-                    <ListItem>
+                    <ListItem className={classes.root}>
                         <ListItemButton component={Link} to='/players'>
-                            <ListItemText primary='Players' />
+                            <ListItemText primary='PLAYERS' />
                         </ListItemButton>
                     </ListItem>
-                    <ListItem>
+                    <ListItem className={classes.root}>
                         <ListItemButton component={Link} to='/teams'>
-                            <ListItemText primary='Teams' />
+                            <ListItemText primary='TEAMS' />
                         </ListItemButton>
                     </ListItem>
                 </List>
@@ -95,19 +108,19 @@ const LeftBar = () => {
             <Divider />
             <nav>
                 <List>
-                    <ListItem>
+                    <ListItem className={classes.root}>
                         <ListItemButton onClick={loginBtnClick}>
-                            <ListItemText secondary='Login' />
+                            <ListItemText primary='Login' />
                         </ListItemButton>
                     </ListItem>
-                    <ListItem>
+                    <ListItem className={classes.root}>
                         <ListItemButton onClick={logoutBtnClick}>
-                            <ListItemText secondary='Logout' />
+                            <ListItemText primary='Logout' />
                         </ListItemButton>
                     </ListItem>
-                    <ListItem>
+                    <ListItem className={classes.root}>
                         <ListItemButton onClick={registerBtnClick}>
-                            <ListItemText secondary='Register' />
+                            <ListItemText primary='Register' />
                         </ListItemButton>
                     </ListItem>
                 </List>

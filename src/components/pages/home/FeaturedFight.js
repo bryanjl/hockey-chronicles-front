@@ -13,10 +13,12 @@ const useStyles = makeStyles((theme) => ({
         // width: '100%',
         padding: '15px',
         margin: '15px',
-        marginBottom: '100px'
+        marginBottom: '100px',
+        // border: '1px solid red'
     },
     viewFightBtn: {
-        backgroundColor: theme.palette.primary.light,
+        backgroundColor: theme.palette.black.main,
+        color: theme.palette.orange.main,
         marginTop: '10px'
     },
     descriptionBox:{
@@ -52,7 +54,7 @@ const FeaturedFight = () => {
             {!isFetching && 
                 <Grid container>
                     <Grid item xs={12}>
-                        <Typography variant='h5'>Featured Fight</Typography>
+                        <Typography variant='h5' style={{borderBottom: '3px solid #F74902', backgroundColor: 'black', color: 'white', padding: '5px'}}>Featured<Typography variant='h5' display="inline" style={{color: '#F74902', fontWeight: 'bolder'}}>FIGHT</Typography></Typography>
                         
                     </Grid>
                     <Grid align='center' item xs={12}>

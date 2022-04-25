@@ -13,9 +13,11 @@ const useStyles = makeStyles((theme) => ({
         // color: 'white'
         border: '1px solid gray',
         paddingLeft: '5px'
+
     },
     searchBtn: {
-        backgroundColor: theme.palette.primary.light,
+        backgroundColor: theme.palette.black.main,
+        color: theme.palette.orange.main,
         marginTop: '10px'
     }
 }));
@@ -35,13 +37,14 @@ const PlayerSearch = ({ handleClick }) => {
 
     return (
         <Paper elevation={8} className={classes.container}>
-            <Typography variant="h5">Search Players</Typography>
+            <Typography variant='h5' style={{borderBottom: '3px solid #F74902', backgroundColor: 'black', color: 'white', padding: '5px'}}>Search<Typography variant='h5' display="inline" style={{color: '#F74902', fontWeight: 'bolder'}}>PLAYERS</Typography></Typography>
             <InputBase
                 placeholder="Type Player's Name"
                 classes={{
                     root: classes.inputRoot,
                     input: classes.inputInput
                 }}
+                style={{marginTop: '15px', marginBottom: '15px'}}
                 fullWidth
                 onChange={playerSearchInput}
                 inputProps={{ 'aria-label': 'search ' }}

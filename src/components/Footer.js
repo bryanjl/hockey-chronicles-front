@@ -1,9 +1,13 @@
-import { Box, makeStyles } from "@material-ui/core";
+import { Box, makeStyles, Typography } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
     footerBox: {
+        display: 'flex',
         minHeight: '100px',
-        borderTop: '1px solid #ece7e7'
+        borderTop: '1px solid #ece7e7',
+        backgroundColor: theme.palette.black.main,
+        justifyContent: 'center',
+        alignItems: 'center'
     }
 }));
 
@@ -11,7 +15,9 @@ const useStyles = makeStyles((theme) => ({
 const Footer = () => {
     const classes = useStyles();
   return (
-    <Box className={classes.footerBox}></Box>
+    <Box className={classes.footerBox}>
+      <Typography style={{color: 'white'}}>Copyright 2022</Typography>
+    </Box>
   )
 }
 

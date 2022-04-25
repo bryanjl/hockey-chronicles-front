@@ -10,7 +10,7 @@ import Logout from './auth/Logout';
 
 const useStyles = makeStyles((theme) => ({
     header: {
-        backgroundColor: theme.palette.primary.dark
+        backgroundColor: theme.palette.black.main
     },
     logoLg: {
         display: 'none',
@@ -144,7 +144,7 @@ const Header = ({ handleSearch }) => {
                 </Menu>
 
                 <Typography onClick={goHome} variant='h5' component='h2' className={classes.logoLg}>
-                    Hockey Fight Chronicles
+                    Hockey Fight <Typography  variant='h5' component='h2' display='inline' style={{color: '#F74902', fontStyle: 'italic', fontWeight: 'bold'}}>CHRONICLES</Typography> 
                 </Typography>
                 
                 <Typography onClick={goHome} variant='h5' component='h2' className={classes.logoSm}>

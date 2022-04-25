@@ -1,6 +1,6 @@
 import { Container, makeStyles } from "@material-ui/core";
 import TopFive from "./pages/home/TopFive";
-import FightStats from "./pages/home/FightStats";
+// import FightStats from "./pages/home/FightStats";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -17,7 +17,7 @@ const RightBar = () => {
     return (
         <Container className={classes.container}>
             <TopFive />
-            <FightStats />
+            {/* <FightStats /> */}
         </Container>
     )
 }

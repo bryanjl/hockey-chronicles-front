@@ -16,7 +16,8 @@ const useStyles = makeStyles((theme) => ({
         paddingLeft: '5px'
     },
     searchBtn: {
-        backgroundColor: theme.palette.primary.light,
+        backgroundColor: theme.palette.black.main,
+        color: theme.palette.orange.main,
         marginTop: '10px'
     }
 }));
@@ -36,7 +37,7 @@ const FightSearch = ({ handleClick }) => {
 
     return (
         <Paper elevation={8} className={classes.container}>
-            <Typography variant="h5">Search Fights</Typography>
+            <Typography variant='h5' style={{borderBottom: '3px solid #F74902', backgroundColor: 'black', color: 'white', padding: '5px'}}>Search<Typography variant='h5' display="inline" style={{color: '#F74902', fontWeight: 'bolder'}}>FIGHTS</Typography></Typography>
             <InputBase
                 placeholder="Search Fights"
                 classes={{
@@ -44,6 +45,7 @@ const FightSearch = ({ handleClick }) => {
                     input: classes.inputInput
                 }}
                 fullWidth
+                style={{marginTop: '15px', marginBottom: '15px'}}
                 onChange={fightSearchInput}
                 inputProps={{ 'aria-label': 'search ' }}
             ></InputBase>

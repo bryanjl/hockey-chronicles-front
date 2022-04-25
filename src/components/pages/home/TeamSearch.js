@@ -15,7 +15,8 @@ const useStyles = makeStyles((theme) => ({
         paddingLeft: '5px'
     },
     searchBtn: {
-        backgroundColor: theme.palette.primary.light,
+        backgroundColor: theme.palette.black.main,
+        color: theme.palette.orange.main,
         marginTop: '10px'
     }
 }));
@@ -35,7 +36,7 @@ const TeamSearch = ({ handleClick }) => {
 
     return (
         <Paper elevation={8} className={classes.container}>
-            <Typography variant="h5">Search Teams</Typography>
+            <Typography variant='h5' style={{borderBottom: '3px solid #F74902', backgroundColor: 'black', color: 'white', padding: '5px'}}>Search<Typography variant='h5' display="inline" style={{color: '#F74902', fontWeight: 'bolder'}}>TEAMS</Typography></Typography>
             <InputBase
                 placeholder="Type Team Name"
                 classes={{
@@ -43,6 +44,7 @@ const TeamSearch = ({ handleClick }) => {
                     input: classes.inputInput
                 }}
                 fullWidth
+                style={{marginTop: '15px', marginBottom: '15px'}}
                 onChange={teamSearchInput}
                 inputProps={{ 'aria-label': 'search ' }}
                 

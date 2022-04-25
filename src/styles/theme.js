@@ -1,10 +1,15 @@
 import { createTheme } from '@material-ui/core';
-import { blue, red } from '@material-ui/core/colors';
+import { blue } from '@material-ui/core/colors';
 
 
 export const theme = createTheme({
     palette: {
-        primary: red,
+        orange: {
+            main: '#F74902'
+        },
+        black: {
+            main: '#000000'
+        },
         secondary: blue
     },
     typography: {
