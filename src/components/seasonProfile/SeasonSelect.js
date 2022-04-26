@@ -5,8 +5,41 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { useEffect, useState } from 'react';
 import { getAllSeasons as getAllSeasonsAPI } from '../../api/seasons/seasonsApi';
+import { makeStyles } from '@material-ui/core';
+
+const useStyles = makeStyles((theme) => ({
+  selectBox: {
+    marginRight: '5px',
+    marginLeft: '5px'
+  },
+  select: {
+      "& .MuiInputLabel-root": {
+        color: "black"
+      },
+      "& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
+        borderColor: "black"
+      },
+      "&:hover .MuiInputLabel-root": {
+        color: "#F74902"
+      },
+      "&:hover .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
+        borderColor: "#F74902"
+      },
+      "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-input": {
+        color: "black"
+      },
+      "& .MuiInputLabel-root.Mui-focused": {
+        color: "#F74902"
+      },
+      "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline": {
+        borderColor: "#F74902"
+      }
+  }
+}));
 
 const SeasonSelect = ({ seasonSelect, allSeasons = true, currSeason = '' }) => {
+    const classes = useStyles();
+  
     //all seasons for menuitem list
     const [seasons, setSeasons] = useState([]);
     const [isFetching, setIsFetching] = useState(true);
@@ -26,22 +59,26 @@ const SeasonSelect = ({ seasonSelect, allSeasons = true, currSeason = '' }) => {
     }, []);
 
     const handleChange = (e) => {
-        // console.log(e.target.value);
         setSeason(e.target.value);
         seasonSelect(e.target.value);
     }
 
     return (
-        <Box sx={{ minWidth: 120 }}>
-        <FormControl fullWidth>
-          <InputLabel id="season-select-label">Season</InputLabel>
+        <Box className={classes.selectBox} sx={{ minWidth: 120 }}>
+        <FormControl 
+          variant='outlined' 
+          classes={{
+            root: classes.select
+          }}  
+          fullWidth
+        >
+          <InputLabel  id="season-select-label">Season</InputLabel>
           <Select
             labelId="season-select-label"
             id="season-select"
             value={season}
             label="Season"
             onChange={handleChange}
-            // renderValue={currSeason}
           >
             {allSeasons && 
               <MenuItem value=''>All Seasons</MenuItem>
@@ -52,9 +89,6 @@ const SeasonSelect = ({ seasonSelect, allSeasons = true, currSeason = '' }) => {
                     return <MenuItem key={result._id} value={result.season}>{result.season}</MenuItem>
                 })
             }
-            {/* <MenuItem value={10}>Ten</MenuItem>
-            <MenuItem value={20}>Twenty</MenuItem>
-            <MenuItem value={30}>Thirty</MenuItem> */}
           </Select>
         </FormControl>
       </Box>

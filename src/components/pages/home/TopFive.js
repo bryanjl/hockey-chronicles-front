@@ -75,7 +75,12 @@ const TopFive = () => {
   return (
       <Paper className={classes.container}>
           <Typography variant="h5" style={{backgroundColor: 'black', color: 'white', borderBottom: '3px solid #F74902', padding: '5px'}}>Fight<Typography variant="h5" display='inline' style={{color: '#F74902', fontWeight: 'bolder'}}>Leaders</Typography></Typography>
-          <Tabs className={classes.tabs} value={currTab} onChange={handleTabChange} TabIndicatorProps={{style: {backgroundColor: '#F74902'}}}>
+          <Tabs 
+            className={classes.tabs} 
+            value={currTab} 
+            onChange={handleTabChange} 
+            TabIndicatorProps={{style: {backgroundColor: '#F74902'}}}
+          >
               <Tab label='Players' />
               <Tab label='Teams' />
           </Tabs>

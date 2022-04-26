@@ -5,6 +5,7 @@ import PlayerTabs from "./PlayerTabs";
 import PlayerFightTable from "./PlayerFightTable";
 import EditPlayerDialog from "../adminTools/edit/EditPlayerDialog";
 import WinLossDrawChart from "../charts/WinLossDrawChart";
+import ActionRatingChart from "../charts/ActionRatingChart";
 import CircularLoadingAnimation from "../feedback/CircularLoadingAnimation";
 //api
 import { getPlayer as getPlayerAPI } from "../../api/players/playersApi";
@@ -15,15 +16,41 @@ import { UserContext } from "../../contexts/UserContext";
 
 
 const useStyles = makeStyles((theme) => ({
+    imgContainer: {
+        height: '100%',
+        width: '100%',
+        // border: '1px solid red',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
     headshotImg: {
         maxHeight: '100px',
-        width: 'auto'
+        width: 'auto',
+        // border: '1px solid black'
     },
     paperContainer: {
-        padding: '15px'
+        padding: '15px',
+        marginTop: '15px',
+        marginBottom: '15px',
+        borderBottom: '3px solid black',
+        borderLeft: '3px solid black',
+        borderTop: '3px solid #F74902',
+        borderRight: '3px solid #F74902',
     },
     tableContainer: {
         overflow: 'auto'
+    },
+    chartContainer: {
+        marginTop: '15px',
+        marginBottom: '15px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-evenly',
+        // border: '1px solid black'
+    },
+    actionRatingContainer: {
+        border: '1px solid black'
     }
 }));
 
@@ -55,6 +82,7 @@ const PlayerProfile = () => {
     useEffect(() => {
         setIsFetching(true);
         getPlayerAPI(playerID).then(data => {
+            console.log(data)
             setPlayer(data.data.player);
             setPlayerFights(data.data.fights);
             setIsFetching(false); 
@@ -139,10 +167,10 @@ const PlayerProfile = () => {
                 <>
                     <Paper className={classes.paperContainer}>
                         <Grid container>
-                            <Grid item xs={12}>
+                            <Grid item xs={8}>
                                 <Typography variant='h3'>{player.firstName} {player.lastName}</Typography>
-                            </Grid>
-                            <Grid align='left' item xs={8}>
+                            {/* </Grid>
+                            <Grid align='left' item xs={8}> */}
                                 <Typography>
                                     Position: {player.position}
                                 </Typography>
@@ -157,12 +185,15 @@ const PlayerProfile = () => {
                                 </Typography>
                             </Grid>
                             <Grid item xs={4}>
-                                <img className={classes.headshotImg} src='/no-headshot.jpg' alt='no-headshot' />
+                                <div className={classes.imgContainer}>
+                                    <img className={classes.headshotImg} src='/no-headshot.jpg' alt='no-headshot' />
+                                </div>
+                                
                             </Grid>
                             
-                            <Grid align='center' item xs={12}>
-                                <WinLossDrawChart wins={player.wins} draws={player.draws} losses={player.losses} />
-                            </Grid>
+                            {/* <Grid align='center' item xs={12}>
+                                
+                            </Grid> */}
                         </Grid>
                     </Paper>
                     
@@ -173,6 +204,15 @@ const PlayerProfile = () => {
                             <EditPlayerDialog player={player} setPlayer={setPlayer} open={openEditPlayer} handleClose={handleEditPlayerClose} />    
                         </>
                     }
+
+                    <div className={classes.chartContainer}>
+                        <WinLossDrawChart wins={player.wins} draws={player.draws} losses={player.losses} />
+                        <div>
+                            <Typography style={{textAlign: 'center', marginBottom: '25px'}} variant='h5'>Action Rating</Typography>
+                            <ActionRatingChart actionRating={player.actionRating.average} />
+                        </div>
+                        
+                    </div>
                     
 
                 <PlayerTabs setTab={setTab} currTab={selectedTab} />

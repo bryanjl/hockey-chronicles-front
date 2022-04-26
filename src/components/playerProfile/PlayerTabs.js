@@ -6,12 +6,13 @@ const PlayerTabs = ({ setTab, currTab }) => {
     }
 
     return (
-        <Tabs value={currTab} onChange={handleChange}>
+        <Tabs 
+            value={currTab} 
+            onChange={handleChange}
+            TabIndicatorProps={{style: {backgroundColor: '#F74902'}}}
+        >
             <Tab label="All Fights" />
-            {/* <Tab label="Highest Action" /> */}
             <Tab label="Rivals" />
-            {/* <Tab label="Win by Type" />
-            <Tab label="Fights by Season" /> */}
         </Tabs>
     )
 }

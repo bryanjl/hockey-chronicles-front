@@ -9,17 +9,22 @@ import {
   const useStyles = makeStyles((theme) =>
     createStyles({
       search: {
+        borderBottom: '3px solid black',
+        borderLeft: '3px solid black',
+        borderRight: '3px solid #F74902',
+        borderTop: '3px solid #F74902',
         position: 'relative',
         borderRadius: theme.shape.borderRadius,
         backgroundColor: alpha(theme.palette.common.white, 0.15),
         '&:hover': {
           backgroundColor: alpha(theme.palette.common.white, 0.25),
         },
-        marginLeft: 0,
+        // marginLeft: 0,
         marginBottom: '10px',
+        marginTop: '10px',
         width: '100%',
         [theme.breakpoints.up('sm')]: {
-          marginLeft: theme.spacing(1),
+          // marginLeft: theme.spacing(1),
           width: 'auto',
         },
       },
@@ -31,10 +36,11 @@ import {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
+        color: '#F74902'
       },
       inputRoot: {
         color: 'inherit',
-        border: '1px solid black'
+        // border: '1px solid black'
       },
       inputInput: {
         

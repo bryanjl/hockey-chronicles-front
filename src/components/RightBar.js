@@ -8,7 +8,7 @@ const useStyles = makeStyles((theme) => ({
         paddingTop: theme.spacing(10),
         // backgroundColor: 'red',
         height: '100%',
-        borderLeft: '1px solid #ece7e7'
+        borderLeft: '1px solid black'
     }
 }));
 

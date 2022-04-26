@@ -19,6 +19,7 @@ const useStyles = makeStyles((theme) => ({
         borderRight: '1px solid black'
     },
     root: {
+        // borderTop: '1px solid black',
         '&:hover': {
             backgroundColor: theme.palette.black.main,
             color: theme.palette.orange.main,
@@ -79,33 +80,33 @@ const LeftBar = () => {
             <nav>
                 <List >
                     <ListItem className={classes.root}>
-                        <ListItemButton  component={Link} to='/fights' >
+                        <ListItemButton style={{borderTop: '1px solid #F74902', borderRight: '1px solid #F74902'}}  component={Link} to='/fights' >
                             <ListItemText primary='FIGHTS' />
                         </ListItemButton>
                     </ListItem>
                     <ListItem className={classes.root}>
-                        <ListItemButton component={Link} to='/leagues'>
+                        <ListItemButton style={{borderTop: '1px solid #F74902', borderRight: '1px solid #F74902'}} component={Link} to='/leagues'>
                             <ListItemText primary='LEAGUES' />
                         </ListItemButton>
                     </ListItem>
                     <ListItem className={classes.root}>
-                        <ListItemButton component={Link} to='/seasons'>
+                        <ListItemButton style={{borderTop: '1px solid #F74902', borderRight: '1px solid #F74902'}} component={Link} to='/seasons'>
                             <ListItemText primary='SEASONS' />
                         </ListItemButton>
                     </ListItem>
                     <ListItem className={classes.root}>
-                        <ListItemButton component={Link} to='/players'>
+                        <ListItemButton style={{borderTop: '1px solid #F74902', borderRight: '1px solid #F74902'}} component={Link} to='/players'>
                             <ListItemText primary='PLAYERS' />
                         </ListItemButton>
                     </ListItem>
                     <ListItem className={classes.root}>
-                        <ListItemButton component={Link} to='/teams'>
+                        <ListItemButton style={{borderTop: '1px solid #F74902', borderRight: '1px solid #F74902'}} component={Link} to='/teams'>
                             <ListItemText primary='TEAMS' />
                         </ListItemButton>
                     </ListItem>
                 </List>
             </nav>
-            <Divider />
+            <Divider style={{background: 'black'}} />
             <nav>
                 <List>
                     <ListItem className={classes.root}>
@@ -127,7 +128,7 @@ const LeftBar = () => {
             </nav>
             {(user.role === 'admin' || user.role === 'super') &&
                 <>
-                <Divider />
+                <Divider style={{background: 'black'}} />
                 <nav>
                     <List>
                         <ListItem>

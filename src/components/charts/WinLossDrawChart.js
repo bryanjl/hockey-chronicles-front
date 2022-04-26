@@ -7,12 +7,13 @@ class WinLossDrawChart extends Component {
 
     this.state = {
       options: {
+        colors: ['#F74902'],
         chart: {
           id: "basic-bar",
           background: 'none',
           toolbar: {
             show: false
-        }
+          },
         },
         xaxis: {
           categories: [`Wins`, 'Draws', `Losses`]
@@ -31,8 +32,20 @@ class WinLossDrawChart extends Component {
                     show: false
                 }
             }
-        }
+        },
+        fill: {
+          type: 'gradient',
+          gradient: {
+            shade: 'light',
+            shadeIntensity: 0.4,
+            inverseColors: false,
+            opacityFrom: 1,
+            opacityTo: 1,
+            stops: [0, 25, 27, 60]
+          },
+        },
       },
+      
       series: [
         {
           name: "Total",

@@ -5,9 +5,41 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { useEffect, useState } from 'react';
 import { getAllLeagues as getAllLeaguesAPI } from '../../api/leagues/leaguesApi';
-import { FormHelperText } from '@material-ui/core';
+import { FormHelperText, makeStyles } from '@material-ui/core';
+
+const useStyles = makeStyles((theme) => ({
+  selectBox: {
+    marginRight: '5px',
+    marginLeft: '5px'
+  },
+  select: {
+      "& .MuiInputLabel-root": {
+        color: "black"
+      },
+      "& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
+        borderColor: "black"
+      },
+      "&:hover .MuiInputLabel-root": {
+        color: "#F74902"
+      },
+      "&:hover .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
+        borderColor: "#F74902"
+      },
+      "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-input": {
+        color: "black"
+      },
+      "& .MuiInputLabel-root.Mui-focused": {
+        color: "#F74902"
+      },
+      "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline": {
+        borderColor: "#F74902"
+      }
+  }
+}));
 
 const LeagueSelect = ({ leagueSelect, formError = false }) => {
+  const classes = useStyles();
+
     //state for leagues api
     const [leagues, setLeagues] = useState([]);
     const [isFetching, setIsFetching] = useState(true);
@@ -31,8 +63,14 @@ const LeagueSelect = ({ leagueSelect, formError = false }) => {
     }
 
     return (
-        <Box sx={{ minWidth: 120 }}>
-        <FormControl fullWidth>
+        <Box className={classes.selectBox} sx={{ minWidth: 120 }}>
+        <FormControl
+          variant='outlined'
+          classes={{
+            root: classes.select
+          }}
+          fullWidth
+        >
           <InputLabel id="league-select-label">League</InputLabel>
           <Select
             error={formError}
@@ -54,4 +92,4 @@ const LeagueSelect = ({ leagueSelect, formError = false }) => {
     )
 }
 
-export default LeagueSelect
+export default LeagueSelect;

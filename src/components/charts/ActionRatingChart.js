@@ -9,6 +9,7 @@ class ActionRatingChart extends Component {
       
         series: [props.actionRating * 10],
         options: {
+          colors: ['#F74902'],
           chart: {
             type: 'radialBar',
             offsetY: -20,
