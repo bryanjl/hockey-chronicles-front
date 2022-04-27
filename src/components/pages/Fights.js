@@ -1,4 +1,4 @@
-import { Grid } from "@material-ui/core";
+import { Grid, Typography } from "@material-ui/core";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { getAllFights as getAllFightsAPI } from "../../api/fights/fightApi"
@@ -111,6 +111,7 @@ const Fights = () => {
 
     return (
         <>
+            <Typography variant="h5" style={{backgroundColor: 'black', color: 'white', borderBottom: '3px solid #F74902', padding: '5px', paddingLeft: '15px', marginTop: '15px'}}>Browse Fights</Typography>
             <Grid container>
                 <Grid item xs={12}>
                     <Search handleSearch={fightSearch} />

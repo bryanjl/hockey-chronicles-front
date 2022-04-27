@@ -1,10 +1,10 @@
-import { Grid } from "@material-ui/core";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { getAllLeagues as getAllLeaguesAPI } from "../../api/leagues/leaguesApi";
 import LeagueResult from '../leagueProfile/LeagueResult';
 import Paging from "../Paging";
 import LinearLoadingAnimation from "../feedback/LinearLoadingAnimation";
+import { Typography } from "@material-ui/core";
 
 const Leagues = () => {
     //use searchparams for browser history
@@ -58,7 +58,8 @@ const Leagues = () => {
     }
 
     return (
-        <Grid container>
+        <>
+            <Typography variant="h5" style={{backgroundColor: 'black', color: 'white', borderBottom: '3px solid #F74902', padding: '5px', paddingLeft: '15px', marginTop: '15px'}}>Leagues</Typography>
             {isFetching &&
                 <LinearLoadingAnimation />
             }
@@ -68,7 +69,7 @@ const Leagues = () => {
                 })
             }
             <Paging currPage={page} pageChange={pageChange} totalPages={numberOfPages} />
-        </Grid>
+        </>
     )
 }
 

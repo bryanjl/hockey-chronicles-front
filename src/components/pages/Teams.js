@@ -1,10 +1,9 @@
-import { Grid } from "@material-ui/core";
+import { Typography } from "@material-ui/core";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { getAllTeams as getAllTeamsAPI } from "../../api/teams/teamsApi";
 import TeamResult from '../teamProfile/TeamResult';
 import Paging from "../Paging";
-// import LeagueSelect from "../leagueProfile/LeagueSelect";
 import Search from "../search/Search";
 import LinearLoadingAnimation from "../feedback/LinearLoadingAnimation";
 
@@ -43,14 +42,6 @@ const Teams = () => {
         });
     }
 
-    // const leagueSelect = (league) => {
-    //     if(league) {
-    //         setSearchParams(`?term=${league}&page=1`);      
-    //     } else {
-    //         setSearchParams(`?page=1`);
-    //     }
-    // }
-
     const teamSearch = (inputQuery) => {
         setSearchParams(`${inputQuery}&page=1`);
     }
@@ -67,11 +58,10 @@ const Teams = () => {
     }
 
     return (
-        <Grid container>
-            <Grid item sm={12}>
-                <Search handleSearch={teamSearch} />
-                {/* <LeagueSelect leagueSelect={leagueSelect} /> */}
-            </Grid>
+        <>
+            <Typography variant="h5" style={{backgroundColor: 'black', color: 'white', borderBottom: '3px solid #F74902', padding: '5px', paddingLeft: '15px', marginTop: '15px'}}>Teams</Typography>  
+            <Search handleSearch={teamSearch} />
+            
             {isFetching &&
                 <LinearLoadingAnimation />
             }
@@ -81,7 +71,7 @@ const Teams = () => {
                 })
             }
             <Paging currPage={page} pageChange={pageChange} totalPages={numberOfPages} />
-        </Grid>
+        </>
     )
 }
 

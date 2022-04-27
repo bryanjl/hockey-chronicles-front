@@ -1,14 +1,12 @@
-import { Grid } from "@material-ui/core";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { getAllPlayers as getAllPlayersAPI } from "../../api/players/playersApi";
-import PlayerCard from '../FightCard/PlayerCard';
+import PlayerResult from '../playerProfile/PlayerResult';
 import Paging from "../Paging";
 import PositionSelect from "../playerProfile/PositionSelect";
 import Search from "../search/Search";
 import LinearLoadingAnimation from "../feedback/LinearLoadingAnimation";
-
-
+import { Typography } from "@material-ui/core";
 
 const Players = () => {
     const [searchParams, setSearchParams] = useSearchParams();
@@ -50,17 +48,10 @@ const Players = () => {
         } else {
             setSearchParams(`?page=1`);
         }
-        
-        // setPositionValue(`term=${position}&`);
-        // setSearchQuery('');
-        // setPage(1);
     }
 
     const playerSearch = (inputQuery) => {
         setSearchParams(`?term=${inputQuery}&page=1`);
-        // setSearchQuery(`term=${inputQuery}&`);
-        // setPositionValue('');
-        // setPage(1);
     }
 
     //page change function
@@ -75,24 +66,22 @@ const Players = () => {
     }
 
     return (
-        <Grid container>
-            <Grid item sm={12}>
-                <Search handleSearch={playerSearch} />
-                <PositionSelect positionSelect={positionSelect} />
-            </Grid>
-
+        <>  
+            <Typography variant="h5" style={{backgroundColor: 'black', color: 'white', borderBottom: '3px solid #F74902', padding: '5px', paddingLeft: '15px', marginTop: '15px'}}>Players</Typography>
+            <Search handleSearch={playerSearch} />
+            <PositionSelect positionSelect={positionSelect} />
+            
             {isFetching &&
                 <LinearLoadingAnimation />
             }
             
             {!isFetching && 
                 playerResults.map((result) => {
-                    // console.log(result);
-                    return <PlayerCard key={result._id} player={result} id={result._id} />
+                    return <PlayerResult key={result._id} player={result} id={result._id} />
                 })
             }
             <Paging currPage={page} pageChange={pageChange} totalPages={numberOfPages} />
-        </Grid>
+        </>
     )
 }
 

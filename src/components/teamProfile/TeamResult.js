@@ -4,7 +4,6 @@ import { Link, useNavigate } from 'react-router-dom';
 const useStyles = makeStyles((theme) => ({
     cardContainer: {
         width: '100%',
-        // height: '150px',
         marginTop: '15px',
 
     },
@@ -25,6 +24,12 @@ const useStyles = makeStyles((theme) => ({
     teamImg: {
         maxHeight: '100px',
         margin: '10px'
+    },
+    teamNameContainer: {
+        display: 'flex',
+        height: '100%',
+        justifyContent: 'center',
+        alignItems: 'center'
     }
 }));
 
@@ -34,40 +39,32 @@ const TeamResult = ({ team, id }) => {
     const navigate = useNavigate();
 
     const getTeam = () => {
-        // console.log(id)
         navigate(`/teams/${id}`)
     }
 
     return (
         <Card  
             className={classes.cardContainer}
-            variant="elevation"
+            style={{ border: 'none', boxShadow: 'none', cursor: 'pointer' }}
+            onClick={getTeam}
         >
             <Grid container className={classes.gridContainer}>
-                <Grid item xs={5}>
+                <Grid item xs={2}>
                     <Link to={`/teams/${id}`}>
                         <img className={classes.teamImg} src={`/images/teams/${team.city}${team.name}.png`} alt={`${team.fullName}`} />
                     </Link>
                 </Grid>
-                <Grid item xs={5}>
-                    <Grid item sm={2} className={classes.gridItem}>
-                        {/* <Typography>{result.teams[0].city} {result.teams[0].name} VS {result.teams[1].city} {result.teams[1].name}</Typography> */}
-                    </Grid>
-                    <Grid align='center' item sm={5} className={classes.gridItem}>
-                        <Typography>{team.city}</Typography>
-                    </Grid>
-                    <Grid align='center' item sm={5} className={classes.gridItem}>
-                        <Typography>{team.name}</Typography>
-                    </Grid>
+                <Grid item xs={8}>
+                    <div className={classes.teamNameContainer}>
+                        <Typography variant='h5' style={{ padding: '5px' }}>{team.city} {team.name}</Typography>
+                    </div>
                 </Grid>
                 <Grid item xs={2} >
                     <CardActions className={classes.cardButton}>
                         <Button onClick={getTeam} size="small">View Team</Button>
                     </CardActions>
                 </Grid>
-                
             </Grid>
-            
         </Card>
     )
 
