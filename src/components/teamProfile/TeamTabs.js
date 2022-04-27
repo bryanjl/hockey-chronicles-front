@@ -7,7 +7,12 @@ const TeamTabs = ({ setTab, currTab }) => {
     }
 
     return (
-        <Tabs value={currTab} onChange={handleChange}>
+        <Tabs 
+            value={currTab} 
+            onChange={handleChange}
+            TabIndicatorProps={{style: {backgroundColor: '#F74902'}}}
+            style={{marginBottom: '10px'}}
+        >
             <Tab label="Games" />
             <Tab label="Fights" />
             <Tab label="Rivals" />

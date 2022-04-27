@@ -4,7 +4,7 @@ import TeamTabs from "./TeamTabs";
 import TeamGameTable from "./TeamGameTable";
 import TeamFightTable from "./TeamFightTable";
 import { Grid, makeStyles, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@material-ui/core";
-import LeagueDisplay from "../leagueProfile/LeagueDisplay";
+// import LeagueDisplay from "../leagueProfile/LeagueDisplay";
 import SeasonSelect from "../seasonProfile/SeasonSelect";
 import CircularLoadingAnimation from "../feedback/CircularLoadingAnimation";
 
@@ -18,6 +18,29 @@ import {
 const useStyles = makeStyles((theme) => ({
     teamImg: {
         maxHeight: '150px'
+    },
+    leagueImg: {
+        maxHeight: '50px'
+    },
+    imgContainer: {
+        height: '100%',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    paperContainer: {
+        padding: '15px',
+        marginTop: '15px',
+        marginBottom: '15px',
+        borderBottom: '3px solid black',
+        borderLeft: '3px solid black',
+        borderTop: '3px solid #F74902',
+        borderRight: '3px solid #F74902',
+    },
+    teamNameContainer: {
+        height: '100%',
+        display: 'flex',
+        alignItems: 'center'
     }
 }));
 
@@ -96,7 +119,6 @@ const TeamProfile = () => {
     }
 
     const handleSeasonChange = (seasonValue) => {
-        console.log(seasonValue);
         fetchData(seasonValue);
     }
 
@@ -108,22 +130,31 @@ const TeamProfile = () => {
 
             {!isFetching && 
             <>
-                <Grid container>
-                    <Grid item xs={12}>
-                        
-                        <Typography variant='h3'>{team.fullName}</Typography>
+                <Paper className={classes.paperContainer}>
+                    <Grid container>
+                        <Grid item xs={4}>
+                            <img className={classes.teamImg} src={`/images/teams/${team.city}${team.name}.png`} alt={`${team.fullName}`} />
+                            
+                        </Grid>
+                        <Grid item xs={6}>
+                            <div className={classes.teamNameContainer}>
+                                <Typography variant='h3'>{team.fullName}</Typography>
+                            </div>
+                        </Grid>
+                        <Grid item xs={2}>
+                            <div className={classes.imgContainer}>
+                                <img className={classes.leagueImg} src={`/images/leagues/${team.league.name}.png`} alt={`${team.league.name}`} />
+                            </div>
+                            
+                        </Grid>
                     </Grid>
-                    <Grid item xs={6}>
-                        <img className={classes.teamImg} src={`/images/teams/${team.city}${team.name}.png`} alt={`${team.fullName}`} />
-                    </Grid>
-                    <Grid item xs={6}>
-                        <LeagueDisplay league={team.league} />
-                    </Grid>
-                </Grid>
+                </Paper>
+
                 
+                <SeasonSelect seasonSelect={handleSeasonChange} />
                 <TeamTabs setTab={setTab} currTab={selectedTab} /> 
 
-                <SeasonSelect seasonSelect={handleSeasonChange} />
+                
 
                 {selectedTab === 0 && 
                     <TeamGameTable seasonData={teamSeasonGameData} />
