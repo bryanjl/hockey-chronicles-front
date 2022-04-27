@@ -2,7 +2,8 @@ import { useEffect, useState, useContext } from "react";
 import { useParams } from "react-router-dom";
 import { Button, Grid, makeStyles, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@material-ui/core";
 import PlayerTabs from "./PlayerTabs";
-import PlayerFightTable from "./PlayerFightTable";
+// import PlayerFightTable from "./PlayerFightTable";
+import Row from "./Row";
 import EditPlayerDialog from "../adminTools/edit/EditPlayerDialog";
 import WinLossDrawChart from "../charts/WinLossDrawChart";
 import ActionRatingChart from "../charts/ActionRatingChart";
@@ -12,22 +13,20 @@ import { getPlayer as getPlayerAPI } from "../../api/players/playersApi";
 //user context
 import { UserContext } from "../../contexts/UserContext";
 //utils
-// import { checkIfInitialOutcome, checkIfDrawOutcome, checkOutcomeWinner } from "../../utils/checkFightOutcome";
+import { checkIfInitialOutcome, checkIfDrawOutcome, checkOutcomeWinner } from "../../utils/checkFightOutcome";
 
 
 const useStyles = makeStyles((theme) => ({
     imgContainer: {
         height: '100%',
         width: '100%',
-        // border: '1px solid red',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center'
     },
     headshotImg: {
         maxHeight: '100px',
-        width: 'auto',
-        // border: '1px solid black'
+        width: 'auto'
     },
     paperContainer: {
         padding: '15px',
@@ -46,8 +45,7 @@ const useStyles = makeStyles((theme) => ({
         marginBottom: '15px',
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'space-evenly',
-        // border: '1px solid black'
+        justifyContent: 'space-evenly'
     },
     actionRatingContainer: {
         border: '1px solid black'
@@ -85,6 +83,7 @@ const PlayerProfile = () => {
             console.log(data)
             setPlayer(data.data.player);
             setPlayerFights(data.data.fights);
+            sortFights(data.data.fights);
             setIsFetching(false); 
         });
         //eslint-disable-next-line
@@ -95,30 +94,29 @@ const PlayerProfile = () => {
         if(value === 1) {
             getRivals(playerFights);
         }
-        
+        // sortFights();
     }
 
     //check to see if player had won lost, drawed or if there is no votes for outcome chart
-    // const outcomeValue = (outcomeObj, playerId) => {
-    //     if(checkIfInitialOutcome(outcomeObj)){
-    //         return '';
-    //     } else if (checkIfDrawOutcome(outcomeObj)) {
-    //         return 'Draw';
-    //     } else {
-    //         if(checkOutcomeWinner(outcomeObj, playerId)){
-    //             return 'Win';
-    //         }         
-    //         return 'Loss';
-    //     }
-    // }
+    const outcomeValue = (outcomeObj, playerId) => {
+        if(checkIfInitialOutcome(outcomeObj)){
+            return '';
+        } else if (checkIfDrawOutcome(outcomeObj)) {
+            return 'Draw';
+        } else {
+            if(checkOutcomeWinner(outcomeObj, playerId)){
+                return 'Win';
+            }         
+            return 'Loss';
+        }
+    }
 
 
     //this could be a custom hook
     const getRivals = (allFights) => {
         let unsortedRivals = {};
         allFights.forEach(fight => {
-            if(fight.players[0].lastName !== player.lastName){
-                
+            if(fight.players[0].lastName !== player.lastName){  
                 if(!unsortedRivals[`${fight.players[0].firstName} ${fight.players[0].lastName}`]){
                     unsortedRivals[`${fight.players[0].firstName} ${fight.players[0].lastName}`] = 1;    
                 } else {
@@ -127,7 +125,6 @@ const PlayerProfile = () => {
             }
             
             if(fight.players[1].lastName !== player.lastName){
-                
                 if(!unsortedRivals[`${fight.players[1].firstName} ${fight.players[1].lastName}`]){
                     unsortedRivals[`${fight.players[1].firstName} ${fight.players[1].lastName}`] = 1;    
                 } else {
@@ -144,6 +141,34 @@ const PlayerProfile = () => {
         });
 
         setPlayerRivals(sortedRivals);
+    }
+
+    // useEffect(() => {
+    //     sortFights();
+    //     //eslint-disable-next-line
+    // }, [])
+
+    const [sortedFights, setSortedFights] = useState([]);
+
+    const sortFights = (allFights) => {
+        let sortFights = [];
+        let seasonArr = [];
+
+        seasonArr[0] = allFights[0];
+
+        for(let i = 1; i < allFights.length; i++){
+            if(allFights[i].season.season === seasonArr[0].season.season){
+                seasonArr.push(allFights[i]);
+            } else {
+                sortFights.push(seasonArr);
+                seasonArr = [];
+                seasonArr[0] = allFights[i];
+            }
+        }
+
+        sortFights.push(seasonArr);
+
+        setSortedFights(sortFights);
     }
 
     //administration tools
@@ -188,12 +213,7 @@ const PlayerProfile = () => {
                                 <div className={classes.imgContainer}>
                                     <img className={classes.headshotImg} src='/no-headshot.jpg' alt='no-headshot' />
                                 </div>
-                                
                             </Grid>
-                            
-                            {/* <Grid align='center' item xs={12}>
-                                
-                            </Grid> */}
                         </Grid>
                     </Paper>
                     
@@ -210,33 +230,39 @@ const PlayerProfile = () => {
                         <div>
                             <Typography style={{textAlign: 'center', marginBottom: '25px'}} variant='h5'>Action Rating</Typography>
                             <ActionRatingChart actionRating={player.actionRating.average} />
-                        </div>
-                        
+                        </div> 
                     </div>
                     
 
                 <PlayerTabs setTab={setTab} currTab={selectedTab} />
 
-                {selectedTab === 0 &&
-                    // <TableContainer className={classes.tableContainer} component={Paper}>
-                    //     <Table aria-label="collapsible table">
-                    //         <TableHead>
-                    //         <TableRow>
-                    //             <TableCell />
-                    //             <TableCell align='left'>Season</TableCell>
-                    //             <TableCell align="right">Overall  Action</TableCell>
-                                
-                    //         </TableRow>
-                    //         </TableHead>
-                    //         <TableBody>
-                    //         {sortedFights.map((fight) => (
-                                
-                    //             <Row key={fight._id} row={fight} player={player} outcomeValue={outcomeValue} />
-                    //         ))}
-                    //         </TableBody>
-                    //     </Table>
-                    // </TableContainer>
-                    <PlayerFightTable seasonData={playerFights} />
+                {selectedTab === 0 && sortedFights.length !== 0 &&
+                    <>
+                    {console.log(sortedFights)}
+                        
+                            <TableContainer className={classes.tableContainer} component={Paper}>
+                                <Table aria-label="collapsible table">
+                                    <TableHead>
+                                    <TableRow>
+                                        <TableCell />
+                                        <TableCell align='left'>Season</TableCell>
+                                        {/* <TableCell align="right">Overall  Action</TableCell> */}
+                                        
+                                    </TableRow>
+                                    </TableHead>
+                                    <TableBody>
+                                    {sortedFights.map((fight) => (
+                                        
+                                        <Row key={fight._id} row={fight} player={player} outcomeValue={outcomeValue} />
+                                    ))}
+                                    </TableBody>
+                                </Table>
+                            </TableContainer> 
+                    {/* {/* // <PlayerFightTable seasonData={playerFights} /> */}
+                        
+
+                   
+                    </>
                 }
 
                 {selectedTab === 1  &&
@@ -274,3 +300,5 @@ const PlayerProfile = () => {
 }
 
 export default PlayerProfile;
+
+
