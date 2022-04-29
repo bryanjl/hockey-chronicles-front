@@ -63,6 +63,33 @@ export const createTeam = async(teamInfo) => {
     return response;
 }
 
+//update a team
+export const updateTeam = async(teamId, teamInfo) => {
+    let route = `/teams/${teamId}`;
+    
+    let options = {
+        method: 'PUT',
+        
+        body: teamInfo
+    }
+
+    let response = await fetchApi(route, options);
+
+    return response;
+
+    // let options = {
+    //     method: 'PUT',
+    //     headers: {
+    //         'Content-Type': 'application/json'
+    //     },
+    //     body: JSON.stringify(teamInfo)
+    // }
+
+    // let response = await fetchApi(route, options);
+
+    // return response;
+}
+
 //fuzzy search for teams
 export const teamsSearch = async(userInput = '') => {
     let route = `/teams/search?lastName=${userInput}`;

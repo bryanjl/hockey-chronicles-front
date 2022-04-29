@@ -1,13 +1,17 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useParams } from "react-router-dom";
+import { Button, Grid, makeStyles, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@material-ui/core";
 import TeamTabs from "./TeamTabs";
 import TeamGameTable from "./TeamGameTable";
 import TeamFightTable from "./TeamFightTable";
-import { Grid, makeStyles, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@material-ui/core";
-// import LeagueDisplay from "../leagueProfile/LeagueDisplay";
 import SeasonSelect from "../seasonProfile/SeasonSelect";
 import CircularLoadingAnimation from "../feedback/CircularLoadingAnimation";
-
+//admin
+    //user context
+import { UserContext } from "../../contexts/UserContext";  
+    //edit team
+import EditTeamDialog from "../adminTools/edit/EditTeamDialog";
+// import LeagueDisplay from "../leagueProfile/LeagueDisplay";
 
 //Team API
 import { 
@@ -15,11 +19,19 @@ import {
     getTeamSeasonData as getTeamSeasonDataAPI
 } from "../../api/teams/teamsApi";
 
+//url for images based on envrinoment
+let imgURL;
+if(process.env.NODE_ENV === 'development'){
+    imgURL = 'http://localhost:5000';
+} else {
+    imgURL = 'https://hockey-chronicles-api.herokuapp.com';
+}
+
 const useStyles = makeStyles((theme) => ({
     teamImg: {
         maxHeight: '150px'
     },
-    leagueImg: {
+    leagueImg: { 
         maxHeight: '50px'
     },
     imgContainer: {
@@ -40,13 +52,20 @@ const useStyles = makeStyles((theme) => ({
     teamNameContainer: {
         height: '100%',
         display: 'flex',
-        alignItems: 'center'
+        alignItems: 'center',
+        justifyContent: 'center',
+        flexDirection: 'column'
     }
 }));
 
-
-
 const TeamProfile = () => {
+
+    //user context -> or guest
+    let { user } = useContext(UserContext);
+    if(!user){
+        user = {}
+        user.role = 'guest'
+    }
 
     //teamId from URL params
     let { teamID } = useParams();
@@ -122,6 +141,17 @@ const TeamProfile = () => {
         fetchData(seasonValue);
     }
 
+    //administration tools
+    const [openEditTeam, setOpenEditPlayer] = useState(false);
+
+    const handleEditTeamOpen = () => {
+        setOpenEditPlayer(true);
+    }
+
+    const handleEditTeamClose = () => {
+        setOpenEditPlayer(false);
+    }
+
     return (
         <>
             {isFetching &&
@@ -133,12 +163,13 @@ const TeamProfile = () => {
                 <Paper className={classes.paperContainer}>
                     <Grid container>
                         <Grid item xs={4}>
-                            <img className={classes.teamImg} src={`/images/teams/${team.city}${team.name}.png`} alt={`${team.fullName}`} />
+                            <img className={classes.teamImg} src={`${imgURL}/uploads/teams/${team.teamImageFile}`} alt={`${team.fullName}`} />
                             
                         </Grid>
                         <Grid item xs={6}>
                             <div className={classes.teamNameContainer}>
                                 <Typography variant='h3'>{team.fullName}</Typography>
+                                <Typography variant='body1'>Active Years: {team.yearsActive}</Typography>
                             </div>
                         </Grid>
                         <Grid item xs={2}>
@@ -149,6 +180,21 @@ const TeamProfile = () => {
                         </Grid>
                     </Grid>
                 </Paper>
+
+                {(user.role === 'admin' || user.role === 'super') &&
+                    <>
+                        <Typography>Administration Tools:</Typography>
+                        <Button 
+                            onClick={handleEditTeamOpen} 
+                            fullWidth 
+                            variant='contained'
+                            style={{ marginBottom: '10px' }}
+                        >
+                            Edit Team Details
+                        </Button>
+                        <EditTeamDialog team={team} setTeam={setTeam} open={openEditTeam} handleClose={handleEditTeamClose} />    
+                    </>
+                }
 
                 
                 <SeasonSelect seasonSelect={handleSeasonChange} />

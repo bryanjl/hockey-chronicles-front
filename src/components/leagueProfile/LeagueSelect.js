@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const LeagueSelect = ({ leagueSelect, formError = false }) => {
+const LeagueSelect = ({ leagueSelect, formError = false, value = null }) => {
   const classes = useStyles();
 
     //state for leagues api
@@ -45,7 +45,7 @@ const LeagueSelect = ({ leagueSelect, formError = false }) => {
     const [isFetching, setIsFetching] = useState(true);
 
     //state for current league value
-    const [league, setLeague] = useState('');
+    const [league, setLeague] = useState(value || '');
 
     useEffect(() => {
         setIsFetching(true);
