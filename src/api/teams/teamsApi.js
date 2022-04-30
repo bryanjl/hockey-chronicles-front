@@ -66,7 +66,7 @@ export const createTeam = async(teamInfo) => {
 //update a team
 export const updateTeam = async(teamId, teamInfo) => {
     let route = `/teams/${teamId}`;
-    
+
     let options = {
         method: 'PUT',
         
@@ -76,18 +76,6 @@ export const updateTeam = async(teamId, teamInfo) => {
     let response = await fetchApi(route, options);
 
     return response;
-
-    // let options = {
-    //     method: 'PUT',
-    //     headers: {
-    //         'Content-Type': 'application/json'
-    //     },
-    //     body: JSON.stringify(teamInfo)
-    // }
-
-    // let response = await fetchApi(route, options);
-
-    // return response;
 }
 
 //fuzzy search for teams

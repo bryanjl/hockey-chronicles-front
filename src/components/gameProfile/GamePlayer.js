@@ -88,37 +88,12 @@ export default function OutlinedCard(props) {
                 </Typography>
               </Grid>
               <Grid item sm={12}>
-                <Typography className={classes.weightHeight} >
-                  {`Height: ${props.player.height.split(' ')[0]}`} 
-                </Typography>
-              </Grid>
-              <Grid item sm={12}>
-                <Typography className={classes.weightHeight} >
-                  {`Weight: ${props.player.weight.split(' ')[0]}lb`} 
-                </Typography>
-              </Grid>
-              <Grid item sm={12}>
-                <Typography className={classes.position}>
-                  {props.player.position}
-                </Typography>
-              </Grid>
-              <Grid item sm={12}>
-                <Typography className={classes.stats}>
+                <Typography textAlign='center' className={classes.stats}>
                   {props.player.wins}{bull}{props.player.losses}{bull}{props.player.draws} (W-L-D)
                 </Typography>
               </Grid>
-            </Grid>
-            
-            
-
-            
+            </Grid> 
           </CardContent>
-          {/* <CardActions>
-            <Grid item xs={12}>
-              <Button onClick={getPlayer} size="small">View Player Profile</Button>
-            </Grid>
-            
-          </CardActions> */}
         </>
       );
 
@@ -126,7 +101,13 @@ export default function OutlinedCard(props) {
 
   return (
     <Box className={classes.cardContainer}>
-      <Card onClick={getPlayer} variant="elevation" className={classes.card}>{card}</Card>
+      <Card 
+        onClick={getPlayer} 
+        className={classes.card}
+        style={{ border: 'none', boxShadow: 'none' }}
+    >
+        {card}
+    </Card>
     </Box>
     
   );

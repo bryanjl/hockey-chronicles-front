@@ -20,7 +20,11 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: 'space-evenly',
         alignItems: 'center',
         padding: '15px',
-        margin: '5px'
+        marginTop: '15px',
+        borderLeft: '3px solid black',
+        borderBottom: '3px solid black',
+        borderTop: '3px solid #F74902',
+        borderRight: '3px solid #F74902',
     },
     gameDetailsTitle: {
         margin: '15px',
@@ -100,14 +104,23 @@ const GameProfile = () => {
 
     return ( 
         <>
+        {/* <Typography variant="h4" style={{marginTop: '15px', backgroundColor: 'black', color: 'white', borderBottom: '3px solid #F74902', padding: '5px'}}>Game</Typography> */}
             {!isFetching &&
                 <>
                     
                     <Paper className={classes.dateSeasonContainer}>
                         <DateDisplay date={new Date(game.date.split('T')[0]).toDateString()} season={game.season.season} />
+                        <TeamCard fight={game} showGameLink={false} home={game.homeTeam} />
+                        <Typography 
+                            variant='body1' 
+                            className={classes.gameDescriptionText}
+                            style={{ margin: '15px' }}
+                        >
+                            {game.description}
+                        </Typography>
                     </Paper>
      
-                    <TeamCard fight={game} showGameLink={false} home={game.homeTeam} />
+                    
 
                     {game.description !== "" &&
                         <>
@@ -116,11 +129,15 @@ const GameProfile = () => {
                         </>
                     }
 
-                    <Typography className={classes.gameDetailsTitle}>Game Details</Typography>
+                    <Typography variant='h5' style={{marginBottom: '15px', marginTop: '15px', backgroundColor: 'black', color: 'white', borderBottom: '3px solid #F74902', padding: '5px'}}>Game Details</Typography>
                     
                     {fights.map(fight => {
                         return (
-                            <Paper className={classes.eventContainer} key={fight._id}>
+                            <Paper 
+                                className={classes.eventContainer} 
+                                key={fight._id}
+                                style={{ border: '1px solid black', boxShadow: 'none' }}
+                            >
                                 <GameEvent key={fight._id} event={fight} />
                             </Paper>
                         )
