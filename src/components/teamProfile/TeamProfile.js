@@ -20,11 +20,11 @@ import {
 } from "../../api/teams/teamsApi";
 
 //url for images based on envrinoment
-let imgURL;
+let imgUrl;
 if(process.env.NODE_ENV === 'development'){
-    imgURL = 'http://localhost:5000';
+    imgUrl = 'http://localhost:5000';
 } else {
-    imgURL = 'https://hockey-chronicles-api.herokuapp.com';
+    imgUrl = 'https://hockey-chronicles-api.herokuapp.com';
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -163,13 +163,16 @@ const TeamProfile = () => {
                 <Paper className={classes.paperContainer}>
                     <Grid container>
                         <Grid item xs={4}>
-                            <img className={classes.teamImg} src={`${imgURL}/uploads/teams/${team.teamImageFile}`} alt={`${team.fullName}`} />
+                            <img className={classes.teamImg} src={team.teamImageFile ? `${imgUrl}/uploads/teams/${team.teamImageFile}` : `/images/teams/${team.city}${team.name}.png`} alt={`${team.fullName}`} />
                             
                         </Grid>
                         <Grid item xs={6}>
                             <div className={classes.teamNameContainer}>
                                 <Typography variant='h3'>{team.fullName}</Typography>
-                                <Typography variant='body1'>Active Years: {team.yearsActive}</Typography>
+                                {team.yearsActive.length > 0 &&
+                                    <Typography variant='body1'>Active Years: {team.yearsActive}</Typography>
+                                }
+                                
                             </div>
                         </Grid>
                         <Grid item xs={2}>

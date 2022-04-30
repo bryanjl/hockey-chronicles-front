@@ -15,6 +15,12 @@ import { UserContext } from "../../contexts/UserContext";
 //utils
 import { checkIfInitialOutcome, checkIfDrawOutcome, checkOutcomeWinner } from "../../utils/checkFightOutcome";
 
+let imgUrl;
+if(process.env.NODE_ENV === 'development'){
+    imgUrl = 'http://localhost:5000';
+} else {
+    imgUrl = 'https://hockey-chronicles-api.herokuapp.com';
+}
 
 const useStyles = makeStyles((theme) => ({
     imgContainer: {
@@ -143,11 +149,6 @@ const PlayerProfile = () => {
         setPlayerRivals(sortedRivals);
     }
 
-    // useEffect(() => {
-    //     sortFights();
-    //     //eslint-disable-next-line
-    // }, [])
-
     const [sortedFights, setSortedFights] = useState([]);
 
     const sortFights = (allFights) => {
@@ -211,7 +212,7 @@ const PlayerProfile = () => {
                             </Grid>
                             <Grid item xs={4}>
                                 <div className={classes.imgContainer}>
-                                    <img className={classes.headshotImg} src='/no-headshot.jpg' alt='no-headshot' />
+                                    <img className={classes.headshotImg} src={player.playerImageFile ? `${imgUrl}/uploads/players/${player.playerImageFile}` : `/no-headshot.jpg`} alt={`${player.firstName} ${player.lastName}`} />
                                 </div>
                             </Grid>
                         </Grid>

@@ -1,6 +1,13 @@
 import { Button, Card, CardActions, Grid, makeStyles, Typography } from "@material-ui/core"
 import { Link, useNavigate } from 'react-router-dom';
 
+let imgUrl;
+if(process.env.NODE_ENV === 'development'){
+    imgUrl = 'http://localhost:5000';
+} else {
+    imgUrl = 'https://hockey-chronicles-api.herokuapp.com';
+}
+
 const useStyles = makeStyles((theme) => ({
     cardContainer: {
         width: '100%',
@@ -51,7 +58,7 @@ const TeamResult = ({ team, id }) => {
             <Grid container className={classes.gridContainer}>
                 <Grid item xs={2}>
                     <Link to={`/teams/${id}`}>
-                        <img className={classes.teamImg} src={`/images/teams/${team.city}${team.name}.png`} alt={`${team.fullName}`} />
+                        <img className={classes.teamImg} src={team.teamImageFile ? `${imgUrl}/uploads/teams/${team.teamImageFile}` : `/images/teams/${team.city}${team.name}.png`} alt={`${team.fullName}`} />
                     </Link>
                 </Grid>
                 <Grid item xs={8}>
