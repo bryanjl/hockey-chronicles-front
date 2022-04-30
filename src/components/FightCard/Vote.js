@@ -12,16 +12,22 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        width: '100%'
-    },
-    button: {
+        width: '100%',
         marginBottom: '15px'
     },
-    title: {
-        
+    button: {
+        marginBottom: '15px',
+        marginTop: '15px',
     },
     actionRatingTitle: {
         padding: '15px'
+    },
+    chartContainer: {
+        height: '70%',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'flex-end',
+        marginBottom: '15px'
     }
 }));
 
@@ -44,9 +50,7 @@ const Vote = ({ fight }) => {
     //state for actionRating chart
     const [action, setAction] = useState(0);
 
-    
     useEffect(() => {
-        // console.log('here');
         setAction(fight.actionRating);
 
         setOutcome(fight.outcome);
@@ -59,11 +63,9 @@ const Vote = ({ fight }) => {
         // eslint-disable-next-line
     }, []);
     
-    
     //voting dialog functions
     const handleClickOpen = () => {
         setOpen(true);
-        
     }
 
     const handleClose = (value) => {
@@ -71,8 +73,6 @@ const Vote = ({ fight }) => {
     }
 
     const submitVote = async (valuesObj) => {
-        // console.log(valuesObj);
-
         //set new action rating state
         let newVotes = action.votes + 1;
         let newAvg = ((action.average * action.votes) + valuesObj.actionRating) / newVotes;
@@ -81,8 +81,6 @@ const Vote = ({ fight }) => {
             votes: newVotes
         }
         setAction(newAction);
-        
-        // console.log(outcome);   
 
         //set new outcome and update state
         let newOutcome = {...outcome};
@@ -90,8 +88,6 @@ const Vote = ({ fight }) => {
         newOutcome[valuesObj.outcome] = outcome[valuesObj.outcome] + 1;
 
         setOutcome(newOutcome);
-        
-
         //set new winBy state
         let newWinBy = {...winBy};
         newWinBy[valuesObj.wonBy] = newWinBy[valuesObj.wonBy] + 1;
@@ -106,39 +102,38 @@ const Vote = ({ fight }) => {
             winBy: newWinBy
         };
 
-        console.log(requestBody);
-
         await updateOutcomeAPI(fight._id, requestBody);
-        // console.log(response);
     }
-
-
 
     return (
         <Grid container className={classes.voteContainer}>
-            <Grid item xs={12} align='center'>
-                <Typography variant='h5' className={classes.title}>
-                    Voting Results
-                </Typography>
+            <Grid item xs={12}>
+            <Typography variant='h5' style={{marginBottom: '15px', marginTop: '15px', backgroundColor: 'black', color: 'white', borderBottom: '3px solid #F74902', padding: '5px'}}>Voting Results</Typography>
             </Grid>
             <Grid item xs={12} align='center'>
-                <OutcomeChart key={rerenderKey} fight={fight} outcome={outcome} />
-            </Grid>
-
-            <Grid item xs={12} align='center'>
-                <WinBy winBy={winBy} />
-            </Grid>
-            <Grid item xs={12} align='center'>
-                <div className={classes.actionRatingtitle}>
-                <Typography className={classes.actionRatingTitle} variant='h5'>Action Rating</Typography>
-                </div>
-            </Grid>
-            <Grid item xs={12} align='center'>
-                <ActionRatingChart key={rerenderKey} actionRating={action.average} />
-            </Grid>
+                <Grid container>
+                    <Grid item xs={12} align='center'>
+                        <WinBy winBy={winBy} />
+                    </Grid>
+                    <Grid item xs={6}>
+                    <Typography variant='h6' style={{marginBottom: '15px', marginTop: '15px', backgroundColor: 'black', color: '#F74902', borderBottom: '1px solid #F74902', padding: '5px'}}>Fight Winner</Typography>
+                        <div className={classes.chartContainer}>
+                            <OutcomeChart key={rerenderKey} fight={fight} outcome={outcome} />
+                        </div>
+                    </Grid>
+                    <Grid item xs={6}>
+                    <Typography variant='h6' style={{marginBottom: '15px', marginTop: '15px', backgroundColor: 'black', color: '#F74902', borderBottom: '1px solid #F74902', padding: '5px'}}>Action Rating</Typography>
+                        <div className={classes.chartContainer} style={{borderLeft: '1px solid black'}}>
+                        
+                            <ActionRatingChart key={rerenderKey} actionRating={action.average} />
+                        </div>
+                        
+                    </Grid>
+                </Grid>
+            </Grid>     
 
             <Grid item xs={12}>
-                <Button variant='outlined' className={classes.button} onClick={handleClickOpen} fullWidth>Vote Now</Button>
+                <Button variant='outlined' style={{ backgroundColor: 'black', color: '#F74902' }} className={classes.button} onClick={handleClickOpen} fullWidth>Vote Now</Button>
             </Grid>
             <VoteDialog
                 players={fight.players}
