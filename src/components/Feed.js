@@ -2,7 +2,6 @@ import { Container, makeStyles } from "@material-ui/core"
 import { Routes, Route } from "react-router-dom";
 
 import FightCard from "./FightCard/FightCard";
-import SearchResults from "./search/SearchResults";
 import Home from "./Home";
 import PlayerProfile from "./playerProfile/PlayerProfile";
 import GameProfile from "./gameProfile/GameProfile";
@@ -16,6 +15,7 @@ import Players from "./pages/Players";
 import Leagues from "./pages/Leagues";
 import Teams from "./pages/Teams";
 import Seasons from "./pages/Seasons";
+import UserProfile from "./pages/UserProfile";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -55,7 +55,8 @@ const Feed = ({ searchQuery }) => {
                 <Route path='/teams' element={<Teams />} />
                 <Route path='/teams/:teamID' element={<TeamProfile />} />
 
-                <Route path='/search' element={<SearchResults searchQuery={searchQuery} />} />  
+                <Route path='/profile' element={<UserProfile />} />
+
             </Routes>
         </Container>
         

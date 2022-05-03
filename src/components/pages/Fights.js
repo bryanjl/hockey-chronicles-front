@@ -60,7 +60,6 @@ const Fights = () => {
         setFightResults([]);
 
         getAllFightsAPI(query).then(data => {
-            console.log(data);
             setFightResults(data.data);
             setTotalDocuments(data.pagination.totalDocuments);
             setIsFetching(false);

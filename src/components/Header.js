@@ -2,11 +2,20 @@ import { AppBar, Toolbar, Typography, makeStyles, Avatar } from '@material-ui/co
 import { AccountCircleRounded, MenuOutlined } from '@material-ui/icons';
 import { LoginRounded, LogoutRounded } from '@mui/icons-material';
 import { Button, Menu, MenuItem } from '@mui/material';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import Login from './auth/Login';
 import Register from './auth/Register';
 import Logout from './auth/Logout';
+//user context
+import { UserContext } from '../contexts/UserContext';
+
+let imgUrl;
+if(process.env.NODE_ENV === 'development'){
+    imgUrl = 'http://localhost:5000';
+} else {
+    imgUrl = 'https://hockey-chronicles-api.herokuapp.com';
+}
 
 const useStyles = makeStyles((theme) => ({
     header: {
@@ -52,6 +61,13 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Header = ({ handleSearch }) => {
+    //user context -> or guest
+    let { user } = useContext(UserContext);
+    if(!user){
+        user = {}
+        user.role = 'guest'
+    }
+
     let navigate = useNavigate();
     const classes = useStyles();
 
@@ -112,6 +128,9 @@ const Header = ({ handleSearch }) => {
     const goHome = () => {
         navigate('/');
     }
+    const profileBtnClick = () => {
+        navigate('/profile');
+    }
 
     return (
         <AppBar className={classes.header} position='fixed'>
@@ -160,7 +179,7 @@ const Header = ({ handleSearch }) => {
                 <div className={classes.icons}>
 
                     <Avatar 
-                        className={classes.avatar} src='#'
+                        className={classes.avatar} src={`${imgUrl}/uploads/users/${user.profileImageFile}`}
                         id="basic-button"
                         aria-controls={openMenu ? 'basic-menu' : undefined}
                         aria-haspopup="true"
@@ -180,6 +199,7 @@ const Header = ({ handleSearch }) => {
                         <MenuItem onClick={loginBtnClick}><LoginRounded />   Login</MenuItem>
                         <MenuItem onClick={logoutBtnClick}><LogoutRounded />   Logout</MenuItem>
                         <MenuItem onClick={registerBtnClick}><AccountCircleRounded />  Register</MenuItem>
+                        <MenuItem onClick={profileBtnClick}><AccountCircleRounded />  Profile</MenuItem>
                     </Menu>
 
                 </div>

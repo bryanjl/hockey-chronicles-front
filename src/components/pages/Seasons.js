@@ -9,6 +9,7 @@ import LinearLoadingAnimation from "../feedback/LinearLoadingAnimation";
 
 //APIs
 import { getAllGames as getAllGamesAPI } from "../../api/games/gamesApi";
+import { Typography } from "@material-ui/core";
 
 
 const Seasons = () => {
@@ -109,6 +110,7 @@ const Seasons = () => {
 
     return (
         <>
+            <Typography variant="h5" style={{backgroundColor: 'black', color: 'white', borderBottom: '3px solid #F74902', padding: '5px', paddingLeft: '15px', marginTop: '15px'}}>View Games by Season</Typography>
             <Grid container>
                 <Grid item xs={12}>
                     <Search handleSearch={gameSearch} />
@@ -123,6 +125,15 @@ const Seasons = () => {
             {isFetching &&
                 <LinearLoadingAnimation />
             }
+            {!isFetching && 
+                <Typography variant="h6" style={{backgroundColor: 'black', color: 'white', borderBottom: '3px solid #F74902', padding: '5px', paddingLeft: '15px', marginTop: '15px'}}>
+                    {(season === '' && league === '') && 'Games for all leagues and seasons' }
+                    {(season === '' && league !== '') && `Games in the ${league} for all seasons`}
+                    {(season !== '' && league === '') && `Games for the ${season} in all leagues`}
+                    {(season !== '' && league !== '') && `Games in the ${league} for the ${season} season`}
+                </Typography>
+            }
+            
             <SeasonTable seasonData={gameResults} pageChange={pageChange} totalDocuments={totalDocuments} currPage={page} />
         </>
     )

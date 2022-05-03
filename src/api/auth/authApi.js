@@ -96,6 +96,24 @@ export const getUserDetails = async() => {
     return user.data;
 }
 
+//update user profile
+export const updateUser = async(fdUserInfo) => {
+    let token = getToken();
+
+    let route = `/auth/updatedetails`;
+    let options = {
+        method: 'PUT',
+        headers: {
+            'Authorization': `Bearer ${token}`
+        },
+        body: fdUserInfo
+    }
+
+    let user = await fetchApi(route, options);
+
+    return user;
+}
+
 //set username to local storage
 // const setUserName = async () => {
 //     let user = await getUserDetails();

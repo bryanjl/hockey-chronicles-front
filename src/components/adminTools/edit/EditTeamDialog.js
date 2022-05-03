@@ -151,7 +151,7 @@ const EditTeamDialog = ({ team, setTeam, open, handleClose }) => {
                     <Alert severity='success'>Team updated</Alert>
                 }
                 {unsuccessfulUpdate &&
-                    <Alert severity='error'>TeamFightTable cannot be updated</Alert>
+                    <Alert severity='error'>Team cannot be updated</Alert>
                 }                
             </Grid>
         </DialogContent>
