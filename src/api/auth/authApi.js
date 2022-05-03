@@ -126,3 +126,19 @@ export const forgotPassword = async(email) => {
 
     return response;
 }
+
+export const resetPassword = async(password, resetToken) => {
+    let route = `/auth/resetpassword/${resetToken}`;
+
+    let options = {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(password)
+    }
+
+    let response = await fetchApi(route, options);
+
+    return response;
+}

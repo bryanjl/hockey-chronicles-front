@@ -17,6 +17,7 @@ import Teams from "./pages/Teams";
 import Seasons from "./pages/Seasons";
 import UserProfile from "./pages/UserProfile";
 import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword  from "./auth/ResetPassword";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -59,6 +60,8 @@ const Feed = ({ searchQuery }) => {
                 <Route path='/profile' element={<UserProfile />} />
 
                 <Route path='/forgotpassword' element={<ForgotPassword />} />
+
+                <Route path='/resetpassword/:resetToken' element={<ResetPassword />} />
 
             </Routes>
         </Container>
