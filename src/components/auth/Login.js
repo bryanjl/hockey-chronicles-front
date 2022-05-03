@@ -1,8 +1,9 @@
 import { makeStyles } from "@material-ui/core";
 import { LockOpen, LockOutlined } from "@material-ui/icons";
-import { Avatar, Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, Link, TextField } from "@mui/material";
+import { Avatar, Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, TextField } from "@mui/material";
 import Success from "./Success";
 import { useState, useContext } from "react";
+import { Link } from 'react-router-dom';
 import { UserContext } from "../../contexts/UserContext";
 import { login as loginAPI } from '../../api/auth/authApi';
 
@@ -121,7 +122,7 @@ const Login = ({ open, onClose }) => {
             </form>
             <Grid container className={classes.footer}>
               <Grid item xs={12} align='center'>
-                <Link href="/forgotpassword" variant="body2">
+                <Link to="/forgotpassword">
                   Forgot password?
                 </Link>
               </Grid>
