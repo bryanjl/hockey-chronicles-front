@@ -5,11 +5,17 @@ import { useState } from "react";
 const useStyles = makeStyles((theme) => ({
     successContainer: {
         display: 'flex',
-        alignItems: 'center'
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     successIcon: {
         color: 'green',
         fontSize: '100px'
+    },
+    iconContainer: {
+        height: '100%',
+        width: '100%',
+        textAlign: 'center'
     }
 }));
 
@@ -25,7 +31,9 @@ const Success = ({ onClose, message }) => {
     return (
         <Dialog open={open} onClose={onClose} className={classes.successContainer} disableEnforceFocus>
             <DialogTitle>{message}</DialogTitle>
-            <CheckCircle className={classes.successIcon} />
+            <div className={classes.iconContainer}>
+                <CheckCircle className={classes.successIcon} />
+            </div>
         </Dialog>
     )
 }

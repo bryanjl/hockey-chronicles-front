@@ -1,4 +1,4 @@
-import { makeStyles } from "@material-ui/core"
+import { makeStyles, Typography } from "@material-ui/core"
 import { LockOutlined } from "@material-ui/icons";
 import { Avatar, Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, Link, TextField } from "@mui/material";
 import Success from "./Success";
@@ -29,6 +29,7 @@ const Register = ({ open, onClose }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [profileImageFile, setProfileImageFile] = useState(null);
 
     //errorState
     const [formError, setFormError] = useState('')
@@ -45,15 +46,18 @@ const Register = ({ open, onClose }) => {
         setPassword(e.target.value);
     }
 
-    const onSubmit = async() => {
-        let userDetails = {
-            username: username,
-            email: email,
-            password: password
-        }
+    const handleProfileImageChange = (e) => {
+        setProfileImageFile(e.target.files[0]);
+    }
 
-        let response = await registerAPI(userDetails);
-        console.log(response);
+    const onSubmit = async() => {
+        let fdUserDetails = new FormData();
+        fdUserDetails.append('username', username);
+        fdUserDetails.append('email', email);
+        fdUserDetails.append('password', password);
+        fdUserDetails.append('profileImageFile', profileImageFile);
+
+        let response = await registerAPI(fdUserDetails);
 
         //handle response errors
         if(response.success === false){
@@ -81,6 +85,7 @@ const Register = ({ open, onClose }) => {
         setPassword('');
         setEmail('');
         setFormError('');
+        setProfileImageFile(null);
         setIsLoggedIn(false);
         onClose();
     }
@@ -143,6 +148,17 @@ const Register = ({ open, onClose }) => {
                             required
                         />
                     </Grid>
+                    <Grid item xs={12}>
+                    <div>
+                        <Typography style={{ marginBottom: '5px' }} variant='body1'>Choose Profile Image</Typography>
+                        <input
+                            onChange={handleProfileImageChange}
+                            accept="image/png"
+                            id="raised-button-file"
+                            type="file"
+                        />
+                    </div>
+                </Grid>
                 </Grid>
             </DialogContent>
             <DialogActions>
@@ -164,4 +180,4 @@ const Register = ({ open, onClose }) => {
     )
 }
 
-export default Register
+export default Register;

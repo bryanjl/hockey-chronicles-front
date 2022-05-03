@@ -49,15 +49,13 @@ export const login = async (credentials) => {
 }
 
 //register for new account with API
-export const register = async (userDetails) => {
+export const register = async (fdUserDetails) => {
     let route = `/auth/register`;
 
     let options = {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(userDetails)
+        
+        body: fdUserDetails
     }
 
     let user = await fetchApi(route, options);
