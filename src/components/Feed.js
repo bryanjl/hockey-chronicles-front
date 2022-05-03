@@ -16,6 +16,7 @@ import Leagues from "./pages/Leagues";
 import Teams from "./pages/Teams";
 import Seasons from "./pages/Seasons";
 import UserProfile from "./pages/UserProfile";
+import ForgotPassword from "./pages/ForgotPassword";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -56,6 +57,8 @@ const Feed = ({ searchQuery }) => {
                 <Route path='/teams/:teamID' element={<TeamProfile />} />
 
                 <Route path='/profile' element={<UserProfile />} />
+
+                <Route path='/forgotpassword' element={<ForgotPassword />} />
 
             </Routes>
         </Container>

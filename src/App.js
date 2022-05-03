@@ -33,7 +33,6 @@ function App() {
 
   useEffect(() => {
     getUserDetailsAPI().then(response => {
-      console.log(response);
       setUser(response);
     });
   }, [])

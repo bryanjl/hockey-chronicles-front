@@ -62,7 +62,6 @@ export const register = async (fdUserDetails) => {
 
     // set token and username to localstorage
     localStorage.setItem('token', user.token);
-    // setUserName();
 
     return user;
 }
@@ -112,9 +111,18 @@ export const updateUser = async(fdUserInfo) => {
     return user;
 }
 
-//set username to local storage
-// const setUserName = async () => {
-//     let user = await getUserDetails();
+export const forgotPassword = async(email) => {
+    let route = `/auth/forgotpassword`;
 
-//     localStorage.setItem('username', user.username);
-// }
+    let options = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(email)
+    }
+
+    let response =  await fetchApi(route, options);
+
+    return response;
+}

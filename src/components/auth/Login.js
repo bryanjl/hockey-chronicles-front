@@ -90,7 +90,6 @@ const Login = ({ open, onClose }) => {
                         onChange={handleUsernameChange}
                         value={username}
                         error={(formError === 'username') ? true : false}
-                        // helperText={`hello`}
                         helperText={(formError === 'username') ? 'User not found' : ''}
                         required
                         fullWidth
@@ -121,14 +120,9 @@ const Login = ({ open, onClose }) => {
                 </DialogActions>
             </form>
             <Grid container className={classes.footer}>
-              <Grid item xs>
-                <Link href="#" variant="body2">
+              <Grid item xs={12} align='center'>
+                <Link href="/forgotpassword" variant="body2">
                   Forgot password?
-                </Link>
-              </Grid>
-              <Grid item>
-                <Link href="#" variant="body2">
-                  {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>
             </Grid>
@@ -137,4 +131,4 @@ const Login = ({ open, onClose }) => {
     
 }
 
-export default Login
+export default Login;

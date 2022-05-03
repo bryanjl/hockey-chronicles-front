@@ -38,4 +38,4 @@ const Success = ({ onClose, message }) => {
     )
 }
 
-export default Success
+export default Success;
