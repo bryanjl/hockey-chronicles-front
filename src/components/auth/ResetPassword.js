@@ -16,19 +16,18 @@ const useStyles = makeStyles((theme) => ({
     textFieldStyle: {
         '& label.Mui-focused': {
             color: 'black',
-          },
-          '& .MuiOutlinedInput-root': {
+        },
+        '& .MuiOutlinedInput-root': {
             '& fieldset': {
-              borderColor: 'black',
+                borderColor: 'black',
             },
             '&:hover fieldset': {
-              borderColor: '#F74902',
+                borderColor: '#F74902',
             },
             '&.Mui-focused fieldset': {
-              borderColor: '#F74902',
-            },
-          },
-        
+                borderColor: '#F74902',
+            }
+        } 
     }
 }));
 

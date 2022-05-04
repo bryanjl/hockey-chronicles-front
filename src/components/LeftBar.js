@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import Login from './auth/Login';
 import Register from './auth/Register';
 import Logout from './auth/Logout';
+// import ForgotPasswordDialog from './auth/ForgotPasswordDialog';
 //css
 import './LeftBarStyles.css'
 //user context
@@ -74,6 +75,17 @@ const LeftBar = () => {
     const onLogoutClose = () => {
         setOpenLogout(false);
     }
+    // //FORGOT PASSWORD
+    // const [openForgotPasswordDialog, setOpenForgotPasswordDialog] = useState(false);
+
+    // const handleForgotPasswordDialogOpen = () => {
+    //     setOpenForgotPasswordDialog(true);
+    // }
+
+    // const handleForgotPasswordDialogClose = () => {
+    //     setOpenForgotPasswordDialog(false);
+    // }
+
 
     return (
         <Box className={classes.container}>
@@ -140,13 +152,14 @@ const LeftBar = () => {
                 </nav>
                 </>
             }
-
+ 
                
             <Login open={openLogin} onClose={onLoginClose} />
                 
             <Register open={openRegister} onClose={onRegisterClose} />
 
             <Logout open={openLogout} onClose={onLogoutClose} />
+
         </Box>
     )
 }

@@ -4,7 +4,7 @@ import { useState } from "react";
 import { forgotPassword as forgotPasswordAPI } from '../../api/auth/authApi';
 import Success from './Success';
 
-const ForgotPassword = ({ open, handleClose }) => {
+const ForgotPassword = ({ open, onClose }) => {
 
     const [email, setEmail] = useState('');
     const [formError, setFormError] = useState('');
@@ -49,12 +49,12 @@ const ForgotPassword = ({ open, handleClose }) => {
     }
 
     const closeDialog = () => {
-        handleClose();
+        onClose();
     }
 
   return (
     <>
-        <Dialog open={open} onClose={handleClose}>
+        <Dialog open={open} onClose={onClose} >
             <DialogTitle>Forgot Password</DialogTitle>
             <DialogContent>
                 <DialogContentText>
@@ -66,6 +66,7 @@ const ForgotPassword = ({ open, handleClose }) => {
                             error={formError === 'email' ? true : false}
                             helperText={formError === 'email' ? 'Please enter a valid email address' : ''}
                             id='email'
+                            value={email}
                             label='Email Address'
                             variant='outlined'
                             margin='normal'

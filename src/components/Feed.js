@@ -65,7 +65,6 @@ const Feed = ({ searchQuery }) => {
 
             </Routes>
         </Container>
-        
     )
 }
 

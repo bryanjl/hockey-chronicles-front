@@ -1,11 +1,12 @@
-import { makeStyles } from "@material-ui/core";
+import { makeStyles, Typography } from "@material-ui/core";
 import { LockOpen, LockOutlined } from "@material-ui/icons";
 import { Avatar, Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, TextField } from "@mui/material";
 import Success from "./Success";
 import { useState, useContext } from "react";
-import { Link } from 'react-router-dom';
 import { UserContext } from "../../contexts/UserContext";
 import { login as loginAPI } from '../../api/auth/authApi';
+import { useNavigate } from "react-router-dom";
+
 
 
 const useStyles = makeStyles((theme) =>({
@@ -20,8 +21,12 @@ const useStyles = makeStyles((theme) =>({
 }));
 
 const Login = ({ open, onClose }) => {
+    const navigate = useNavigate();
+
     //context
     const { setUser } = useContext(UserContext);
+
+    const classes = useStyles();
 
     //State
     const [username, setUsername] = useState('');
@@ -29,7 +34,7 @@ const Login = ({ open, onClose }) => {
     const [formError, setFormError] = useState('');
     const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-    const classes = useStyles();
+    
 
     const handleUsernameChange = (e) => {
         setUsername(e.target.value);
@@ -69,9 +74,13 @@ const Login = ({ open, onClose }) => {
         onClose();
     }
 
-  
+    const handleForgotOpen = () => {
+        handleClose();
+        navigate('/forgotpassword');
+    }
     
     return ( 
+        
         <Dialog open={open} onClose={handleClose}>
             {isLoggedIn && <Success onClose={handleClose} message='You are now logged in' />} 
             <DialogTitle className={classes.title}>
@@ -122,12 +131,15 @@ const Login = ({ open, onClose }) => {
             </form>
             <Grid container className={classes.footer}>
               <Grid item xs={12} align='center'>
-                <Link to="/forgotpassword">
-                  Forgot password?
-                </Link>
+                <Typography
+                    style={{cursor: 'pointer'}}
+                    onClick={handleForgotOpen}
+                >Forgot Password?</Typography>
               </Grid>
             </Grid>
         </Dialog>
+        
+        
     )
     
 }
