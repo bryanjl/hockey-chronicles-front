@@ -26,13 +26,20 @@ const useStyles = makeStyles((theme) => ({
         [theme.breakpoints.up('md')]: {
             display: 'block'
         },
-        cursor: 'pointer'
+        cursor: 'pointer',
+        textAlign: 'left',
+        width: '100%'
     },
     logoSm: {
         display: 'none',
         [theme.breakpoints.down('sm')]: {
             display: 'block'
         },
+        cursor: 'pointer'
+    },
+    logo: {
+        maxHeight: '75px',
+        margin: '10px',
         cursor: 'pointer'
     },
     toolbar: {
@@ -162,10 +169,14 @@ const Header = ({ handleSearch }) => {
                     
                 </Menu>
 
+                <img onClick={goHome} className={classes.logo} src='/hfc_logo.png' alt='logo' />
+
                 <Typography onClick={goHome} variant='h5' component='h2' className={classes.logoLg}>
                     Hockey Fight <Typography  variant='h5' component='h2' display='inline' style={{color: '#F74902', fontStyle: 'italic', fontWeight: 'bold'}}>CHRONICLES</Typography> 
                 </Typography>
                 
+                
+
                 <Typography onClick={goHome} variant='h5' component='h2' className={classes.logoSm}>
                     Hockey Fight Chronicles
                 </Typography>
