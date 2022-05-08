@@ -1,27 +1,13 @@
-import { Box, DialogActions, DialogContent, Grid, Input, makeStyles, Slider, Typography } from "@material-ui/core";
+import { Box, DialogActions, DialogContent, Grid, Input, InputLabel, MenuItem, Select, Slider, Typography } from "@material-ui/core";
 import { 
     Button, 
     Dialog, 
     DialogTitle, 
-    FormControl, 
-    FormControlLabel, 
-    FormLabel, 
-    Radio, 
-    RadioGroup 
+    FormControl
 } from "@mui/material"
 import { useState } from "react";
 
-const useStyles = makeStyles((theme) => ({
-    radioGroup: {
-        padding: '25px'
-    },
-    submitBtn: {
-        
-    }
-}));
-
 const VoteDialog = ({ onClose, open, players, onSubmit }) => {
-    const classes = useStyles();
 
     //state for player select
     const [value, setValue] = useState('draw');
@@ -29,7 +15,7 @@ const VoteDialog = ({ onClose, open, players, onSubmit }) => {
     //state for action rating slider
     const [actionRating, setActionRating] = useState(5);
 
-    //state for won by radio group
+    //state for won by 
     const [wonBy, setWonBy] = useState('');
 
     const handleChange = (event) => {
@@ -75,70 +61,92 @@ const VoteDialog = ({ onClose, open, players, onSubmit }) => {
             <DialogTitle>Cast Your Vote</DialogTitle>
             <DialogContent>
                 <Grid container>
-                    <Grid item xs={6}>
-                        <Box
-                            component="form"
-                            sx={{
-                                display: 'flex',
-                                flexDirection: 'column',
-                                // m: 'auto',
-                                // width: 'fit-content',
-                            }}
-                        >
-                            <FormControl component="fieldset" >
-                                <FormLabel component="legend">Choose the winner:</FormLabel>
-                                <RadioGroup
-                                    aria-label="vote"
-                                    // defaultValue="draw"
-                                    name="radio-buttons-group"
+                    <Grid item xs={12}>
+                        <Box>
+                            <FormControl
+                                variant='outlined'
+                                style={{
+                                    marginBottom: '25px'
+                                }}
+                                fullWidth
+                            >
+                                <InputLabel 
+                                    style={{
+                                        marginBottom: '15px'
+                                    }}
+                                    id='winner-select-label'>Choose the Winner:</InputLabel>
+                                <Select
+                                    labelId='winner-select-label'
+                                    id='winner-select'
+                                    label='Choose the Winner:'
+                                    value={value}
                                     onChange={handleChange}
-                                    className={classes.radioGroup}
                                 >
-                                    <FormControlLabel value={players[0].id} control={<Radio />} label={`${players[0].firstName} ${players[0].lastName}`} />
-                                    <FormControlLabel value="draw" control={<Radio />} label="Draw" />
-                                    <FormControlLabel value={players[1].id} control={<Radio />} label={`${players[1].firstName} ${players[1].lastName}`} />
-                                    
-                                </RadioGroup>
+                                    <MenuItem
+                                        value={players[0].id}
+                                    >
+                                        {`${players[0].firstName} ${players[0].lastName}`}
+                                    </MenuItem> 
+                                    <MenuItem
+                                        value='draw'
+                                    >
+                                        Draw
+                                    </MenuItem>  
+                                    <MenuItem
+                                        value={players[1].id}
+                                    >
+                                        {`${players[1].firstName} ${players[1].lastName}`}
+                                    </MenuItem>
+                                </Select>
                             </FormControl>
                         </Box>
                     </Grid>
                 
                 
-                    <Grid item xs={6}>
-                        <Box
-                            component="form"
-                            sx={{
-                                display: 'flex',
-                                flexDirection: 'column',
-                                // m: 'auto',
-                                // width: 'fit-content',
-                            }}
-                        >
-                            <FormControl component="fieldset" >
-                                <FormLabel component="legend">Won by:</FormLabel>
-                                <RadioGroup
-                                    aria-label="winner-by"
-                                    // defaultValue="KD"
-                                    name="won-by-radio-buttons-group"
+                    <Grid item xs={12}>
+                        <Box>
+                            <FormControl 
+                                variant='outlined'
+                                style={{
+                                    marginBottom: '25px'
+                                }}
+                                fullWidth
+                            >
+                                <InputLabel 
+                                    id='won-by-select-label'
+                                    style={{
+                                        marginBottom: '15px'
+                                    }}
+                                >Won by:</InputLabel>
+                                <Select
+                                    labelId="won-by-select-label"
+                                    id='won-by-select'
+                                    value={wonBy}
+                                    label='Won By:'
                                     onChange={handleWonByChange}
-                                    className={classes.radioGroup}
                                 >
-                                    <FormControlLabel value='knockout' control={<Radio />} label={`Knockout`} />
-                                    <FormControlLabel value="knockdown" control={<Radio />} label="Knockdown" />
-                                    <FormControlLabel value='fall' control={<Radio />} label={`Fall`} />
-                                    
-                                </RadioGroup>
+                                    <MenuItem value='splitDecision'>Split Decision(Slight edge)</MenuItem>
+                                    <MenuItem value='unanimousDecision'>Unanimous Decision(Decisive edge)</MenuItem>
+                                    <MenuItem value='beatdown'>Beatdown</MenuItem>
+                                    <MenuItem value='tko'>TKO</MenuItem>
+                                    <MenuItem value='knockout'>Knockout</MenuItem>
+                                    <MenuItem value='noDecision'>No-Decision</MenuItem>
+                                    <MenuItem value='draw'>Draw</MenuItem>
+                                </Select>
                             </FormControl>
                         </Box>
                     </Grid>
                     <Grid align='center' item xs={12}>
                         <Box sx={{ width: 250 }}>
-                            <Typography align='left' id="input-slider" gutterBottom>
+                            <Typography align='center' id="input-slider" gutterBottom>
                                 Action Rating
                             </Typography>
                             <Grid container spacing={2} alignItems="center">
                                 <Grid item xs>
                                     <Slider
+                                        style={{
+                                            color: '#F74902'
+                                        }}
                                         value={typeof actionRating === 'number' ? actionRating : 0}
                                         onChange={handleSliderChange}
                                         aria-labelledby="input-slider"
@@ -149,6 +157,7 @@ const VoteDialog = ({ onClose, open, players, onSubmit }) => {
                                     </Grid>
                                 <Grid item>
                                     <Input
+                                        disableUnderline
                                         value={actionRating}
                                         size="small"
                                         onChange={handleInputChange}
@@ -168,7 +177,10 @@ const VoteDialog = ({ onClose, open, players, onSubmit }) => {
                 </Grid>
             </DialogContent>
             <DialogActions>
-               <Button className={classes.submitBtn} variant="outlined" fullWidth onClick={submitVote}>Submit Vote</Button>
+               <Button style={{
+                   color: '#F74902',
+                   borderColor: 'black'
+               }} variant="outlined" fullWidth onClick={submitVote}>Submit Vote</Button>
             </DialogActions>
         </Dialog>
     )

@@ -7,6 +7,7 @@ class OutcomeChart extends Component {
 
     this.state = {
       options: {
+        colors: ['#F74902'],
         chart: {
           id: "basic-bar",
           background: 'none',

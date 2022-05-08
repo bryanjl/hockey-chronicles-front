@@ -3,7 +3,7 @@ import { makeStyles } from "@material-ui/core";
 import { useEffect, useState } from "react";
 import OutcomeChart from "../charts/OutcomeChart";
 import ActionRatingChart from "../charts/ActionRatingChart";
-import WinBy from "./WinBy";
+import WinByChart from '../charts/WinByChart';
 import VoteDialog from "./VoteDialog";
 import { updateOutcome as updateOutcomeAPI } from "../../api/fights/fightApi";
 
@@ -44,7 +44,15 @@ const Vote = ({ fight }) => {
     const [outcome, setOutcome] = useState(0);
 
     //state for KD, KO, Fall
-    const initialState = {knockout: 0, knockdown: 0, fall: 0};
+    const initialState = {
+        splitDecision: 0, 
+        unanimousDecision: 0, 
+        beatdown: 0,
+        tko: 0,
+        knockout: 0,
+        noDecision: 0,
+        draw: 0
+    };
     const [winBy, setWinBy] = useState(initialState);
 
     //state for actionRating chart
@@ -113,7 +121,7 @@ const Vote = ({ fight }) => {
             <Grid item xs={12} align='center'>
                 <Grid container>
                     <Grid item xs={12} align='center'>
-                        <WinBy winBy={winBy} />
+                        <WinByChart key={rerenderKey} winBy={winBy} />
                     </Grid>
                     <Grid item xs={6}>
                     <Typography variant='h6' style={{marginBottom: '15px', marginTop: '15px', backgroundColor: 'black', color: '#F74902', borderBottom: '1px solid #F74902', padding: '5px'}}>Fight Winner</Typography>
@@ -132,8 +140,8 @@ const Vote = ({ fight }) => {
                 </Grid>
             </Grid>     
 
-            <Grid item xs={12}>
-                <Button variant='outlined' style={{ backgroundColor: 'black', color: '#F74902' }} className={classes.button} onClick={handleClickOpen} fullWidth>Vote Now</Button>
+            <Grid item xs={12} align='center'>
+                <Button variant='outlined' style={{ backgroundColor: 'black', color: '#F74902', paddingLeft: '25px', paddingRight: '25px' }} className={classes.button} onClick={handleClickOpen}>Vote Now</Button>
             </Grid>
             <VoteDialog
                 players={fight.players}
