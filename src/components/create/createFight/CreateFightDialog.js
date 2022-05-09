@@ -4,6 +4,7 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
+import { Alert } from "@mui/material";
 import DialogTitle from '@mui/material/DialogTitle';
 import { createFight as createFightAPI } from '../../../api/fights/fightApi';
 //components for form
@@ -11,6 +12,7 @@ import PlayerSearch from '../PlayerSearch';
 import FightTypeSelect from '../FightTypeSelect';
 import GameTimePicker from '../GameTimePicker';
 import { useState } from 'react';
+
 
 const useStyles = makeStyles((theme) => ({
   fightDescriptionTextField: {
@@ -35,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-function CreateFightDialog({ gameFights, setGameFights, game, open, handleClose }) {
+function CreateFightDialog({ gameFights, setGameFights = null, game, open, handleClose }) {
   const classes = useStyles();
 
   //form states
@@ -45,6 +47,9 @@ function CreateFightDialog({ gameFights, setGameFights, game, open, handleClose 
   const [player2, setPlayer2] = useState('');
   const [fightDescription, setFightDescription] = useState('');
   const [youtubeLink, setYoutubeLink] = useState('');
+
+  //form success
+  const [successCreate, setSuccessCreate] = useState(false);
 
   const createFightSubmit = () => {
     let players = [player1, player2];
@@ -75,11 +80,19 @@ function CreateFightDialog({ gameFights, setGameFights, game, open, handleClose 
 
   const submitToApi = (fightInfo) => {
     createFightAPI(fightInfo).then(data => {
-      console.log(data);
-      let newFights = [...gameFights, data.data];
-      console.log(newFights);
-      setGameFights(newFights);
-      handleClose();
+      if(data.success){
+        setSuccessCreate(true);
+
+        setTimeout(() => {
+          setSuccessCreate(false);
+          handleClose();
+        }, 2000);
+      }
+      if(setGameFights !== null) {
+        let newFights = [...gameFights, data.data];
+        setGameFights(newFights);
+      }      
+      
     });
   }
 
@@ -92,7 +105,7 @@ function CreateFightDialog({ gameFights, setGameFights, game, open, handleClose 
   }
 
   return (
-    
+    <>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Create a Fight/Event</DialogTitle>
         <DialogContent>
@@ -146,14 +159,18 @@ function CreateFightDialog({ gameFights, setGameFights, game, open, handleClose 
               />
             </Grid>
           </Grid>
-          
+          {successCreate &&
+            <Alert severity="success">Fight Added to Game</Alert>
+          }
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
           <Button onClick={createFightSubmit}>Create Fight/Event</Button>
         </DialogActions>
       </Dialog>
-    
+      
+      
+    </>
   );
 }
 

@@ -65,11 +65,22 @@ const CreateLeague = () => {
   return (
     <>
         <Grid container>
-            <div className={classes.formMargin}>
-                <Grid item xs={12}>
-                    <Typography variant='h5'>Create a New League</Typography>
-                </Grid>
-            </div>
+            
+            <Grid item xs={12}>
+                <Typography 
+                    variant='h5'
+                    style={{
+                        marginBottom: '15px', 
+                        marginTop: '15px', 
+                        backgroundColor: 'black', 
+                        color: 'white', 
+                        borderBottom: '3px solid #F74902', 
+                        padding: '5px', 
+                        width: '100%'
+                    }}
+                >Create a New League</Typography>
+            </Grid>
+            
         </Grid>
 
         <FormControl>

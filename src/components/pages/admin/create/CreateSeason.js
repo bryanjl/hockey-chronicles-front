@@ -83,7 +83,18 @@ const CreateSeason = () => {
       <>
     <Grid container>
         <Grid item xs={12}>
-            <Typography variant='h6'>Create a New Season</Typography>
+            <Typography 
+                variant='h6'
+                style={{
+                    marginBottom: '15px', 
+                    marginTop: '15px', 
+                    backgroundColor: 'black', 
+                    color: 'white', 
+                    borderBottom: '3px solid #F74902', 
+                    padding: '5px', 
+                    width: '100%'
+                }}
+            >Create a New Season</Typography>
         </Grid>
     </Grid>
 

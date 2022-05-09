@@ -51,7 +51,6 @@ const SeasonSelect = ({ seasonSelect, allSeasons = true, currSeason = '' }) => {
     useEffect(() => {
         setIsFetching(true);
         getAllSeasonsAPI().then(data => {
-          console.log(data);
             let orderedSeasons = data.data.sort((a, b) => {
                let first = parseInt(a.season.split('-'), 10);
                let second = parseInt(b.season.split('-'), 10);
