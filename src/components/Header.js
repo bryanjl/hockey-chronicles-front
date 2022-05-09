@@ -19,7 +19,8 @@ if(process.env.NODE_ENV === 'development'){
 
 const useStyles = makeStyles((theme) => ({
     header: {
-        backgroundColor: theme.palette.black.main
+        backgroundColor: theme.palette.black.main,
+        
     },
     logoLg: {
         display: 'none',
@@ -140,6 +141,7 @@ const Header = ({ handleSearch }) => {
     }
 
     return (
+        <div style={{marginBottom: '25px'}}>
         <AppBar className={classes.header} position='fixed'>
             <Toolbar className={classes.toolbar}>
                 <MenuOutlined
@@ -216,6 +218,7 @@ const Header = ({ handleSearch }) => {
                 </div>
             </Toolbar>
         </AppBar>
+        </div>
     )
 }
 
