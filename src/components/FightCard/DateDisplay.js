@@ -18,10 +18,15 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Types(props) {
     const classes = useStyles();
+
+    let date = new Date(props.date.split('T')[0]).toUTCString();
+    
+    date = date.split(' ').splice(0, 4).join(' ');
+
   return (
     <Container className={classes.container}>
         <Typography className={`${classes.text} ${classes.date}`}>
-            {props.date}
+            {date}
         </Typography>
         <Typography className={classes.text}>
             {props.season} season
@@ -30,7 +35,7 @@ export default function Types(props) {
   );
 }
 
-
+// 
 
 
 

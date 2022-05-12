@@ -109,7 +109,7 @@ const GameProfile = () => {
                 <>
                     
                     <Paper className={classes.dateSeasonContainer}>
-                        <DateDisplay date={new Date(game.date.split('T')[0]).toDateString()} season={game.season.season} />
+                        <DateDisplay date={game.date} season={game.season.season} />
                         <TeamCard fight={game} showGameLink={false} home={game.homeTeam} />
                         <Typography 
                             variant='body1' 
