@@ -11,6 +11,7 @@ import { createFight as createFightAPI } from '../../../api/fights/fightApi';
 import PlayerSearch from '../PlayerSearch';
 import FightTypeSelect from '../FightTypeSelect';
 import GameTimePicker from '../GameTimePicker';
+import TeamSearch from '../../adminTools/TeamSearch';
 import { useState } from 'react';
 
 
@@ -33,6 +34,9 @@ const useStyles = makeStyles((theme) => ({
   },
   fightTypeSelect: {
     marginTop: '15px'
+  },
+  teamPlayerContainer: {
+    // border: '1px solid black'
   }
 }));
 
@@ -44,7 +48,9 @@ function CreateFightDialog({ gameFights, setGameFights = null, game, open, handl
   const [fightType, setFightType] = useState('Fight');
   const [gameTime, setGameTime] = useState('');
   const [player1, setPlayer1] = useState('');
+  const [player1Team, setPlayer1Team] = useState('');
   const [player2, setPlayer2] = useState('');
+  const [player2Team, setPlayer2Team] = useState('');
   const [fightDescription, setFightDescription] = useState('');
   const [youtubeLink, setYoutubeLink] = useState('');
 
@@ -52,7 +58,11 @@ function CreateFightDialog({ gameFights, setGameFights = null, game, open, handl
   const [successCreate, setSuccessCreate] = useState(false);
 
   const createFightSubmit = () => {
-    let players = [player1, player2];
+    let player1Info = player1;
+    player1Info.teamId = player1Team._id;
+    let player2Info = player2;
+    player2Info.teamId = player2Team._id;
+    let players = [player1Info, player2Info];
     
     let fightInfo = {
       league: game.league,
@@ -104,6 +114,16 @@ function CreateFightDialog({ gameFights, setGameFights = null, game, open, handl
     setYoutubeLink(e.target.value);
   }
 
+  const handlePlayer1TeamChange = (value, prevTeam = null) => {
+    console.log(value);
+    setPlayer1Team(value);
+  }
+
+  const handlePlayer2TeamChange = (value, prevTeam = null) => {
+    console.log(value);
+    setPlayer2Team(value);
+  }
+
   return (
     <>
       <Dialog open={open} onClose={handleClose}>
@@ -125,15 +145,32 @@ function CreateFightDialog({ gameFights, setGameFights = null, game, open, handl
             </Grid>
             {fightType !== 'Event' &&
               <>
+              <div style={{border: '1px solid gray', width: '100%', marginTop: '10px', padding: '3px'}}>
+                <Grid container>
+                  <Typography variant='body1'>Choose the player and the team they fought for:</Typography>
                 <Grid item sm={5} xs={12}>
-                  <PlayerSearch className={classes.playerSearch} setFormPlayer={setPlayer1} />
+                  <div className={classes.teamPlayerContainer}>
+                    <PlayerSearch className={classes.playerSearch} setFormPlayer={setPlayer1} />
+                    {/* <Typography variant='body1' style={{paddingLeft:'5px', marginTop: '5px', marginBottom: '5px'}}>fought for:</Typography> */}
+                    <TeamSearch gameTeams={game.teams} updateTeam={handlePlayer1TeamChange} team={null} />
+                    
+                    
+                  </div>
                 </Grid>
                 <Grid className={classes.vsText} item sm={2} xs={12}>
                   <Typography align='center'>VS</Typography>
                 </Grid>
                 <Grid item sm={5} xs={12}>
-                  <PlayerSearch className={classes.playerSearch} setFormPlayer={setPlayer2} />
+                  <div className={classes.teamPlayerContainer}>
+                    <PlayerSearch className={classes.playerSearch} setFormPlayer={setPlayer2} />
+                    {/* <Typography variant='body1' style={{paddingLeft:'5px', marginTop: '5px', marginBottom: '5px'}}>fought for:</Typography> */}
+                    <TeamSearch gameTeams={game.teams} updateTeam={handlePlayer2TeamChange} team={null}/>
+                    
+                  </div>
+                  
                 </Grid>
+                </Grid>
+              </div>
               </>
             }
             <Grid item xs={12}>

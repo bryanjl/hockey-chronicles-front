@@ -1,6 +1,7 @@
 import { useEffect, useState, useContext } from "react";
 import { useParams } from "react-router-dom";
 import { Button, Grid, makeStyles, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@material-ui/core";
+import FighterRow from "./FighterRow";
 import TeamTabs from "./TeamTabs";
 import TeamGameTable from "./TeamGameTable";
 import TeamFightTable from "./TeamFightTable";
@@ -55,6 +56,9 @@ const useStyles = makeStyles((theme) => ({
         alignItems: 'center',
         justifyContent: 'center',
         flexDirection: 'column'
+    },
+    tableContainer: {
+        marginBottom: '25px'
     }
 }));
 
@@ -97,6 +101,7 @@ const TeamProfile = () => {
     const setTab = (value) => {
         setSelectedTab(value);
         getRivals(teamSeasonGameData);
+        // organizeFighters(teamSeasonFightData);
     }
 
     const getRivals = (allGames) => {
@@ -139,6 +144,51 @@ const TeamProfile = () => {
 
     const handleSeasonChange = (seasonValue) => {
         fetchData(seasonValue);
+    }
+
+    //fighters tab
+    const organizeFighters = (fights) => {
+        console.log(fights)
+        let playersObj = {};
+        for( let i = 0; i < fights.length; i++ ){
+            if(fights[i].players[0].teamId === team._id){
+                if(!playersObj[`${fights[i].players[0].firstName} ${fights[i].players[0].lastName}`]){
+                    playersObj[`${fights[i].players[0].firstName} ${fights[i].players[0].lastName}`] = [fights[i]];
+                } else {
+                    playersObj[`${fights[i].players[0].firstName} ${fights[i].players[0].lastName}`].push(fights[i]);
+                }
+            } else if(fights[i].players[1].teamId === team._id) {
+                if(!playersObj[`${fights[i].players[1].firstName} ${fights[i].players[1].lastName}`]){
+                    playersObj[`${fights[i].players[1].firstName} ${fights[i].players[1].lastName}`] = [fights[i]];
+                } else {
+                    playersObj[`${fights[i].players[1].firstName} ${fights[i].players[1].lastName}`].push(fights[i]);
+                }
+            } else {
+                continue;
+            }
+        }
+        console.log(playersObj);
+        let playerNameArray = Object.keys(playersObj);
+        console.log(playerNameArray);
+
+        return (
+            <TableContainer className={classes.tableContainer} component={Paper}>
+                <Table aria-label="collapsible table">
+                    <TableHead>
+                    <TableRow>
+                        {/* <TableCell /> */}
+                        <TableCell align='left' style={{fontSize: '1.2rem'}}>Fighter</TableCell>
+                        
+                    </TableRow>
+                    </TableHead>
+                    <TableBody>
+                    {playerNameArray.map((name) => (
+                        <FighterRow key={name} playerName={name} row={playersObj[name]} />
+                    ))}
+                    </TableBody>
+                </Table>
+            </TableContainer> 
+        )
     }
 
     //administration tools
@@ -213,6 +263,8 @@ const TeamProfile = () => {
                     <TeamFightTable seasonData={teamSeasonFightData} />
                 }
 
+               
+
                 {selectedTab === 2 && 
                     <TableContainer sx={{maxHeight: 440, overflow: 'hidden'}} component={Paper}>
                         <Table stickyHeader aria-label="simple table">
@@ -239,6 +291,12 @@ const TeamProfile = () => {
                         </Table>
                     </TableContainer>
                 }
+
+                {selectedTab === 3 &&
+                    organizeFighters(teamSeasonFightData)
+                }
+
+                
             </>
             }
         </>
@@ -246,3 +304,25 @@ const TeamProfile = () => {
 }
 
 export default TeamProfile;
+
+
+// {selectedTab === 3 &&
+//     <TableContainer className={classes.tableContainer} component={Paper}>
+//         <Table aria-label="collapsible table">
+//             <TableHead>
+//             <TableRow>
+//                 <TableCell />
+//                 <TableCell align='left'>Fighter</TableCell>
+//                 {/* <TableCell align="right">Overall  Action</TableCell> */}
+                
+//             </TableRow>
+//             </TableHead>
+//             <TableBody>
+//             {sortedFights.map((fight) => (
+                
+//                 <Row key={fight._id} row={fight} player={player} outcomeValue={outcomeValue} />
+//             ))}
+//             </TableBody>
+//         </Table>
+//     </TableContainer> 
+// }
