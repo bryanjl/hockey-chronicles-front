@@ -148,7 +148,7 @@ const TeamProfile = () => {
 
     //fighters tab
     const organizeFighters = (fights) => {
-        console.log(fights)
+        // console.log(fights)
         let playersObj = {};
         for( let i = 0; i < fights.length; i++ ){
             if(fights[i].players[0].teamId === team._id){
@@ -167,9 +167,9 @@ const TeamProfile = () => {
                 continue;
             }
         }
-        console.log(playersObj);
+        // console.log(playersObj);
         let playerNameArray = Object.keys(playersObj);
-        console.log(playerNameArray);
+        // console.log(playerNameArray);
 
         return (
             <TableContainer className={classes.tableContainer} component={Paper}>

@@ -53,8 +53,8 @@ const FighterRow = (props) => {
                             <TableCell component="th" scope="row">
                                 {new Date(fight.date.split('T')[0]).toLocaleString().split(',')[0]}
                             </TableCell>
-                            <TableCell align="right"><Link to={`/games/${fight.game}`} >{fight.teams[0].city}-{fight.teams[1].city}</Link></TableCell>
-                            <TableCell align="right">
+                            <TableCell align="center"><Link to={`/games/${fight.game}`} >{fight.teams[0].city}-{fight.teams[1].city}</Link></TableCell>
+                            <TableCell align="center">
                                 <Link to={`/players/${fight.players[0].id}`}>{`${fight.players[0].lastName}`}</Link> VS <Link to={`/players/${fight.players[1].id}`}>{`${fight.players[1].lastName}`}</Link>
                             </TableCell>
                             <TableCell align="right">{fight.actionRating.average === 0 ? `` : fight.actionRating.average}</TableCell>

@@ -44,7 +44,9 @@ const useStyles = makeStyles((theme) => ({
         borderRight: '3px solid #F74902',
     },
     tableContainer: {
-        overflow: 'auto'
+        overflow: 'auto',
+        marginBottom: '25px',
+        maxWidth: '100%'
     },
     chartContainer: {
         marginTop: '15px',
@@ -86,7 +88,6 @@ const PlayerProfile = () => {
     useEffect(() => {
         setIsFetching(true);
         getPlayerAPI(playerID).then(data => {
-            console.log(data)
             setPlayer(data.data.player);
             setPlayerFights(data.data.fights);
             sortFights(data.data.fights);
@@ -239,16 +240,14 @@ const PlayerProfile = () => {
 
                 {selectedTab === 0 && sortedFights.length !== 0 &&
                     <>
-                    {console.log(sortedFights)}
+                    
                         
                             <TableContainer className={classes.tableContainer} component={Paper}>
                                 <Table aria-label="collapsible table">
                                     <TableHead>
                                     <TableRow>
-                                        <TableCell />
                                         <TableCell align='left'>Season</TableCell>
-                                        {/* <TableCell align="right">Overall  Action</TableCell> */}
-                                        
+                                        <TableCell />                                  
                                     </TableRow>
                                     </TableHead>
                                     <TableBody>
@@ -268,7 +267,7 @@ const PlayerProfile = () => {
 
                 {selectedTab === 1  &&
     
-                    <TableContainer sx={{maxHeight: 440, overflow: 'hidden'}} component={Paper}>
+                    <TableContainer sx={{maxHeight: 440, overflow: 'hidden', marginBottom: '25px'}} component={Paper}>
                         <Table stickyHeader aria-label="simple table">
                             <TableHead>
                             <TableRow>
