@@ -4,6 +4,7 @@ import { Button, Grid, makeStyles, Paper, Table, TableBody, TableCell, TableCont
 import PlayerTabs from "./PlayerTabs";
 // import PlayerFightTable from "./PlayerFightTable";
 import Row from "./Row";
+import RivalRow from "./RivalRow";
 import EditPlayerDialog from "../adminTools/edit/EditPlayerDialog";
 import WinLossDrawChart from "../charts/WinLossDrawChart";
 import ActionRatingChart from "../charts/ActionRatingChart";
@@ -125,17 +126,27 @@ const PlayerProfile = () => {
         allFights.forEach(fight => {
             if(fight.players[0].lastName !== player.lastName){  
                 if(!unsortedRivals[`${fight.players[0].firstName} ${fight.players[0].lastName}`]){
-                    unsortedRivals[`${fight.players[0].firstName} ${fight.players[0].lastName}`] = 1;    
+                    unsortedRivals[`${fight.players[0].firstName} ${fight.players[0].lastName}`] = {
+                        count: 1,
+                        fights: [fight]
+                    }
+                    // unsortedRivals[`${fight.players[0].firstName} ${fight.players[0].lastName}`].fights = [fight];
                 } else {
-                    unsortedRivals[`${fight.players[0].firstName} ${fight.players[0].lastName}`] += 1;
+                    unsortedRivals[`${fight.players[0].firstName} ${fight.players[0].lastName}`].count += 1;
+                    unsortedRivals[`${fight.players[0].firstName} ${fight.players[0].lastName}`].fights.push(fight);
                 }
             }
             
             if(fight.players[1].lastName !== player.lastName){
                 if(!unsortedRivals[`${fight.players[1].firstName} ${fight.players[1].lastName}`]){
-                    unsortedRivals[`${fight.players[1].firstName} ${fight.players[1].lastName}`] = 1;    
+                    unsortedRivals[`${fight.players[1].firstName} ${fight.players[1].lastName}`] = {
+                        count: 1,
+                        fights: [fight]
+                    };
+                    
                 } else {
-                    unsortedRivals[`${fight.players[1].firstName} ${fight.players[1].lastName}`] += 1;
+                    unsortedRivals[`${fight.players[1].firstName} ${fight.players[1].lastName}`].count += 1;
+                    unsortedRivals[`${fight.players[1].firstName} ${fight.players[1].lastName}`].fights.push(fight);
                 }
             }
         });
@@ -144,8 +155,10 @@ const PlayerProfile = () => {
             sortedRivals.push([item, unsortedRivals[item]]);
         }
         sortedRivals.sort((a, b) => {
-            return b[1] - a[1];
+            return b[1].count - a[1].count;
         });
+
+        console.log(sortedRivals);
 
         setPlayerRivals(sortedRivals);
     }
@@ -240,58 +253,46 @@ const PlayerProfile = () => {
 
                 {selectedTab === 0 && sortedFights.length !== 0 &&
                     <>
-                    
-                        
-                            <TableContainer className={classes.tableContainer} component={Paper}>
-                                <Table aria-label="collapsible table">
-                                    <TableHead>
-                                    <TableRow>
-                                        <TableCell align='left'>Season</TableCell>
-                                        <TableCell />                                  
-                                    </TableRow>
-                                    </TableHead>
-                                    <TableBody>
-                                    {sortedFights.map((fight) => (
-                                        
-                                        <Row key={fight._id} row={fight} player={player} outcomeValue={outcomeValue} />
-                                    ))}
-                                    </TableBody>
-                                </Table>
-                            </TableContainer> 
-                    {/* {/* // <PlayerFightTable seasonData={playerFights} /> */}
-                        
-
-                   
+                        <TableContainer className={classes.tableContainer} component={Paper}>
+                            <Table aria-label="collapsible table">
+                                <TableHead>
+                                <TableRow>
+                                    <TableCell align='left'>Season</TableCell>
+                                    <TableCell />                                  
+                                </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                {sortedFights.map((fight) => (
+                                    
+                                    <Row key={fight._id} row={fight} player={player} outcomeValue={outcomeValue} />
+                                ))}
+                                </TableBody>
+                            </Table>
+                        </TableContainer> 
+                    </>
+                }
+                {selectedTab === 1  &&
+                    <>
+                        <TableContainer className={classes.tableContainer} component={Paper}>
+                            <Table aria-label="collapsible table">
+                                <TableHead>
+                                <TableRow>
+                                    <TableCell align='left'>Player</TableCell>
+                                    <TableCell align='center'>Fights</TableCell>
+                                    <TableCell />                                  
+                                </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                {playerRivals.map((fight) => (
+                                    
+                                    <RivalRow key={fight[0]} row={fight} player={player} outcomeValue={outcomeValue} />
+                                ))}
+                                </TableBody>
+                            </Table>
+                        </TableContainer> 
                     </>
                 }
 
-                {selectedTab === 1  &&
-    
-                    <TableContainer sx={{maxHeight: 440, overflow: 'hidden', marginBottom: '25px'}} component={Paper}>
-                        <Table stickyHeader aria-label="simple table">
-                            <TableHead>
-                            <TableRow>
-                                <TableCell>Player</TableCell>
-                                <TableCell align="right">Fights</TableCell>
-                            </TableRow>
-                            </TableHead>
-                            <TableBody>
-                            { 
-                                playerRivals.map((rival) => (
-                                <TableRow
-                                    key={rival[0]}
-                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                >
-                                    <TableCell component="th" scope="row">
-                                        {rival[0]}
-                                    </TableCell>
-                                    <TableCell align="right">{rival[1]}</TableCell>
-                                </TableRow>
-                            ))}
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
-                }
                 
                 </>
             }            
@@ -300,5 +301,3 @@ const PlayerProfile = () => {
 }
 
 export default PlayerProfile;
-
-
