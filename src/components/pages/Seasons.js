@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { Grid } from "@mui/material";
+import { Typography } from "@material-ui/core";
 import { useSearchParams } from 'react-router-dom';
+import Stats from "./Stats";
 import SeasonTable from "../seasonProfile/SeasonTable";
 import SeasonSelect from "../seasonProfile/SeasonSelect";
 import LeagueSelect from "../leagueProfile/LeagueSelect";
@@ -9,7 +11,8 @@ import LinearLoadingAnimation from "../feedback/LinearLoadingAnimation";
 
 //APIs
 import { getAllGames as getAllGamesAPI } from "../../api/games/gamesApi";
-import { Typography } from "@material-ui/core";
+import { getSeasonAndLeagueStats as getSeasonAndLeagueStatsAPI } from '../../api/stats/statsApi';
+
 
 
 const Seasons = () => {
@@ -27,6 +30,7 @@ const Seasons = () => {
     const [season, setSeason] = useState('');
     const [league, setLeague] = useState('');
     const [searchQuery, setSearchQuery] = useState('');
+    const [statsData, setStatsData] = useState(null);
 
     useEffect(() => {
         let query = '';
@@ -60,11 +64,17 @@ const Seasons = () => {
         setIsFetching(true);
         setGameResults([]);
 
+        getSeasonAndLeagueStatsAPI(query).then(response => {
+            setStatsData(response.data);
+        });
+
         getAllGamesAPI(query).then(response => {
             setGameResults(response.data);
             setTotalDocuments(response.pagination.totalDocuments);
             setIsFetching(false);
         });
+
+        
     }
 
     const setParams = () => {
@@ -110,6 +120,7 @@ const Seasons = () => {
 
     return (
         <>
+        
             <Typography variant="h5" style={{backgroundColor: 'black', color: 'white', borderBottom: '3px solid #F74902', padding: '5px', paddingLeft: '15px', marginTop: '15px'}}>View Games by Season</Typography>
             <Grid container>
                 <Grid item xs={12}>
@@ -125,13 +136,19 @@ const Seasons = () => {
             {isFetching &&
                 <LinearLoadingAnimation />
             }
+            {statsData &&
+                <Stats data={statsData} />
+            }
             {!isFetching && 
-                <Typography variant="h6" style={{backgroundColor: 'black', color: 'white', borderBottom: '3px solid #F74902', padding: '5px', paddingLeft: '15px', marginTop: '15px'}}>
+                <>
+                
+                <Typography align='center' variant="h6" style={{backgroundColor: 'black', color: '#F74902', borderBottom: '3px solid #F74902', padding: '5px', paddingLeft: '15px', marginTop: '15px', marginBottom: '10px'}}>
                     {(season === '' && league === '') && 'Games for all leagues and seasons' }
                     {(season === '' && league !== '') && `Games in the ${league} for all seasons`}
                     {(season !== '' && league === '') && `Games for the ${season} in all leagues`}
                     {(season !== '' && league !== '') && `Games in the ${league} for the ${season} season`}
                 </Typography>
+                </>
             }
             
             <SeasonTable seasonData={gameResults} pageChange={pageChange} totalDocuments={totalDocuments} currPage={page} />

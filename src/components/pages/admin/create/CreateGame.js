@@ -80,7 +80,7 @@ const CreateGame = () => {
             let gameInfo = {
                 date: gameDate,
                 season: gameSeason,
-                gameType: `${gameType.charAt(0).toUpperCase() + gameType.slice(1)} `,
+                gameType: `${gameType.charAt(0).toUpperCase() + gameType.slice(1)}`,
                 league: gameLeague,
                 teams: teamsArr,
                 description: gameDescription
