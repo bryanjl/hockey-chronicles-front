@@ -2,6 +2,7 @@ import { useEffect, useState, useContext } from "react";
 import { useParams } from "react-router-dom";
 import { Button, Grid, makeStyles, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@material-ui/core";
 import FighterRow from "./FighterRow";
+import RivalRow from "./RivalRow";
 import TeamStats from "./TeamStats";
 import TeamTabs from "./TeamTabs";
 import TeamGameTable from "./TeamGameTable";
@@ -90,6 +91,9 @@ const TeamProfile = () => {
     //state for fetching
     const [isFetching, setIsFetching] = useState(true);
 
+    //current season
+    const [season, setSeason] = useState('')
+
     useEffect(() => {
         setIsFetching(true);
         getTeamAPI(teamID).then(response => {
@@ -102,25 +106,35 @@ const TeamProfile = () => {
 
     const setTab = (value) => {
         setSelectedTab(value);
-        getRivals(teamSeasonGameData);
+        // getRivals(teamSeasonGameData);
         // organizeFighters(teamSeasonFightData);
     }
 
-    const getRivals = (allGames) => {
+    const getRivals = (allFights) => {
         let unsortedRivals = {};
-        allGames.forEach(game => {
-            if(game.teams[0].city !== team.city){
-                if(!unsortedRivals[`${game.teams[0].city} ${game.teams[0].name}`]){
-                    unsortedRivals[`${game.teams[0].city} ${game.teams[0].name}`] = game.fights.length;    
+        allFights.forEach(fight => {
+            if(fight.teams[0].city !== team.city){
+                if(!unsortedRivals[`${fight.teams[0].city} ${fight.teams[0].name}`]){
+                    unsortedRivals[`${fight.teams[0].city} ${fight.teams[0].name}`] = {
+                        count: 1,
+                        fights: [fight],
+                        id: fight.teams[0].id
+                    };    
                 } else {
-                    unsortedRivals[`${game.teams[0].city} ${game.teams[0].name}`] += game.fights.length;
+                    unsortedRivals[`${fight.teams[0].city} ${fight.teams[0].name}`].count += 1;
+                    unsortedRivals[`${fight.teams[0].city} ${fight.teams[0].name}`].fights.push(fight);
                 }
                 
-            } else if(game.teams[1].city !== team.city) {
-                if(!unsortedRivals[`${game.teams[1].city} ${game.teams[1].name}`]){
-                    unsortedRivals[`${game.teams[1].city} ${game.teams[1].name}`] = game.fights.length;    
+            } else if(fight.teams[1].city !== team.city) {
+                if(!unsortedRivals[`${fight.teams[1].city} ${fight.teams[1].name}`]){
+                    unsortedRivals[`${fight.teams[1].city} ${fight.teams[1].name}`] = {
+                        count: 1,
+                        fights: [fight],
+                        id: fight.teams[1].id
+                    };    
                 } else {
-                    unsortedRivals[`${game.teams[1].city} ${game.teams[1].name}`] += game.fights.length;
+                    unsortedRivals[`${fight.teams[1].city} ${fight.teams[1].name}`].count += 1;
+                    unsortedRivals[`${fight.teams[1].city} ${fight.teams[1].name}`].fights.push(fight);
                 }
             }
         });
@@ -129,7 +143,7 @@ const TeamProfile = () => {
             sortedRivals.push([item, unsortedRivals[item]]);
         }
         sortedRivals.sort((a, b) => {
-            return b[1] - a[1];
+            return b[1].count - a[1].count;
         });
         setTeamRivals(sortedRivals);
     }
@@ -142,11 +156,13 @@ const TeamProfile = () => {
             // console.log(response)
             setTeamSeasonGameData(response.data.games);
             setTeamSeasonFightData(response.data.fights);
+            getRivals(response.data.fights);
         })
     }
 
     const handleSeasonChange = (seasonValue) => {
         fetchData(seasonValue);
+        setSeason(seasonValue);
     }
 
     //fighters tab
@@ -258,8 +274,10 @@ const TeamProfile = () => {
                         </>
                     }
 
-                    <Typography style={{paddingLeft: '5px'}}>Select A Season:</Typography>
+                    <Typography style={{paddingLeft: '5px', marginBottom: '10px'}}>Select A Season:</Typography>
                     <SeasonSelect seasonSelect={handleSeasonChange} />
+
+                    <Typography align='center' variant="h6" style={{backgroundColor: 'black', color: '#F74902', borderBottom: '3px solid #F74902', padding: '5px', paddingLeft: '15px', marginTop: '15px', marginBottom: '10px'}}>{season === '' ? `Select a Season to see Fights and Games` : `Stats for ${season} Season`}</Typography>
 
                     {
                         teamSeasonFightData.length !== 0 &&
@@ -277,30 +295,25 @@ const TeamProfile = () => {
                     }
 
                     {selectedTab === 2 &&
-                        <TableContainer sx={{ maxHeight: 440, overflow: 'hidden' }} component={Paper}>
-                            <Table stickyHeader aria-label="simple table">
-                                <TableHead>
-                                    <TableRow>
-                                        <TableCell>Team</TableCell>
-                                        <TableCell align="right">Fights</TableCell>
-                                    </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                    {
-                                        teamRivals.map((rival) => (
-                                            <TableRow
-                                                key={rival[0]}
-                                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                            >
-                                                <TableCell component="th" scope="row">
-                                                    {rival[0]}
-                                                </TableCell>
-                                                <TableCell align="right">{rival[1]}</TableCell>
-                                            </TableRow>
-                                        ))}
-                                </TableBody>
-                            </Table>
-                        </TableContainer>
+                    <>
+                    <TableContainer className={classes.tableContainer} component={Paper}>
+                        <Table aria-label="collapsible table">
+                            <TableHead>
+                            <TableRow>
+                                <TableCell align='left'>Team</TableCell>
+                                <TableCell align='center'>Fights</TableCell>
+                                <TableCell />                                  
+                            </TableRow>
+                            </TableHead>
+                            <TableBody>
+                            {teamRivals.map((fight) => (
+                                
+                                <RivalRow key={fight[0]} row={fight} />
+                            ))}
+                            </TableBody>
+                        </Table>
+                    </TableContainer> 
+                </>
                     }
 
                     {selectedTab === 3 &&

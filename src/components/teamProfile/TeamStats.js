@@ -61,7 +61,6 @@ const TeamStats = ({ fightCount, highestAction, mostRecent }) => {
 
   return (
     <>        
-        <Typography align='center' variant="h6" style={{backgroundColor: 'black', color: '#F74902', borderBottom: '3px solid #F74902', padding: '5px', paddingLeft: '15px', marginTop: '15px', marginBottom: '10px'}}>Stats for season</Typography>
             
         <div className={classes.statsContainer}>
             <div className={classes.statsTitleTypo}>
