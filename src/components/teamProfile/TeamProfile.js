@@ -2,6 +2,7 @@ import { useEffect, useState, useContext } from "react";
 import { useParams } from "react-router-dom";
 import { Button, Grid, makeStyles, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@material-ui/core";
 import FighterRow from "./FighterRow";
+import TeamStats from "./TeamStats";
 import TeamTabs from "./TeamTabs";
 import TeamGameTable from "./TeamGameTable";
 import TeamFightTable from "./TeamFightTable";
@@ -12,7 +13,8 @@ import CircularLoadingAnimation from "../feedback/CircularLoadingAnimation";
 import { UserContext } from "../../contexts/UserContext";  
     //edit team
 import EditTeamDialog from "../adminTools/edit/EditTeamDialog";
-// import LeagueDisplay from "../leagueProfile/LeagueDisplay";
+//utils
+import { getFightCount, getHighestAction, getMostRecent } from '../../utils/stats';
 
 //Team API
 import { 
@@ -137,6 +139,7 @@ const TeamProfile = () => {
 
     const fetchData = (seasonValue) => {
         getTeamSeasonDataAPI(teamID, seasonValue).then(response => {
+            // console.log(response)
             setTeamSeasonGameData(response.data.games);
             setTeamSeasonFightData(response.data.fights);
         })
@@ -148,19 +151,21 @@ const TeamProfile = () => {
 
     //fighters tab
     const organizeFighters = (fights) => {
-        // console.log(fights)
         let playersObj = {};
         for( let i = 0; i < fights.length; i++ ){
-            if(!fights[i].players[0].teamId && !fights[i].players[1].teamId){
+            if(fights[i].players.length === 0){
                 continue;
             }
-            if(fights[i].players[0].teamId === team._id){
+            if(!('teamId' in fights[i].players[0]) && !('teamId' in fights[i].players[1])){
+                continue;
+            }
+            if(('teamId' in fights[i].players[0]) && fights[i].players[0].teamId === team._id){
                 if(!playersObj[`${fights[i].players[0].firstName} ${fights[i].players[0].lastName}`]){
                     playersObj[`${fights[i].players[0].firstName} ${fights[i].players[0].lastName}`] = [fights[i]];
                 } else {
                     playersObj[`${fights[i].players[0].firstName} ${fights[i].players[0].lastName}`].push(fights[i]);
                 }
-            } else if(fights[i].players[1].teamId === team._id) {
+            } else if(('teamId' in fights[i].players[0]) && fights[i].players[1].teamId === team._id) {
                 if(!playersObj[`${fights[i].players[1].firstName} ${fights[i].players[1].lastName}`]){
                     playersObj[`${fights[i].players[1].firstName} ${fights[i].players[1].lastName}`] = [fights[i]];
                 } else {
@@ -170,9 +175,7 @@ const TeamProfile = () => {
                 continue;
             }
         }
-        // console.log(playersObj);
         let playerNameArray = Object.keys(playersObj);
-        // console.log(playerNameArray);
 
         if(playerNameArray.length === 0){
             return
@@ -196,8 +199,6 @@ const TeamProfile = () => {
                 </TableContainer> 
             )
         }
-
-        
     }
 
     //administration tools
@@ -217,121 +218,98 @@ const TeamProfile = () => {
                 <CircularLoadingAnimation />
             }
 
-            {!isFetching && 
-            <>
-                <Paper className={classes.paperContainer}>
-                    <Grid container>
-                        <Grid item xs={4}>
-                            <img className={classes.teamImg} src={team.teamImageFile ? `${imgUrl}/uploads/teams/${team.teamImageFile}` : `/images/teams/${team.city}${team.name}.png`} alt={`${team.fullName}`} />
-                            
+            {!isFetching &&
+                <>
+                    <Paper className={classes.paperContainer}>
+                        <Grid container>
+                            <Grid item xs={4}>
+                                <img className={classes.teamImg} src={team.teamImageFile ? `${imgUrl}/uploads/teams/${team.teamImageFile}` : `/images/teams/${team.city}${team.name}.png`} alt={`${team.fullName}`} />
+                            </Grid>
+                            <Grid item xs={6}>
+                                <div className={classes.teamNameContainer}>
+                                    <Typography variant='h3'>{team.fullName}</Typography>
+                                    {team.yearsActive.length > 0 &&
+                                        <Typography variant='body1'>Active Years: {team.yearsActive}</Typography>
+                                    }
+                                </div>
+                            </Grid>
+                            <Grid item xs={2}>
+                                <div className={classes.imgContainer}>
+                                    <img className={classes.leagueImg} src={`/images/leagues/${team.league.name}.png`} alt={`${team.league.name}`} />
+                                </div>
+                            </Grid>
                         </Grid>
-                        <Grid item xs={6}>
-                            <div className={classes.teamNameContainer}>
-                                <Typography variant='h3'>{team.fullName}</Typography>
-                                {team.yearsActive.length > 0 &&
-                                    <Typography variant='body1'>Active Years: {team.yearsActive}</Typography>
-                                }
-                                
+                    </Paper>                    
+
+                    {(user.role === 'admin' || user.role === 'super') &&
+                        <>
+                        <div style={{width: '50%', margin: 'auto', padding: '25px'}}>
+                            <Typography>Administration Tools:</Typography>
+                            <Button
+                                onClick={handleEditTeamOpen}
+                                fullWidth
+                                variant='contained'
+                                style={{ marginBottom: '10px' }}
+                            >
+                                Edit Team Details
+                            </Button>
+                            <EditTeamDialog team={team} setTeam={setTeam} open={openEditTeam} handleClose={handleEditTeamClose} />
                             </div>
-                        </Grid>
-                        <Grid item xs={2}>
-                            <div className={classes.imgContainer}>
-                                <img className={classes.leagueImg} src={`/images/leagues/${team.league.name}.png`} alt={`${team.league.name}`} />
-                            </div>
-                            
-                        </Grid>
-                    </Grid>
-                </Paper>
+                        </>
+                    }
 
-                {(user.role === 'admin' || user.role === 'super') &&
-                    <>
-                        <Typography>Administration Tools:</Typography>
-                        <Button 
-                            onClick={handleEditTeamOpen} 
-                            fullWidth 
-                            variant='contained'
-                            style={{ marginBottom: '10px' }}
-                        >
-                            Edit Team Details
-                        </Button>
-                        <EditTeamDialog team={team} setTeam={setTeam} open={openEditTeam} handleClose={handleEditTeamClose} />    
-                    </>
-                }
+                    <Typography style={{paddingLeft: '5px'}}>Select A Season:</Typography>
+                    <SeasonSelect seasonSelect={handleSeasonChange} />
 
-                
-                <SeasonSelect seasonSelect={handleSeasonChange} />
-                <TeamTabs setTab={setTab} currTab={selectedTab} /> 
+                    {
+                        teamSeasonFightData.length !== 0 &&
+                        <TeamStats fightCount={getFightCount(teamSeasonFightData)} highestAction={getHighestAction(teamSeasonFightData)} mostRecent={getMostRecent(teamSeasonFightData)} />
+                    }
 
-                
+                    <TeamTabs setTab={setTab} currTab={selectedTab} />
 
-                {selectedTab === 0 && 
-                    <TeamGameTable seasonData={teamSeasonGameData} />
-                }
+                    {selectedTab === 0 &&
+                        <TeamGameTable seasonData={teamSeasonGameData} />
+                    }
 
-                {selectedTab === 1 &&
-                    <TeamFightTable seasonData={teamSeasonFightData} />
-                }
+                    {selectedTab === 1 &&
+                        <TeamFightTable seasonData={teamSeasonFightData} />
+                    }
 
-               
+                    {selectedTab === 2 &&
+                        <TableContainer sx={{ maxHeight: 440, overflow: 'hidden' }} component={Paper}>
+                            <Table stickyHeader aria-label="simple table">
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell>Team</TableCell>
+                                        <TableCell align="right">Fights</TableCell>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    {
+                                        teamRivals.map((rival) => (
+                                            <TableRow
+                                                key={rival[0]}
+                                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                            >
+                                                <TableCell component="th" scope="row">
+                                                    {rival[0]}
+                                                </TableCell>
+                                                <TableCell align="right">{rival[1]}</TableCell>
+                                            </TableRow>
+                                        ))}
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
+                    }
 
-                {selectedTab === 2 && 
-                    <TableContainer sx={{maxHeight: 440, overflow: 'hidden'}} component={Paper}>
-                        <Table stickyHeader aria-label="simple table">
-                            <TableHead>
-                            <TableRow>
-                                <TableCell>Team</TableCell>
-                                <TableCell align="right">Fights</TableCell>
-                            </TableRow>
-                            </TableHead>
-                            <TableBody>
-                            { 
-                                teamRivals.map((rival) => (
-                                <TableRow
-                                    key={rival[0]}
-                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                >
-                                    <TableCell component="th" scope="row">
-                                        {rival[0]}
-                                    </TableCell>
-                                    <TableCell align="right">{rival[1]}</TableCell>
-                                </TableRow>
-                            ))}
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
-                }
-
-                {selectedTab === 3 &&
-                    organizeFighters(teamSeasonFightData)
-                }
-
-                
-            </>
+                    {selectedTab === 3 &&
+                        organizeFighters(teamSeasonFightData)
+                    }
+                </>
             }
         </>
     )
 }
 
 export default TeamProfile;
-
-
-// {selectedTab === 3 &&
-//     <TableContainer className={classes.tableContainer} component={Paper}>
-//         <Table aria-label="collapsible table">
-//             <TableHead>
-//             <TableRow>
-//                 <TableCell />
-//                 <TableCell align='left'>Fighter</TableCell>
-//                 {/* <TableCell align="right">Overall  Action</TableCell> */}
-                
-//             </TableRow>
-//             </TableHead>
-//             <TableBody>
-//             {sortedFights.map((fight) => (
-                
-//                 <Row key={fight._id} row={fight} player={player} outcomeValue={outcomeValue} />
-//             ))}
-//             </TableBody>
-//         </Table>
-//     </TableContainer> 
-// }

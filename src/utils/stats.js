@@ -33,11 +33,20 @@ export const getHighestAction = (fights) => {
         fights.sort((a, b) => {
             return b.actionRating.average - a.actionRating.average
         });
-    
-        for(let i = 0; i < 5; i++){
-            top5.push(fights[i]);
+
+        let i = 0, x = 0;
+        while(x < 5){
+            if(fights[i].players.length === 0){
+                i++;
+            } else {
+                top5.push(fights[i]);
+                i++;
+                x++;
+            }
         }
     }
+
+
     
     return top5;
 }
