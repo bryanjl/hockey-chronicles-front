@@ -44,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Stats = ({data}) => {
-    console.log(data)
+    
     const { fightCount, highestAction, mostRecent, topPlayers, topTeams } = data;
 
     const classes = useStyles();

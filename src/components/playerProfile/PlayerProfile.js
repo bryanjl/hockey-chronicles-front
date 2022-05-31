@@ -2,9 +2,10 @@ import { useEffect, useState, useContext } from "react";
 import { useParams } from "react-router-dom";
 import { Button, Grid, makeStyles, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@material-ui/core";
 import PlayerTabs from "./PlayerTabs";
-// import PlayerFightTable from "./PlayerFightTable";
+import { getFightCount, getHighestAction, getMostRecent } from "../../utils/stats";
 import Row from "./Row";
 import RivalRow from "./RivalRow";
+import PlayerStats from "./PlayerStats";
 import EditPlayerDialog from "../adminTools/edit/EditPlayerDialog";
 import WinLossDrawChart from "../charts/WinLossDrawChart";
 import ActionRatingChart from "../charts/ActionRatingChart";
@@ -158,8 +159,6 @@ const PlayerProfile = () => {
             return b[1].count - a[1].count;
         });
 
-        console.log(sortedRivals);
-
         setPlayerRivals(sortedRivals);
     }
 
@@ -231,6 +230,10 @@ const PlayerProfile = () => {
                             </Grid>
                         </Grid>
                     </Paper>
+                    {playerFights.length !== 0 &&
+                        <PlayerStats fightCount={getFightCount(playerFights)} highestAction={getHighestAction(playerFights)} mostRecent={getMostRecent(playerFights)} />
+                    }
+                    
                     
                     {(user.role === 'admin' || user.role === 'super') &&
                         <>

@@ -151,6 +151,9 @@ const TeamProfile = () => {
         // console.log(fights)
         let playersObj = {};
         for( let i = 0; i < fights.length; i++ ){
+            if(!fights[i].players[0].teamId && !fights[i].players[1].teamId){
+                continue;
+            }
             if(fights[i].players[0].teamId === team._id){
                 if(!playersObj[`${fights[i].players[0].firstName} ${fights[i].players[0].lastName}`]){
                     playersObj[`${fights[i].players[0].firstName} ${fights[i].players[0].lastName}`] = [fights[i]];
@@ -171,24 +174,30 @@ const TeamProfile = () => {
         let playerNameArray = Object.keys(playersObj);
         // console.log(playerNameArray);
 
-        return (
-            <TableContainer className={classes.tableContainer} component={Paper}>
-                <Table aria-label="collapsible table">
-                    <TableHead>
-                    <TableRow>
-                        {/* <TableCell /> */}
-                        <TableCell align='left' style={{fontSize: '1.2rem'}}>Fighter</TableCell>
-                        
-                    </TableRow>
-                    </TableHead>
-                    <TableBody>
-                    {playerNameArray.map((name) => (
-                        <FighterRow key={name} playerName={name} row={playersObj[name]} />
-                    ))}
-                    </TableBody>
-                </Table>
-            </TableContainer> 
-        )
+        if(playerNameArray.length === 0){
+            return
+        }else{
+            return (
+                <TableContainer className={classes.tableContainer} component={Paper}>
+                    <Table aria-label="collapsible table">
+                        <TableHead>
+                        <TableRow>
+                            {/* <TableCell /> */}
+                            <TableCell align='left' style={{fontSize: '1.2rem'}}>Fighter</TableCell>
+                            
+                        </TableRow>
+                        </TableHead>
+                        <TableBody>
+                        {playerNameArray.map((name) => (
+                            <FighterRow key={name} playerName={name} row={playersObj[name]} />
+                        ))}
+                        </TableBody>
+                    </Table>
+                </TableContainer> 
+            )
+        }
+
+        
     }
 
     //administration tools
