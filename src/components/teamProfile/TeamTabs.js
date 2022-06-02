@@ -15,6 +15,7 @@ const TeamTabs = ({ setTab, currTab }) => {
         >
             <Tab label="Games" />
             <Tab label="Fights" />
+            <Tab label="Intra-Squad Fights" />
             <Tab label="Rivals" />
             <Tab label="Fighters" />
         </Tabs>

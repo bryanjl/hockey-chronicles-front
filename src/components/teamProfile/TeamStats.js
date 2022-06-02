@@ -79,47 +79,14 @@ const TeamStats = ({ fightCount, highestAction, mostRecent }) => {
                 <Typography>Playoff Fights:</Typography>
                 <Typography style={{fontWeight: 'bold', marginRight: '15px'}}>{fightCount.finals}</Typography>
             </div>
+            <div className={classes.statsTitleTypo}>
+                <Typography>Intra-Squad Fights:</Typography>
+                <Typography style={{fontWeight: 'bold', marginRight: '15px'}}>{fightCount.intra}</Typography>
+            </div>
         </div>
         <Button variant='outlined' fullWidth onClick={() => setOpenMoreStats(!openMoreStats)}>See {openMoreStats ? 'Less' : 'More'} Stats</Button>
         {openMoreStats &&
             <div className={classes.listContainer}>
-                {/* <Box className={classes.boxContainer}>
-                    <Typography align='center'>Top Teams</Typography>
-                    <List>
-                        {topTeams.map(team => {
-                            return(
-                                <ListItem divider className={classes.listItem} key={team._id.id}>
-                                    <Typography>
-                                    <Link style={{textDecoration: 'none'}} to={`/teams/${team._id.id}`}>{team._id.city} {team._id.name}</Link>
-                                    </Typography>
-                                    <Typography style={{fontWeight: 'bold'}}>
-                                        {team.count}
-                                    </Typography> 
-                                </ListItem>
-                            )
-                            
-                        })}
-                    </List>
-                </Box> */}
-                {/* <Box className={classes.boxContainer}>
-                <Typography align='center'>Top Fighters</Typography>
-                    <List>
-                        {topPlayers.map(player => {
-                            return (
-                                <ListItem divider className={classes.listItem} key={player._id.id}>
-                                    <Typography>
-                                        <Link style={{ textDecoration: 'none' }} to={`/players/${player._id.id}`}>{player._id.firstName} {player._id.lastName}</Link>
-                                    </Typography>
-                                    <Typography style={{ fontWeight: 'bold' }}>
-                                        {player.count}
-                                    </Typography> 
-                                </ListItem>
-                            )
-                        })
-
-                        }
-                    </List>
-                </Box> */}
                 <Box className={classes.boxContainer}>
                 <Typography align='center'>Highest Action</Typography>
                     <List>

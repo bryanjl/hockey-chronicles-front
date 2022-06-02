@@ -7,6 +7,7 @@ import TeamStats from "./TeamStats";
 import TeamTabs from "./TeamTabs";
 import TeamGameTable from "./TeamGameTable";
 import TeamFightTable from "./TeamFightTable";
+import IntraFightTable from "./IntraFightTable";
 import SeasonSelect from "../seasonProfile/SeasonSelect";
 import CircularLoadingAnimation from "../feedback/CircularLoadingAnimation";
 //admin
@@ -14,6 +15,7 @@ import CircularLoadingAnimation from "../feedback/CircularLoadingAnimation";
 import { UserContext } from "../../contexts/UserContext";  
     //edit team
 import EditTeamDialog from "../adminTools/edit/EditTeamDialog";
+import CreateIntraSquadFightDialog from "../create/createFight/CreateIntraSquadFightDialog";
 //utils
 import { getFightCount, getHighestAction, getMostRecent } from '../../utils/stats';
 
@@ -113,6 +115,9 @@ const TeamProfile = () => {
     const getRivals = (allFights) => {
         let unsortedRivals = {};
         allFights.forEach(fight => {
+            if(fight.teams.length === 1){
+                return;
+            }
             if(fight.teams[0].city !== team.city){
                 if(!unsortedRivals[`${fight.teams[0].city} ${fight.teams[0].name}`]){
                     unsortedRivals[`${fight.teams[0].city} ${fight.teams[0].name}`] = {
@@ -153,7 +158,7 @@ const TeamProfile = () => {
 
     const fetchData = (seasonValue) => {
         getTeamSeasonDataAPI(teamID, seasonValue).then(response => {
-            // console.log(response)
+            console.log(response)
             setTeamSeasonGameData(response.data.games);
             setTeamSeasonFightData(response.data.fights);
             getRivals(response.data.fights);
@@ -217,8 +222,23 @@ const TeamProfile = () => {
         }
     }
 
+    const intraSquadFights = () => {
+        let intraFights = [];
+
+        teamSeasonFightData.forEach(fight => {
+            if(fight.teams.length === 1){
+                intraFights.push(fight);
+            }
+        })
+
+        return (
+            <IntraFightTable seasonData={intraFights} />
+        )
+    }
+
     //administration tools
     const [openEditTeam, setOpenEditPlayer] = useState(false);
+    const [openAddIntraSquadFight, setOpenAddIntraSquadFight] = useState(false);
 
     const handleEditTeamOpen = () => {
         setOpenEditPlayer(true);
@@ -226,6 +246,14 @@ const TeamProfile = () => {
 
     const handleEditTeamClose = () => {
         setOpenEditPlayer(false);
+    }
+
+    const handleIntraSquadFightOpen = () => {
+        setOpenAddIntraSquadFight(true);
+    }
+
+    const handleIntraSquadFightClose = () => {
+        setOpenAddIntraSquadFight(false);
     }
 
     return (
@@ -258,8 +286,8 @@ const TeamProfile = () => {
                     </Paper>                    
 
                     {(user.role === 'admin' || user.role === 'super') &&
-                        <>
-                        <div style={{width: '50%', margin: 'auto', padding: '25px'}}>
+                    <>
+                        <div style={{ width: '50%', margin: 'auto', padding: '25px' }}>
                             <Typography>Administration Tools:</Typography>
                             <Button
                                 onClick={handleEditTeamOpen}
@@ -269,9 +297,18 @@ const TeamProfile = () => {
                             >
                                 Edit Team Details
                             </Button>
+                            <Button
+                                onClick={handleIntraSquadFightOpen}
+                                fullWidth
+                                variant='contained'
+                                style={{ marginBottom: '10px' }}
+                            >
+                                Add an Intra-Squad Fight 
+                            </Button>
                             <EditTeamDialog team={team} setTeam={setTeam} open={openEditTeam} handleClose={handleEditTeamClose} />
-                            </div>
-                        </>
+                            <CreateIntraSquadFightDialog team={team} open={openAddIntraSquadFight} handleClose={handleIntraSquadFightClose} />
+                        </div>
+                    </>
                     }
 
                     <Typography style={{paddingLeft: '5px', marginBottom: '10px'}}>Select A Season:</Typography>
@@ -295,6 +332,10 @@ const TeamProfile = () => {
                     }
 
                     {selectedTab === 2 &&
+                        intraSquadFights()
+                    }
+
+                    {selectedTab === 3 &&
                     <>
                     <TableContainer className={classes.tableContainer} component={Paper}>
                         <Table aria-label="collapsible table">
@@ -316,7 +357,7 @@ const TeamProfile = () => {
                 </>
                     }
 
-                    {selectedTab === 3 &&
+                    {selectedTab === 4 &&
                         organizeFighters(teamSeasonFightData)
                     }
                 </>

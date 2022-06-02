@@ -4,7 +4,8 @@ export const getFightCount = (fights) => {
         finals: 0,
         regular: 0,
         preseason: 0,
-        total: 0
+        total: 0,
+        intra: 0
     }
 
     if(fights.length !== 0) {
@@ -17,6 +18,9 @@ export const getFightCount = (fights) => {
             }
             if(fight.gameType === 'Final' || fight.gameType === 'Playoff'){
                 fightCount.finals++;
+            }
+            if(fight.teams.length === 1){
+                fightCount.intra++;
             }
             fightCount.total++;
         });    
@@ -36,6 +40,9 @@ export const getHighestAction = (fights) => {
 
         let i = 0, x = 0;
         while(x < 5){
+            if(i >= fights.length){
+                break;
+            }
             if(fights[i].players.length === 0){
                 i++;
             } else {
@@ -61,6 +68,9 @@ export const getMostRecent = (fights) => {
         });
     
         for(let i = 0; i < 5; i++){
+            if(i >= fights.length){
+                break;
+            }
             top5.push(fights[i]);
         }
     }    

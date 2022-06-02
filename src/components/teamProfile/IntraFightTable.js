@@ -33,7 +33,7 @@ const columns = [
   { 
     id: 'players', 
     label: 'Players', 
-    minWidth: 170,
+    minWidth: 125,
     align: 'center',
     format: (players) => {
         if(players.length === 0){
@@ -45,8 +45,15 @@ const columns = [
   {
     id: 'fightType',
     label: 'Fight Type',
-    minWidth: 150,
+    minWidth: 100,
     align: 'center',
+  },
+  {
+    id: 'tookPlaceAt',
+    label: 'Location',
+    minWidth: 100,
+    align: 'center',
+    // format: (fights) => fights ? fights.length : 0
   },
   {
     id: '_id',
