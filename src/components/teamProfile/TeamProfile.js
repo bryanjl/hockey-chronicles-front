@@ -85,7 +85,7 @@ const TeamProfile = () => {
     //teamProfile State for team DATA
     const [team, setTeam] = useState({});
     //state for rivals
-    const [teamRivals, setTeamRivals] = useState({});
+    const [teamRivals, setTeamRivals] = useState([]);
 
     //state for tabs
     const [selectedTab, setSelectedTab] = useState(0);
@@ -347,7 +347,8 @@ const TeamProfile = () => {
                             </TableRow>
                             </TableHead>
                             <TableBody>
-                            {teamRivals.map((fight) => (
+                            {teamRivals.length !== 0 &&
+                            teamRivals.map((fight) => (
                                 
                                 <RivalRow key={fight[0]} row={fight} />
                             ))}
