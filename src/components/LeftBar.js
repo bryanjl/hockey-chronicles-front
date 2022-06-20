@@ -32,6 +32,15 @@ const useStyles = makeStyles((theme) => ({
                 borderLeft: '3px solid #F74902',
             }
         }
+    },
+    affiliateContainer: {
+        width: '100%',
+        overflow: 'hidden',
+        padding: '15px'
+    },
+    affiliateImage: {
+        width: '100%',
+        marginBottom: '25px'
     }
 }));
 
@@ -152,6 +161,15 @@ const LeftBar = () => {
                 </nav>
                 </>
             }
+            <div className={classes.affiliateContainer}>
+                <a href='https://link.chtbl.com/4thlinevoice' target='_blank'  rel='noreferrer'>
+                    <img className={classes.affiliateImage} src='/4th_line_voice.png' alt='4th Line Voice' />
+                </a>
+                <a href='https://www.sixpackcoverage.com/five-for-fighting/' target='_blank' rel='noreferrer'>
+                    <img className={classes.affiliateImage} src='/five_for_fighting.png' alt='Five For Fighting' />
+                </a>
+            </div>
+            
  
                
             <Login open={openLogin} onClose={onLoginClose} />
