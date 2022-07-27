@@ -44,6 +44,8 @@ export const createPlayer = async(playerInfo) => {
     fdPlayerInfo.append('height', playerInfo.height);
     fdPlayerInfo.append('playerImg', playerInfo.playerImg);
 
+    console.log(fdPlayerInfo)
+
     let options = {
         method: 'POST',
         
@@ -51,6 +53,8 @@ export const createPlayer = async(playerInfo) => {
     }
 
     let response = await fetchApi(route, options);
+
+    console.log(response)
 
     return response;
 }

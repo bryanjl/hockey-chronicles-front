@@ -41,12 +41,15 @@ export const createLeague = async(leagueInfo) => {
     let route = `/leagues`;
 
     //send in form data
+    console.log(leagueInfo)
 
     let fdLeagueInfo = new FormData();
   
     fdLeagueInfo.append('name', leagueInfo.name);
     fdLeagueInfo.append('description', leagueInfo.description);
     fdLeagueInfo.append('leagueImg', leagueInfo.leagueImg);
+
+    console.log(fdLeagueInfo);
 
     let options = {
         method: 'POST',

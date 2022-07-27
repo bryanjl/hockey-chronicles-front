@@ -48,7 +48,7 @@ const LeagueProfile = () => {
         setIsFetching(true);
         getLeagueAPI(leagueID).then(response => {
             console.log(response);
-            setLeague(response.data);
+            setLeague(response.league);
             setGamePage(1);
             setFightPage(1);
             setIsFetching(false);
@@ -101,7 +101,7 @@ const LeagueProfile = () => {
     }
 
     const handleSeasonSelect = (seasonValue) => {
-        console.log(seasonValue);
+        //console.log(seasonValue);
         setSeasonSelect(seasonValue);
     }
 
@@ -110,7 +110,7 @@ const LeagueProfile = () => {
             {isFetching &&
                 <CircularLoadingAnimation />
             }
-            { !isFetching &&
+            { !isFetching && league !== 0 &&
                 <>
                     <LeagueDisplay league={league} />
                     <LeagueTabs currTab={selectedTab} setTab={setSelectedTab} />

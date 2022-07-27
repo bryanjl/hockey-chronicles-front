@@ -37,6 +37,8 @@ const CreateLeague = () => {
                 leagueImg: leagueImageFile
             }
 
+            // console.log(leagueInfo)
+
             createLeagueAPI(leagueInfo).then(response => {
                 console.log(response);
                 if(response.success){
