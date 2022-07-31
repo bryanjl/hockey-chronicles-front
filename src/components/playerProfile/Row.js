@@ -10,7 +10,12 @@ const Row = (props) => {
     
     //check if fight.players has a teamId anywhere in the row and belongs to current player
     let teamPlayerExists = false;
+    //console.log(row);
+    
     row.forEach(fight => {
+        if(fight === undefined){
+            return;
+        }
         if(fight.players[0].teamId){
             if(fight.players[0].lastName === player.lastName){
                 //teamId exists to current player
@@ -28,6 +33,7 @@ const Row = (props) => {
             }
         }
     });
+
 
     //check if row season exists in player.teams
     let playerSeason = null;
@@ -66,11 +72,16 @@ const Row = (props) => {
     }
 
     return (
+        
     <>
+    
         <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
+            
             <TableCell component="th" scope="row">
                 {`${row[0].season.season} ${teamNames}`}
             </TableCell>
+            
+            
             <TableCell>
                 <IconButton
                 aria-label="expand row"
@@ -138,7 +149,9 @@ const Row = (props) => {
                 </Collapse>
             </TableCell>
         </TableRow>
+
     </>
+                            
   )
 };
 

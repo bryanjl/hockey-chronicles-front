@@ -89,10 +89,11 @@ const PlayerProfile = () => {
 
     useEffect(() => {
         setIsFetching(true);
-        getPlayerAPI(playerID).then(data => {
-            setPlayer(data.data.player);
-            setPlayerFights(data.data.fights);
-            sortFights(data.data.fights);
+        getPlayerAPI(playerID).then(response => {
+            //console.log(response)
+            setPlayer(response.data.player);
+            setPlayerFights(response.data.fights);
+            sortFights(response.data.fights);
             setIsFetching(false); 
         });
         //eslint-disable-next-line
@@ -264,12 +265,15 @@ const PlayerProfile = () => {
                                     <TableCell />                                  
                                 </TableRow>
                                 </TableHead>
-                                <TableBody>
-                                {sortedFights.map((fight) => (
-                                    
-                                    <Row key={fight._id} row={fight} player={player} outcomeValue={outcomeValue} />
-                                ))}
-                                </TableBody>
+                                {
+                                    sortedFights[0][0] !== undefined &&
+                                    <TableBody>
+                                    {sortedFights.map((fight) => (
+                                        <Row key={fight._id} row={fight} player={player} outcomeValue={outcomeValue} />
+                                    ))}
+                                    </TableBody>
+                                }
+
                             </Table>
                         </TableContainer> 
                     </>
