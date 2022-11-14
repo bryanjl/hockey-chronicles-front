@@ -49,6 +49,7 @@ const TopFive = () => {
             setTopFivePlayers(data.data.players);
             setTopFiveTeams(data.data.teams);
             setIsFetching(false)
+            console.log(data.data.players)
         });
     }
 
@@ -101,10 +102,10 @@ const TopFive = () => {
                     onClick={handleCellClick}
                     className={classes.tableRow}
                     >
-                    <TableCell id={row._id.id} component="th" scope="row">
-                        {row._id.firstName} {row._id.lastName}
+                    <TableCell id={row._id} component="th" scope="row">
+                        {row.firstName} {row.lastName}
                     </TableCell>
-                    <TableCell align="right">{row.count}</TableCell>
+                    <TableCell align="right">{row.numberOfFights}</TableCell>
                     </TableRow>
                 ))}
                 {(!isFetching && currTab === 1) && topFiveTeams.map((row) => (
@@ -114,10 +115,10 @@ const TopFive = () => {
                     onClick={handleCellClick}
                     className={classes.tableRow}
                     >
-                    <TableCell id={row._id.id} component="th" scope="row">
-                        {row._id.city} {row._id.name}
+                    <TableCell id={row._id} component="th" scope="row">
+                        {row.city} {row.name}
                     </TableCell>
-                    <TableCell align="right">{row.count}</TableCell>
+                    <TableCell align="right">{row.numberOfFights}</TableCell>
                     </TableRow>
                 ))}
                 </TableBody>

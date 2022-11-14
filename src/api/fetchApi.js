@@ -13,7 +13,7 @@ if(process.env.NODE_ENV === 'development'){
 const fetchApi = async (route, options) => {
     const response = await fetch(`${baseUrl}${route}`, options);
 
-    // console.log('here', response.json());
+   //console.log('fetch', response.json());
 
     return response.json();
 }

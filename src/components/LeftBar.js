@@ -125,6 +125,11 @@ const LeftBar = () => {
                             <ListItemText primary='TEAMS' />
                         </ListItemButton>
                     </ListItem>
+                    <ListItem className={classes.root}>
+                        <ListItemButton style={{borderTop: '1px solid #F74902', borderRight: '1px solid #F74902'}} component={Link} to='#'>
+                            <ListItemText primary='FORUM' />
+                        </ListItemButton>
+                    </ListItem>
                 </List>
             </nav>
             <Divider style={{background: 'black'}} />

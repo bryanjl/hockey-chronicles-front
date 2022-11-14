@@ -157,11 +157,16 @@ const TeamProfile = () => {
     const [teamSeasonFightData, setTeamSeasonFightData] = useState([]);
 
     const fetchData = (seasonValue) => {
+        // console.log(seasonValue)
+        setIsFetching(true);
         getTeamSeasonDataAPI(teamID, seasonValue).then(response => {
-            console.log(response)
-            setTeamSeasonGameData(response.data.games);
-            setTeamSeasonFightData(response.data.fights);
+            // console.log(response)
+            let sortedFights = response.data.fights.sort((a, b) => new Date(a.date) - new Date(b.date))
+            let sortedGames = response.data.games.sort((a, b) => new Date(a.date) - new Date(b.date))
+            setTeamSeasonGameData(sortedGames);
+            setTeamSeasonFightData(sortedFights);
             getRivals(response.data.fights);
+            setIsFetching(false);
         })
     }
 
