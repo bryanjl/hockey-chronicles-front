@@ -126,7 +126,7 @@ const LeftBar = () => {
                         </ListItemButton>
                     </ListItem>
                     <ListItem className={classes.root}>
-                        <ListItemButton style={{borderTop: '1px solid #F74902', borderRight: '1px solid #F74902'}} component={Link} to='#'>
+                        <ListItemButton style={{borderTop: '1px solid #F74902', borderRight: '1px solid #F74902'}} component={Link} to='https://hockey-chronicles-forum-8ezhy.ondigitalocean.app/'>
                             <ListItemText primary='FORUM' />
                         </ListItemButton>
                     </ListItem>

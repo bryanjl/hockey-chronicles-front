@@ -49,7 +49,7 @@ const TopFive = () => {
             setTopFivePlayers(data.data.players);
             setTopFiveTeams(data.data.teams);
             setIsFetching(false)
-            console.log(data.data.players)
+            // console.log(data.data.players)
         });
     }
 
@@ -97,7 +97,7 @@ const TopFive = () => {
                 <TableBody>
                 {(!isFetching && currTab === 0) && topFivePlayers.map((row) => (
                     <TableRow
-                    key={row._id.id}
+                    key={row._id}
                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                     onClick={handleCellClick}
                     className={classes.tableRow}

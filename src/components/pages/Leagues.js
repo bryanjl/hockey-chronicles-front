@@ -2,12 +2,13 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { getAllLeagues as getAllLeaguesAPI } from "../../api/leagues/leaguesApi";
 import LeagueResult from '../leagueProfile/LeagueResult';
-import Paging from "../Paging";
+// import Paging from "../Paging";
 import LinearLoadingAnimation from "../feedback/LinearLoadingAnimation";
 import { Typography } from "@material-ui/core";
 
 const Leagues = () => {
     //use searchparams for browser history
+    //eslint-disable-next-line
     const [searchParams, setSearchParams] = useSearchParams();
 
     //state for API data
@@ -15,8 +16,8 @@ const Leagues = () => {
     const [leagueResults, setLeagueResults] = useState([]);
 
     //state for pagination
-    const [page, setPage] = useState(1);
-    const [numberOfPages, setNumberOfPages] = useState(0);
+    // const [page, setPage] = useState(1);
+    // const [numberOfPages, setNumberOfPages] = useState(0);
 
     useEffect(() => {
         //get params 
@@ -29,7 +30,7 @@ const Leagues = () => {
         let pageParam = parseInt(searchParams.get('page')) || 1;
 
         //set page number
-        setPage(pageParam);        
+        // setPage(pageParam);        
 
         //fetch data
         fetchData(`${query}page=${pageParam}`);  
@@ -41,21 +42,21 @@ const Leagues = () => {
         setIsFetching(true);
         getAllLeaguesAPI(query).then(data => {
             setLeagueResults(data.data);
-            setNumberOfPages(data.pagination.totalPages);
+            // setNumberOfPages(data.pagination.totalPages);
             setIsFetching(false);
         });
     }
 
     //page change function
-    const pageChange = (value) => {
-        //before changing page check to see if there is a search
-        //query and add to the searchParams
-        let searchTerm = `term=${searchParams.get('term')}&`;
-        if(!searchParams.get('term')) {
-            searchTerm = '';
-        }
-        setSearchParams(`?${searchTerm}page=${value}`);
-    }
+    // const pageChange = (value) => {
+    //     //before changing page check to see if there is a search
+    //     //query and add to the searchParams
+    //     let searchTerm = `term=${searchParams.get('term')}&`;
+    //     if(!searchParams.get('term')) {
+    //         searchTerm = '';
+    //     }
+    //     setSearchParams(`?${searchTerm}page=${value}`);
+    // }
 
     return (
         <>
@@ -68,7 +69,7 @@ const Leagues = () => {
                     return <LeagueResult key={result._id} league={result} id={result._id} />
                 })
             }
-            <Paging currPage={page} pageChange={pageChange} totalPages={numberOfPages} />
+            {/* <Paging currPage={page} pageChange={pageChange} totalPages={numberOfPages} /> */}
         </>
     )
 }

@@ -47,7 +47,7 @@ const LeagueProfile = () => {
     useEffect(() => {
         setIsFetching(true);
         getLeagueAPI(leagueID).then(response => {
-            console.log(response);
+            // console.log(response);
             setLeague(response.league);
             setGamePage(1);
             setFightPage(1);

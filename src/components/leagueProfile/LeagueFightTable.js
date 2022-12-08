@@ -128,7 +128,7 @@ const LeagueFightTable = ({ seasonData, pageChange, totalDocuments, currPage }) 
       <TablePagination
         rowsPerPageOptions={[]}
         component="div"
-        count={totalDocuments}
+        count={-1}
         rowsPerPage={50}
         page={currPage === 1 ? 0 : page}
         onPageChange={handleChangePage}
