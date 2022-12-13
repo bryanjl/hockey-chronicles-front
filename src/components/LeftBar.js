@@ -127,11 +127,11 @@ const LeftBar = () => {
                     </ListItem>
                     <ListItem className={classes.root}>
                         <a href="https://hockey-chronicles-forum-8ezhy.ondigitalocean.app/" target='_blank' rel="noreferrer">
-                        <ListItemButton style={{borderTop: '1px solid #F74902', borderRight: '1px solid #F74902'}} >
+                        {/* <ListItemButton style={{borderTop: '1px solid #F74902', borderRight: '1px solid #F74902'}} > */}
                             
                             <ListItemText primary='FORUM' />
                         
-                        </ListItemButton>
+                        {/* </ListItemButton> */}
                         </a>
                     </ListItem>
                 </List>
