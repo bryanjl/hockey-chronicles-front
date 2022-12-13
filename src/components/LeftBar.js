@@ -126,13 +126,13 @@ const LeftBar = () => {
                         </ListItemButton>
                     </ListItem>
                     <ListItem className={classes.root}>
-                        <a href="https://hockey-chronicles-forum-8ezhy.ondigitalocean.app/" target='_blank'  rel='noreferrer'>
-                        <ListItemButton style={{borderTop: '1px solid #F74902', borderRight: '1px solid #F74902'}} component={Link} to='#'>
+                        
+                        <ListItemButton style={{borderTop: '1px solid #F74902', borderRight: '1px solid #F74902'}} component={Link} to={{pathname: "https://hockey-chronicles-forum-8ezhy.ondigitalocean.app/"}} target='_blank'>
                             
                             <ListItemText primary='FORUM' />
                         
                         </ListItemButton>
-                        </a>
+                        
                     </ListItem>
                 </List>
             </nav>
