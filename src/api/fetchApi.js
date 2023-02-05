@@ -4,7 +4,7 @@
 let baseUrl;
 
 if(process.env.NODE_ENV === 'development'){
-    baseUrl = 'http://localhost:5000/api/v1';
+    baseUrl = 'https://hockey-chronicles-api.herokuapp.com/api/v1';
 } else {
     baseUrl = 'https://hockey-chronicles-api.herokuapp.com/api/v1';
 }
