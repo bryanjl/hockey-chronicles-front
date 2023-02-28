@@ -126,7 +126,7 @@ const LeftBar = () => {
                         </ListItemButton>
                     </ListItem>
                     <ListItem className={classes.root}>
-                        <a href="https://hockey-chronicles-forum-8ezhy.ondigitalocean.app/" target='_blank' rel="noreferrer">
+                        <a href="https://squid-app-bcvn5.ondigitalocean.app/" target='_blank' rel="noreferrer">
                         {/* <ListItemButton style={{borderTop: '1px solid #F74902', borderRight: '1px solid #F74902'}} > */}
                             
                             <ListItemText primary='FORUM' />
